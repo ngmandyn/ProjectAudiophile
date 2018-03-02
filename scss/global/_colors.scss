@@ -1,0 +1,41 @@
+
+$light-gray: #f7f7f7;
+$gray: #b3b3b3;
+$sandalwood: #535050;
+$onyx: #000;
+$papaya: #f15a24;
+$tangerine: #f7931e;
+$kumquat: #fbb03b;
+$taupe: #e8a273;
+$blush: #f7c3b4;
+$sand: mix($kumquat, #fff, 5%);
+
+
+$color-palette: (
+  light-gray: $light-gray,
+  gray: $gray,
+  sandalwood: $sandalwood,
+  onyx: $onyx,
+  papaya: $papaya,
+  tangerine: $tangerine,
+  kumquat: $kumquat,
+  taupe: $taupe,
+  blush: $blush,
+  sand: $sand,
+
+  punch: $papaya,
+  primary: $papaya,
+  header: $onyx,
+  body: $sandalwood,
+  meta: $light-gray,
+);
+
+@function ms-get-color($key) {
+  @if ( map-has-key($color-palette, $key) ) {
+    @return map-get($color-palette, $key);
+  }
+  @else {
+    @warn "Color #{$key} does not exist in the palette.";
+  }
+  @return '';
+}

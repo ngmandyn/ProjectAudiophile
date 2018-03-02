@@ -1,0 +1,120 @@
+// typography base styles
+// half a reset, half as readjusting
+
+$akzidenz-grotesk: 'Akzidenz Grotesk', Helvetica, Arial, sans-serif;
+
+$modular-scale-ratio: 1.2; 
+$modular-scale-base: 1rem;
+$base-font-size: 16px;
+
+$header-type-scale: (
+  h1: pow($modular-scale-ratio, 6) * $modular-scale-base,
+  h2: pow($modular-scale-ratio, 5) * $modular-scale-base,
+  h3: pow($modular-scale-ratio, 4) * $modular-scale-base,
+  h4: pow($modular-scale-ratio, 3) * $modular-scale-base,
+  h5: pow($modular-scale-ratio, 2) * $modular-scale-base,
+  h6: pow($modular-scale-ratio, 1) * $modular-scale-base,
+);
+
+$header-type-scale-names: map-keys($header-type-scale);
+
+$type-scale: (
+  p:     pow($modular-scale-ratio, 0) * $modular-scale-base,
+  small: pow($modular-scale-ratio, -1) * $modular-scale-base,
+);
+
+$type-scale-names: map-keys($type-scale);
+
+body {
+  font-size: 100%;
+  font-family: $akzidenz-grotesk;
+  font-weight: normal;
+}
+
+// HEADER TYPOGRAPHY
+// outputs each typographic header's font-size
+@each $type in $header-type-scale-names {
+  $size: map-get($header-type-scale, $type);
+
+  #{$type} {
+    font-size: $size;
+    font-weight: normal;
+    line-height: ms-adjust-leading($size);
+    margin: ms-rhythm(3) 0 ms-rhythm(2);
+    max-width: 32em; // measure
+
+    @if ($type == 'h1' or $type == 'h2' or $type == 'h3') {
+      letter-spacing: -0.025em;
+    }
+  }
+}
+
+// NORMAL TYPOGRAPHY
+// outputs each typographic element's font-size
+@each $type in $type-scale-names {
+  $size: map-get($type-scale, $type);
+
+  #{$type} {
+    font-size: $size;
+    line-height: ms-adjust-leading($size);
+    margin: 0;
+    max-width: 32em; // measure
+  }
+}
+
+
+/////////////// Typescale
+
+
+/////////////// Other
+p,
+ul,
+ol,
+blockquote {
+  color: $sandalwood;
+  line-height: 1.5rem;
+  max-width: 30em;
+}
+
+p {
+  margin: ms-rhythm(3) 0;
+}
+
+li {
+  margin-bottom: ms-rhythm(1);
+}
+
+p > img {
+  
+}
+
+hr {
+  // max-width: 32em; 
+  text-align: left;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: ms-get-color(tangerine);
+  margin: ms-rhythm(4) 0;
+  transform: rotate(-1deg);
+}
+
+main a {
+  color: map-get($color-palette, body);
+  border-bottom: 1px solid ms-get-color(primary);
+  transition: all 200ms ease-in-out;
+  text-decoration: none;
+
+  &:hover {
+    border-bottom-color: white;
+    // background-color: $skin;
+  }
+}
+
+table {
+  margin-bottom: ms-rhythm(4);
+  th,
+  td {
+    padding: ms-rhythm(1.5 1);
+    border-bottom: 1px solid rgba(ms-get-color(gray), .4);
+  }
+}

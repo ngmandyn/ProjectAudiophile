@@ -1,0 +1,9 @@
+
+// $point[em]  input an em value that is relative to the container
+@mixin breakpoint($point) {
+
+  @media screen and (min-width: #{$point}) {
+    @content;
+  }
+
+}
