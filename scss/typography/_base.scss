@@ -1,9 +1,12 @@
 // typography base styles
 // half a reset, half as readjusting
 
+$mononoki: 'mononoki', sans-serif;
 $akzidenz-grotesk: 'Akzidenz Grotesk', Helvetica, Arial, sans-serif;
+$body-font-family: $akzidenz-grotesk;
+$meta-font-family: $mononoki;
 
-$modular-scale-ratio: 1.2; 
+$modular-scale-ratio: 1.125; 
 $modular-scale-base: 1rem;
 $base-font-size: 16px;
 
@@ -21,14 +24,26 @@ $header-type-scale-names: map-keys($header-type-scale);
 $type-scale: (
   p:     pow($modular-scale-ratio, 0) * $modular-scale-base,
   small: pow($modular-scale-ratio, -1) * $modular-scale-base,
+  tiny: pow($modular-scale-ratio, -2) * $modular-scale-base,
 );
 
 $type-scale-names: map-keys($type-scale);
 
+@function get-font-size($key) {
+  $warning: "There is no type scale #{$key}.";
+  @if map-has-key($header-type-scale, $key) {
+    @return -map-get($header-type-scale, $key, $warning);
+  }
+  @else {
+    @return -map-get($type-scale, $key, $warning);
+  }
+}
+
 body {
   font-size: 100%;
-  font-family: $akzidenz-grotesk;
+  font-family: $body-font-family;
   font-weight: normal;
+  color: get-color('masthead');
 }
 
 // HEADER TYPOGRAPHY
@@ -39,12 +54,15 @@ body {
   #{$type} {
     font-size: $size;
     font-weight: normal;
-    line-height: ms-adjust-leading($size);
-    margin: ms-rhythm(3) 0 ms-rhythm(2);
+    line-height: 1.2;
+    margin: 0 0 rhythm(2) 0;
     max-width: 32em; // measure
 
-    @if ($type == 'h1' or $type == 'h2' or $type == 'h3') {
-      letter-spacing: -0.025em;
+    @if ($type == 'h1') {
+      letter-spacing: 0.15em;
+      color: -get-color(masthead);
+    } else {
+      color: -get-color(header);
     }
   }
 }
@@ -67,54 +85,3 @@ body {
 
 
 /////////////// Other
-p,
-ul,
-ol,
-blockquote {
-  color: $sandalwood;
-  line-height: 1.5rem;
-  max-width: 30em;
-}
-
-p {
-  margin: ms-rhythm(3) 0;
-}
-
-li {
-  margin-bottom: ms-rhythm(1);
-}
-
-p > img {
-  
-}
-
-hr {
-  // max-width: 32em; 
-  text-align: left;
-  border-width: 0 0 1px 0;
-  border-style: solid;
-  border-color: ms-get-color(tangerine);
-  margin: ms-rhythm(4) 0;
-  transform: rotate(-1deg);
-}
-
-main a {
-  color: map-get($color-palette, body);
-  border-bottom: 1px solid ms-get-color(primary);
-  transition: all 200ms ease-in-out;
-  text-decoration: none;
-
-  &:hover {
-    border-bottom-color: white;
-    // background-color: $skin;
-  }
-}
-
-table {
-  margin-bottom: ms-rhythm(4);
-  th,
-  td {
-    padding: ms-rhythm(1.5 1);
-    border-bottom: 1px solid rgba(ms-get-color(gray), .4);
-  }
-}

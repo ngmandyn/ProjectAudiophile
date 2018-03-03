@@ -1,0 +1,10 @@
+.masthead {
+  border-radius: 0 0 5px 5px;
+}
+.masthead__title {
+  font-family: $mononoki;
+  font-weight: bold;
+  font-size: get-font-size('p');
+  text-transform: lowercase;
+  margin: 0;
+}

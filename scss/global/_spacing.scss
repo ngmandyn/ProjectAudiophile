@@ -1,0 +1,11 @@
+$global-spacing: (
+  'horizontal-margin': 1rem,
+  'horiz': 1rem,
+  'top': 2rem,
+  'bottom': 2rem,
+);
+
+@function get-global-spacing($key) {
+  $warning: "No #{$key} in inside $global-spacing.";
+  @return -map-get($global-spacing, $key, $warning);
+}

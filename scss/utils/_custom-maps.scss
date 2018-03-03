@@ -1,0 +1,16 @@
+
+// $map[map] map to traverse
+// $key[string] the key of original map to connect
+// $warning-message[string] warning message
+@function -map-get($map, $key, $warning-message) {
+  $map-keys: map-keys($map);
+  $index: index($map-keys, $key);
+
+  @if $index != null {
+    $match-key: nth($map-keys, $index);
+    @return map-get($map, $match-key);
+  }
+  @else {
+    @warn $warning-message;
+  }
+}

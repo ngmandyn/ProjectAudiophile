@@ -1,0 +1,10 @@
+@mixin meta($color: gray) {
+  font-style: italic;
+  color: get-color($color);
+}
+
+@mixin header($color: header, $size: h3) {
+  color: get-color($color);
+  font-size: map-get($header-type-scale, $size);
+  font-weight: bold;
+}

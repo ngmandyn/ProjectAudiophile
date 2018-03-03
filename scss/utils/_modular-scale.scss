@@ -1,0 +1,20 @@
+// // these should be globals
+// $modular-scale-ratio: 1.25; 
+// $modular-scale-base: 1rem;
+// $base-font-size: 16px;
+
+// @function ms-modular-scale($scale) {
+  
+// }
+
+
+// adjust line-height to nearest rem
+@function adjust-leading($base-size) {
+  $ratio: $base-size / $base-rhythm;
+
+  // @if $ratio % $base-rhythm > 0 {
+    $new-rhythm: ceil($base-size);
+  // }
+
+  @return $new-rhythm;
+}

@@ -2,40 +2,54 @@
 $light-gray: #f7f7f7;
 $gray: #b3b3b3;
 $sandalwood: #535050;
-$onyx: #000;
-$papaya: #f15a24;
+$obsidian: #000;
+// $papaya: #f15a24;
 $tangerine: #f7931e;
 $kumquat: #fbb03b;
 $taupe: #e8a273;
 $blush: #f7c3b4;
 $sand: mix($kumquat, #fff, 5%);
-
+// ------------------------------------
+$onyx: #3D6478;
+$pine: #406B34;
+$cedarpine: #698061;
+$ivy : #7D9E3D;
+$sundapples: #CAD917;
+$winterpine: #65BD63;
+$papaya: #FAA56F;
+$persimmon: #F6743D;
+$foxglove: #B27FE7;
+// ------------------------------------
+$discopurple: #662D91;
+$discoindigo: #2E3192;
 
 $color-palette: (
-  light-gray: $light-gray,
+  masthead: $discoindigo,
+  header: $discoindigo,
+  body: $discopurple,
+  words: $discopurple,
+  punch: $persimmon,
+  primary: $persimmon,
   gray: $gray,
-  sandalwood: $sandalwood,
-  onyx: $onyx,
-  papaya: $papaya,
-  tangerine: $tangerine,
-  kumquat: $kumquat,
-  taupe: $taupe,
-  blush: $blush,
-  sand: $sand,
-
-  punch: $papaya,
-  primary: $papaya,
-  header: $onyx,
-  body: $sandalwood,
-  meta: $light-gray,
 );
 
-@function ms-get-color($key) {
-  @if ( map-has-key($color-palette, $key) ) {
-    @return map-get($color-palette, $key);
-  }
-  @else {
-    @warn "Color #{$key} does not exist in the palette.";
-  }
-  @return '';
+$gradients: (
+  blueberry: linear-gradient(60deg, $discopurple 0%, $discoindigo 100%),
+);
+
+@function get-color($key) {
+  $warning: "Color #{$key} does not exist in the palette.";
+  @return -map-get($color-palette, $key, $warning);
+  // @if ( map-has-key($color-palette, $key) ) {
+  //   @return map-get($color-palette, $key);
+  // }
+  // @else {
+  //   @warn "Color #{$key} does not exist in the palette.";
+  // }
+  // @return '';
+}
+
+@function get-gradient($key) {
+  $warning: "Color #{$key} does not exist in the gradient palette.";
+  @return -map-get($gradients, $key, $warning);
 }

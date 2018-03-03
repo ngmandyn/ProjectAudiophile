@@ -1,0 +1,78 @@
+// creates a harmonius vertical rhythm where all elements will sit relative to each other
+// > taked based on compass-style.org's vertical rhythm tools
+// everything deals in rems!
+
+// $base-font-size: 1rem;
+// $sc-base-line-height: rem-calc(8);
+$base-rhythm: .5rem; // 8px
+
+// $lines: multiples of the $base-rhythm size
+@function rhythm($lines: 1) {
+  $rhythm: null;
+
+  @if (type-of($lines) == 'number') {
+    $rhythm: $lines * $base-rhythm;
+  }
+  @else if (type-of($lines) == 'list') {
+    @each $line in $lines {
+      $rhythm: append($rhythm, $line * $base-rhythm);
+    }
+  }
+
+  @return $rhythm;
+}
+
+// $lines: multiples of the $base-rhythm size
+// $offset: how much to decrease the rhythm, in pixels
+@function -rhythm($lines: 1, $offset: 0) {
+  $rhythm: $lines * $base-rhythm - rem-calc(strip-unit($offset));
+  @return $rhythm;
+}
+$global-border-width: 1px;
+$global-border-style: solid;
+$global-border-color: -get-color(punch);
+
+
+@mixin rhythm-border(
+  $border-position: all,
+  $rhythm-spacing: 1,
+  $border-width: $global-border-width,
+  $border-style: $global-border-style,
+  $border-color: $global-border-color
+) {
+  // check what sides, if "all", of type-of($side) == list
+  // if list, @each $value in $border-position output property
+  @if ($border-position == 'all') {
+    border: $border-width $border-style $border-color;
+    padding: -rhythm($lines: $rhythm-spacing, $offset: $border-width);
+  }
+  @else if (type-of($border-position) == 'list') {
+    @each $side in $border-position {
+      border-#{$side}: $border-width $border-style $border-color;
+      padding-#{$side}: -rhythm($lines: $rhythm-spacing, $offset: $border-width);
+    }
+  }
+}
+
+//testing
+.rhythm-border-all {
+  @include rhythm-border($rhythm-spacing: 2);
+}
+
+
+
+// taken from Compass-style.org
+@function get-baseline-gradient($color: #d6d6d6) {
+  $gradient: linear-gradient(to top, $color 5%, rgba($color, 0) 5%);
+  @return $gradient;
+}
+
+@mixin baseline-grid-background($baseline: $base-rhythm, $color: #d6d6d6) {
+  background-image: get-baseline-gradient($color);
+  background-size: 100% $baseline;
+  background-position: 0 1px;
+}
+
+.u-baseline-bg {
+  @include baseline-grid-background();
+}

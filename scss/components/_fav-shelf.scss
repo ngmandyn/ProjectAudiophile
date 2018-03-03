@@ -1,0 +1,8 @@
+
+.fav-shelf {
+  padding: get-global-spacing('horiz');
+  background: get-gradient('blueberry');
+  width: 100%;
+  color: white;
+  font-family: $meta-font-family;
+}

@@ -61,14 +61,14 @@ $grid-column-names: (
 );
 
 $grid-column-nums: map-keys($grid-column-names);
-$grid-spacing: ms-rhythm(3);
+$grid-spacing: rhythm(3);
 
 .grid {
   display: flex;
   max-width: rem-calc(600);
   margin-left: -($grid-spacing);
   margin-right: -($grid-spacing);
-  margin-top: ms-rhythm(3);
+  margin-top: rhythm(3);
 
   .grid__cell {
     padding-left: $grid-spacing;

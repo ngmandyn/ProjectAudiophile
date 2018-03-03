@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Project Audiophile</title>
+  <link rel="stylesheet" type="text/css" href="css/tachyons.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <!-- jquery -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <!-- requirejs -->
+  <!-- <script data-main="js/dataLoad.js" src="js/require.js" charset="utf-8"></script> -->
+  <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/dataLoad.js" type="text/javascript" charset="utf-8" async defer></script>
+</head>
+<body>
+
+  <article class="masthead mr3 pt4 pb3 pl3 pr3 shadow-2 dib absolute right-0">
+    <h1 class="masthead__title">Project Audiophile</h1>
+  </article>
+
+  <article class="legend">
+    <!-- here goes the drop down selection stuff -->
+    <section class="select-axis">
+      <fieldset class="select-axis__y jsChangeableYAxis">
+        <label for="select-y-axis" class="db"><strong>y-axis</strong> shows</label>
+        <select name="select-y-axis">
+          <option value="average review">average review</option>
+          <option value="impedance">impedance</option>
+          <option value="sensitivity">sensitivity</option>
+        </select>
+      </fieldset>
+      <div class="select-axis__graph">
+        <span class="select-axis__graph-y">y</span>
+        <span class="select-axis__graph-x">x</span>
+      </div>
+      <fieldset class="select-axis__x jsChangeableXAxis">
+        <label for="select-x-axis" class="db"><strong>x-axis</strong> shows</label>
+        <select name="select-x-axis" disabled>
+          <option value="price">price</option>
+        </select>
+      </fieldset>
+    </section>
+    <section class="select-other">
+      <fieldset class="select-other__colour jsChangeableColour">
+        <label for="select-colour"><strong>colour</strong> shows</label>
+        <select name="select-colour">
+          <option value="brands">brands</option>
+          <option value="form factor">form factor</option>
+        </select>
+      </fieldset>
+      <fieldset class="select-other__size jsChangeableSize">
+        <label for="select-size"><strong>size</strong> shows</label>
+        <select name="select-size" disabled>
+          <option value="size">size</option>
+        </select>
+      </fieldset>
+    </section>
+  </article>
+
+  <article class="sidebar">
+    <!-- here goes the filters and search -->
+  </article>
+
+  <article class="canvas">
+    <!-- here goes the drawn data -->
+  </article>
+
+  <article class="fav-shelf absolute bottom-0">
+    <article class="fav-shelf__tab">my selection</article>
+    <!-- here goes the favourited headphones -->
+  </article>
+
+</body>
+</html>

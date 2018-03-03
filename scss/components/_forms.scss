@@ -1,0 +1,73 @@
+$form-border: 1px solid rgba($discopurple, .30);
+
+input,
+select{
+  // sets custom focus glow on form fields
+  &:focus {
+    box-shadow: 0 0 5px $discopurple;
+    outline: none;
+  }
+  &:disabled {
+    border-color: rgba($discopurple, .08);
+  }
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 rhythm(1) 0;
+}
+
+select {
+  border: $form-border;
+  border-radius: rem-calc(3);
+  background-color: rgba($discopurple, .08);
+  padding: .1rem .2rem;
+  // min-width: rem-calc(150);
+}
+
+
+// -----------------------------------------------------------
+.legend {
+  // width: 70%;
+  display: flex;
+  // justify-content: space-between;
+  font-family: $meta-font-family;
+  font-size: get-font-size('small');
+  letter-spacing: -.025rem;
+  padding: get-global-spacing('top') get-global-spacing('horiz');
+
+  >:not(:first-child) {
+    margin-left: 4rem;
+  }
+}
+
+  .select-axis {
+    display: flex;
+  }
+
+    .select-axis__graph {
+      position: relative;
+      width: rem-calc(72);
+      height: rem-calc(48);
+      border-left: $form-border;
+      border-bottom: $form-border;
+      margin: 1rem 2rem .5rem 1.5rem;
+      color: rgba($discopurple, .47);
+
+      &-x { 
+        position: absolute; 
+        bottom: -.3rem; 
+        right: -.7rem; }
+      &-y { position: absolute; 
+        top: -1.1rem; 
+        left: -.3rem; }
+    }
+
+    .select-axis__x {
+      align-self: flex-end;
+    }
+
+  .select-other {
+    align-self: flex-end;
+  }
