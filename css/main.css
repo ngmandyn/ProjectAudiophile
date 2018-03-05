@@ -706,4 +706,18 @@ select {
 .select-other {
   align-self: flex-end; }
 
+.axis .domain {
+  stroke-dasharray: 1px 3px;
+  stroke-opacity: .8;
+  stroke: #662D91; }
+.axis.xaxis .domain {
+  transform: translateY(3px); }
+.axis.yaxis .domain {
+  transform: translateX(-4px); }
+.axis .tick text {
+  fill: #662D91; }
+.axis .tick line {
+  stroke: #662D91;
+  opacity: .8; }
+
 /*# sourceMappingURL=main.css.map */
