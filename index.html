@@ -13,6 +13,7 @@
   <!-- requirejs -->
   <!-- <script data-main="js/dataLoad.js" src="js/require.js" charset="utf-8"></script> -->
   <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/modules/changeableAxis.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/dataLoad.js" type="text/javascript" charset="utf-8" async defer></script>
 </head>
 <body>
@@ -24,22 +25,23 @@
   <article class="legend">
     <!-- here goes the drop down selection stuff -->
     <section class="select-axis">
-      <fieldset class="select-axis__y jsChangeableYAxis">
+      <fieldset class="select-axis__y">
         <label for="select-y-axis" class="db"><strong>y-axis</strong> shows</label>
-        <select name="select-y-axis">
-          <option value="average review">average review</option>
-          <option value="impedance">impedance</option>
-          <option value="sensitivity">sensitivity</option>
+        <select name="select-y-axis" class="jsChangeableYAxis">
+          <!-- <option value="average review">average review</option> -->
+          <option value="Impedance" select="selected">impedance</option>
+          <option value="Convert to Efficiency">efficiency</option>
+          <option value="Weight">weight</option>
         </select>
       </fieldset>
       <div class="select-axis__graph">
         <span class="select-axis__graph-y">y</span>
         <span class="select-axis__graph-x">x</span>
       </div>
-      <fieldset class="select-axis__x jsChangeableXAxis">
+      <fieldset class="select-axis__x">
         <label for="select-x-axis" class="db"><strong>x-axis</strong> shows</label>
-        <select name="select-x-axis" disabled>
-          <option value="price">price</option>
+        <select name="select-x-axis" class="jsChangeableXAxis" disabled>
+          <option value="MRSP">price</option>
         </select>
       </fieldset>
     </section>
@@ -47,8 +49,8 @@
       <fieldset class="select-other__colour jsChangeableColour">
         <label for="select-colour"><strong>colour</strong> shows</label>
         <select name="select-colour">
-          <option value="brands">brands</option>
-          <option value="form factor">form factor</option>
+          <option value="Brand">brands</option>
+          <option value="Form_Factor">form factor</option>
         </select>
       </fieldset>
       <fieldset class="select-other__size jsChangeableSize">

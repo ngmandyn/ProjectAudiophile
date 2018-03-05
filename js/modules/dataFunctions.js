@@ -7,7 +7,8 @@ var parseEmptyRegex = /\w+/;
 
 // returns a boolean of whether the parameter value is empty or not
 function notEmpty(value) {
-  return (typeof value === 'number' || value.match(parseEmptyRegex) !== null);
+  return (typeof value !== 'undefined' && 
+          (typeof value === 'number' || value.match(parseEmptyRegex) !== null));
 }
 
 // filter units - drop the unit string, convert resulting number to integer

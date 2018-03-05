@@ -1,0 +1,26 @@
+.axis {
+  .domain {
+    // the axis path
+    stroke-dasharray: 1px 3px;
+    stroke-opacity: .8;
+    stroke: $discopurple;
+  }
+
+  &.xaxis .domain {
+    transform: translateY(3px);
+  }
+  &.yaxis .domain {
+    transform: translateX(-4px);
+  }
+
+  .tick {
+    text {
+      fill: $discopurple;
+    }
+
+    line {
+      stroke: $discopurple;
+      opacity: .8;
+    }
+  }
+}
