@@ -19,7 +19,7 @@ d3.csv(url, prepData, function(data) {
   console.log(data);
 
   var colourScale = d3.scaleOrdinal(d3.schemeCategory10)
-                    .domain(d3.extent(data, function(d) { return d['Form factor'] }));
+                    .domain(d3.extent(data, function(d) { return d['Manufacturer'] }));
 
   var impedanceMin = getMin(data, 'Impedance');
   var impedanceMax = getMax(data, 'Impedance')+50;
@@ -35,6 +35,9 @@ d3.csv(url, prepData, function(data) {
   $(document).ready(function() {
     $('.jsChangeableYAxis').on('change', function() {
       updateYAxis(data, $(this).val(), yscale, yaxis);
+    });
+    $('.jsChangeableColour').on('change', function() {
+      updateColours(data, $(this).val());
     });
   });
 
@@ -64,7 +67,7 @@ d3.csv(url, prepData, function(data) {
     .attr('cx', function(d) { return xscale(d['MSRP']); })
     .attr('cy', function(d) { return yscale(d['Impedance']); })
     .attr('r', '5')
-    .attr('fill', function(d) { return colourScale(d['Form factor']); })
+    .attr('fill', function(d) { return colourScale(d['Manufacturer']); })
 });
 
 
