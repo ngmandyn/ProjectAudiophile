@@ -9,17 +9,11 @@ var parseEmptyRegex = /\w+/;
 function notEmpty(value) {
   return (typeof value === 'number' || value.match(parseEmptyRegex) !== null);
 }
-// function notEmpty(value) {
-//   return (typeof value === 'number' || value.match(parseEmptyRegex) !== null);
-// }
 
 // filter units - drop the unit string, convert resulting number to integer
 function stripUnits(data) {
   return +data.match(stripUnitRegex);
 }
-// function stripUnits(data) {
-//   return +data.match(stripUnitRegex);
-// }
 
 // filter units in columns defined in arrOfColumnNames
 function stripUnitsForColumns(data, arrOfColumnNames) {
@@ -29,19 +23,12 @@ function stripUnitsForColumns(data, arrOfColumnNames) {
     }
   });
 }
-// function stripUnitsForColumns(data, arrOfColumnNames) {
-//   arrOfColumnNames.forEach(function(name) {
-//     if (data[name] && notEmpty(data[name])) {
-//       data[name] = stripUnits(data[name]);
-//     }
-//   });
-// }
 
 // returns the max within the columnName of data
 function getMax(data, columnName) {
   return d3.max(data, function(d) {
     return d[columnName];
-  })
+  });
 }
 
 // returns the min within the columnName of data
