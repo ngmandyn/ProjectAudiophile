@@ -24,6 +24,14 @@ function stripUnitsForColumns(data, arrOfColumnNames) {
   });
 }
 
+function trimWhitespace(data, arrOfColumnNames) {
+  arrOfColumnNames.forEach(function(name) {
+    if (data[name] && notEmpty(data[name])) {
+      data[name] = data[name].trim();
+    }
+  });
+}
+
 // returns the max within the columnName of data
 function getMax(data, columnName) {
   return d3.max(data, function(d) {

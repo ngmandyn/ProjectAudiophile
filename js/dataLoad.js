@@ -1,6 +1,7 @@
 // var df = require('./modules/dataFunctions.js');
 var url = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dimensions = ['Impedance', 'Efficiency', 'MSRP'];
+var dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required']
 var dataUrl = '';
 var width = window.innerWidth;
 var height = window.innerHeight*.70;
@@ -17,7 +18,9 @@ d3.csv(url, prepData, function(data) {
   console.log('here is data: ');
   console.log(data);
 
-  var colourScale = d3.scaleLinear().domain(d3.extent(data)).range([80, 255]);
+  var colourScale = d3.scaleOrdinal(d3.schemeCategory10)
+                    .domain(d3.extent(data, function(d) { return d['Form factor'] }));
+
   var impedanceMin = getMin(data, 'Impedance');
   var impedanceMax = getMax(data, 'Impedance');
   console.log(impedanceMin + '; ' + impedanceMax);
@@ -25,7 +28,7 @@ d3.csv(url, prepData, function(data) {
                 .domain([impedanceMin, impedanceMax])
                 .range([height-margin, margin]);
   var yaxis = d3.axisLeft(yscale);
-  
+
   var priceMin = getMin(data, 'MSRP');
   var priceMax = getMax(data, 'MSRP');
   console.log(priceMin + '; ' + priceMax + ' USD');
@@ -52,7 +55,7 @@ d3.csv(url, prepData, function(data) {
     .attr('cx', function(d) { return xscale(d['MSRP']); })
     .attr('cy', function(d) { return yscale(d['Impedance']); })
     .attr('r', '5')
-    .attr('fill', function(d) { return d3.rgb(colourScale(d), colourScale(d), colourScale(d)); })
+    .attr('fill', function(d) { return colourScale(d['Form factor']); })
 });
 
 
@@ -60,6 +63,7 @@ d3.csv(url, prepData, function(data) {
 // strips units from given dimensions
 function prepData(data) {
   stripUnitsForColumns(data, dimensions);
+  trimWhitespace(data, dimensionsWithStrings);
   return data;
 }
 
