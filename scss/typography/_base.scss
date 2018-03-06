@@ -74,7 +74,7 @@ body {
 
   #{$type} {
     font-size: $size;
-    line-height: ms-adjust-leading($size);
+    line-height: adjust-leading($size);
     margin: 0;
     max-width: 32em; // measure
   }
@@ -85,3 +85,7 @@ body {
 
 
 /////////////// Other
+.hide {
+  // height: 0;
+  display: none;
+}

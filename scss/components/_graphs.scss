@@ -1,4 +1,10 @@
 .axis {
+  text {
+    font-family: $mononoki;
+    fill: $discopurple;
+    letter-spacing: -.035em;
+  }
+
   .domain {
     // the axis path
     stroke-dasharray: 1px 3px;
@@ -6,21 +12,34 @@
     stroke: $discopurple;
   }
 
-  &.xaxis .domain {
-    transform: translateY(3px);
-  }
-  &.yaxis .domain {
-    transform: translateX(-4px);
-  }
+  // moves axis line to overlap ticks
+  &.xaxis .domain { transform: translateY(3px); }
+  &.yaxis .domain { transform: translateX(-4px); }
 
   .tick {
-    text {
-      fill: $discopurple;
-    }
+    // text {
+    //   fill: $discopurple;
+    // }
 
     line {
       stroke: $discopurple;
       opacity: .8;
     }
   }
+}
+
+  .axis__label {
+    font-weight: bold;
+    font-size: get-font-size('small');
+
+    &-unit {
+      font-size: get-font-size('tiny');
+      fill: $discopurple;
+      opacity: .8;
+    }
+  }
+
+///////////////////////////////////////
+.tooltip {
+  
 }

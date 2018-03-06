@@ -46,19 +46,46 @@ d3.csv(url, prepData, function(data) {
   console.log(priceMin + '; ' + priceMax + ' USD');
   var xscale = d3.scaleLinear()
                 .domain([0, priceMax])
-                .range([margin, width-margin]);
+                .range([margin*2, width-margin]);
   var xaxis = d3.axisBottom(xscale);
 
+  var xLabelOffset = {x: margin*2, y: 36};
+  var yLabelOffset = {x: 0, y: 24};
   // adding axis labels
   svg.append('g')
-    .attr('class', 'axis xaxis')
-    .attr('transform', 'translate(0,'+(height-margin+10)+')')
-    .call(xaxis);
-
+      .attr('class', 'axis xaxis')
+      .attr('transform', 'translate(0,'+(height-margin+10)+')')
+      .call(xaxis)
+    .append('text') // x-axis label
+      .attr('class', 'axis__label axis__label--x')
+      .attr('text-anchor', 'start')
+      .attr('x', xLabelOffset.x)
+      .attr('y', xLabelOffset.y)
+      .text('price');
+  d3.select('.xaxis') // add x-axis unit label
+    .append('text')
+      .attr('class', 'axis__label-unit')
+      .attr('text-anchor', 'start')
+      .attr('x', xLabelOffset.x + 42)
+      .attr('y', xLabelOffset.y)
+      .text('[$USD]');
   svg.append('g')
       .attr('class', 'axis yaxis')
-      .attr('transform', 'translate('+(margin-10)+', 0)')
-      .call(yaxis);
+      .attr('transform', 'translate('+(margin*2-10)+', 0)')
+      .call(yaxis)
+    .append('text') // y-axis label
+      .attr('class', 'axis__label axis__label--y')
+      .attr('text-anchor', 'end')
+      .attr('x', yLabelOffset.x)
+      .attr('y', yLabelOffset.y)
+      .text('impedance')
+  d3.select('.yaxis')
+      .append('text')
+      .attr('class', 'axis__label-unit')
+      .attr('text-anchor', 'end')
+      .attr('x', yLabelOffset.x)
+      .attr('y', yLabelOffset.y+16)
+      .text('[ohms]');
 
   var circles = svg.selectAll('circle')
     .data(data)
@@ -68,6 +95,31 @@ d3.csv(url, prepData, function(data) {
     .attr('cy', function(d) { return yscale(d['Impedance']); })
     .attr('r', '5')
     .attr('fill', function(d) { return colourScale(d['Manufacturer']); })
+    .on('mouseover', function() {
+      d3.select(this)
+        .transition().duration(200)
+        .attr('r', 10);
+    })
+    .on('mouseout', function() {
+      d3.select(this)
+        .transition().duration(300)
+        .attr('r', 5);
+    })
+    .on('click', function() {
+      // $(this).children('.tooltip').toggleClass('hide');
+      var content = $(this).find('.tooltip-data')[0].textContent;
+      console.log(content);
+      // $('.tooltip').html($.parseHTML(content));
+    })
+    .append('p')
+      .attr('class', 'tooltip-data')
+      .text(function(d) {
+        var string = '';
+        dimensionsWithStrings.forEach(function(value, i) {
+          string += value + ': ' + d[value] + ' \n';
+        });
+        return string;
+      });
 });
 
 
@@ -78,6 +130,3 @@ function prepData(data) {
   trimWhitespace(data, dimensionsWithStrings);
   return data;
 }
-
-// sets custom scale from input columnName
-// function setXScale()
