@@ -4,7 +4,7 @@ var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'];
 var dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required']
 var dataUrl = '';
 var width = window.innerWidth;
-var height = window.innerHeight*.7;
+var height = window.innerHeight - 250;
 var margin = 56;
 
 // create the svg
