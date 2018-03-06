@@ -4,7 +4,7 @@ var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'];
 var dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required']
 var dataUrl = '';
 var width = window.innerWidth;
-var height = window.innerHeight*.75;
+var height = window.innerHeight*.7;
 var margin = 56;
 
 // create the svg
@@ -12,6 +12,10 @@ var svg = d3.select('.canvas')
   .append('svg')
   .attr('width', width)
   .attr('height', height);
+var legendSvg = d3.select('.legend-display')
+  .append('svg')
+  .attr('width', width)
+  .attr('height', 50);
 
 // console.log(df.stripUnit('1 cm'));
 d3.csv(url, prepData, function(data) {
@@ -25,19 +29,19 @@ d3.csv(url, prepData, function(data) {
   var colourScale = d3.scaleOrdinal(d3.schemeCategory20)
                       .domain(legendVals);
 
-svg.append("g")
-  .attr("class", "legendOrdinal")
-  .attr("transform", "translate(80, 7)");
+  legendSvg.append("g")
+    .attr("class", "legendOrdinal")
+    .attr("transform", "translate(56, 7)");
 
-var legendOrdinal = d3.legendColor()
-  .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
-  .shapePadding(75)
-  .cellFilter(function(d){ return d.label !== "e" })
-  .scale(colourScale)
-  .orient('horizontal');
+  var legendOrdinal = d3.legendColor()
+    .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
+    .shapePadding(75)
+    .cellFilter(function(d){ return d.label !== "e" })
+    .scale(colourScale)
+    .orient('horizontal');
 
-svg.select(".legendOrdinal")
-  .call(legendOrdinal);
+  legendSvg.select(".legendOrdinal")
+    .call(legendOrdinal);
 
 
   var impedanceMin = getMin(data, 'Impedance');

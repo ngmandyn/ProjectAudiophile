@@ -21,7 +21,7 @@ function updateColours(data, value) {
                           .scale(colourScale)
                           .orient('horizontal');
 
-    svg.select(".legendOrdinal")
+    legendSvg.select(".legendOrdinal")
       .call(legendOrdinal);
 
     d3.selectAll('circle')
