@@ -680,6 +680,9 @@ select {
   .legend > :not(:first-child) {
     margin-left: 4rem; }
 
+.legendOrdinal {
+  font-size: 0.8rem; }
+
 .select-axis {
   display: flex; }
 
