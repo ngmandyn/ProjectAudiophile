@@ -18,8 +18,27 @@ d3.csv(url, prepData, function(data) {
   console.log('here is data: ');
   console.log(data);
 
-  var colourScale = d3.scaleOrdinal(d3.schemeCategory10)
-                    .domain(d3.extent(data, function(d) { return d['Manufacturer'] }));
+  var legendVals = d3.set(data.map( function(d) { return d['Manufacturer']} ) ).values();
+
+  console.log(legendVals);
+
+  var colourScale = d3.scaleOrdinal(d3.schemeCategory20)
+                      .domain(legendVals);
+
+svg.append("g")
+  .attr("class", "legendOrdinal")
+  .attr("transform", "translate(80, 7)");
+
+var legendOrdinal = d3.legendColor()
+  .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
+  .shapePadding(75)
+  .cellFilter(function(d){ return d.label !== "e" })
+  .scale(colourScale)
+  .orient('horizontal');
+
+svg.select(".legendOrdinal")
+  .call(legendOrdinal);
+
 
   var impedanceMin = getMin(data, 'Impedance');
   var impedanceMax = getMax(data, 'Impedance')+50;
@@ -121,6 +140,8 @@ d3.csv(url, prepData, function(data) {
         return string;
       });
 });
+
+
 
 
 // replaces row(function(d))
