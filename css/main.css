@@ -619,21 +619,24 @@ h6 {
 
 p {
   font-size: 1rem;
-  line-height: ms-adjust-leading(1rem);
+  line-height: 1rem;
   margin: 0;
   max-width: 32em; }
 
 small {
   font-size: 0.88889rem;
-  line-height: ms-adjust-leading(0.88889rem);
+  line-height: 1rem;
   margin: 0;
   max-width: 32em; }
 
 tiny {
   font-size: 0.79012rem;
-  line-height: ms-adjust-leading(0.79012rem);
+  line-height: 1rem;
   margin: 0;
   max-width: 32em; }
+
+.hide {
+  display: none; }
 
 .masthead {
   border-radius: 0 0 5px 5px; }
@@ -709,6 +712,10 @@ select {
 .select-other {
   align-self: flex-end; }
 
+.axis text {
+  font-family: "mononoki", sans-serif;
+  fill: #662D91;
+  letter-spacing: -.035em; }
 .axis .domain {
   stroke-dasharray: 1px 3px;
   stroke-opacity: .8;
@@ -717,10 +724,16 @@ select {
   transform: translateY(3px); }
 .axis.yaxis .domain {
   transform: translateX(-4px); }
-.axis .tick text {
-  fill: #662D91; }
 .axis .tick line {
   stroke: #662D91;
   opacity: .8; }
+
+.axis__label {
+  font-weight: bold;
+  font-size: 0.88889rem; }
+  .axis__label-unit {
+    font-size: 0.79012rem;
+    fill: #662D91;
+    opacity: .8; }
 
 /*# sourceMappingURL=main.css.map */

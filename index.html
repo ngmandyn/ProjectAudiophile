@@ -51,8 +51,8 @@
       <fieldset class="select-other__colour">
         <label for="select-colour"><strong>colour</strong> shows</label>
         <select name="select-colour" class="jsChangeableColour">
+          <option value="Manufacturer" selected="selected">brands</option>
           <option value="Form factor">form factor</option>
-          <option value="Manufacturer">brands</option>
           <option value="Amp required">amp required</option>
         </select>
       </fieldset>
@@ -70,6 +70,12 @@
   </article>
 
   <article class="canvas">
+    <!-- <template id="tooltip-template"> -->
+      <article class="tooltip"></article>
+    <!-- </template> -->
+    <template id="tooltip-data-template">
+      <div class="tooltip__data"></div>
+    </template>
     <!-- here goes the drawn data -->
   </article>
 
