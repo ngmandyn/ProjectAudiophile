@@ -1,123 +1,119 @@
 // var df = require('./modules/dataFunctions.js');
-var url = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
-var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'];
-var dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required']
-var dataUrl = '';
-var width = window.innerWidth;
-var height = window.innerHeight - 250;
-var margin = 56;
+var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
+var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
+    dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
+var margin = 56,
+    width = window.innerWidth - margin,
+    height = window.innerHeight - 272;
 
-// create the svg
-var svg = d3.select('.canvas')
-  .append('svg')
-  .attr('width', width)
-  .attr('height', height);
-var legendSvg = d3.select('.legend-display')
-  .append('svg')
-  .attr('width', width)
-  .attr('height', 50);
+// position vectors, and dimensions
+var xAxisOffset = { x: 0, y: height-margin+10 },
+    xLabelOffset = { x: margin*2, y: 36 },
+    xLabelUnitsOffset = { x: xLabelOffset.x+42, y: xLabelOffset.y },
+    yAxisOffset = { x: margin*2-10, y: 0 },
+    yLabelOffset = { x: 0, y: 24 },
+    yLabelUnitsOffset = { x: yLabelOffset.x, y: yLabelOffset.y+16 },
+    canvasDimensions = { width: width, height: height },
+    legendDimensions = { width: width, height: 50 };
 
-// console.log(df.stripUnit('1 cm'));
-d3.csv(url, prepData, function(data) {
-  console.log('here is data: ');
-  console.log(data);
+// the config of the starting graph's axes and colour
+var dataInitConfig = {
+  xAxis: {
+    dimension: 'MSRP',
+    displayName: 'price',
+    units: '$USD',
+    min: null, 
+    max: null,
+    // offset: 50,
+  },
+  yAxis: {
+    dimension: 'Impedance',
+    displayName: 'impedance',
+    units: 'ohmns',
+    min: null, 
+    max: null,
+    // offset: 50,
+  },
+  colour: {
+    dimension: 'Manufacturer',
+    displayName: 'brands',
+  }
+}
 
-  var legendVals = d3.set(data.map( function(d) { return d['Manufacturer']} ) ).values();
+var visGraphInit = {
+  canvas: {
+    svg: null,
+    // dimensions: { width: width, height: height },
+  },
+  legend: {
+    svg: null,
+    vals: null,
+    // dimensions: { width: width, height: 50 },
+  },
+  scales: {
+    x: null,
+    y: null,
+    colour: null,
+  },
+  axis: {
+    x: null,
+    y: null,
+  }
+}
 
-  console.log(legendVals);
-
-  var colourScale = d3.scaleOrdinal(d3.schemeCategory20)
-                      .domain(legendVals);
-
-  legendSvg.append("g")
-    .attr("class", "legendOrdinal")
-    .attr("transform", "translate(56, 7)");
-
-  var legendOrdinal = d3.legendColor()
-    .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
-    .shapePadding(75)
-    .cellFilter(function(d){ return d.label !== "e" })
-    .scale(colourScale)
-    .orient('horizontal');
-
-  legendSvg.select(".legendOrdinal")
-    .call(legendOrdinal);
 
 
-  var impedanceMin = getMin(data, 'Impedance');
-  var impedanceMax = getMax(data, 'Impedance')+50;
-  var efficiencyMin = getMin(data, 'Convert to Efficiency');
-  var efficiencyMax = getMax(data, 'Convert to Efficiency')+50;
-  console.log('impedance min & max:' + impedanceMin + '; ' + impedanceMax);
-  console.log('efficiency min & max:' + efficiencyMin + '; ' + efficiencyMax);
-  var yscale = d3.scaleLinear()
-                .domain([0, impedanceMax])
-                .range([height-margin, margin]);
-  var yaxis = d3.axisLeft(yscale);
+// ----------------------------------------------------------------------
+d3.csv(dataUrl, prepData, function(data) {
 
-  $(document).ready(function() {
-    $('.jsChangeableYAxis').on('change', function() {
-      updateYAxis(data, $(this).val(), yscale, yaxis);
-    });
-    $('.jsChangeableColour').on('change', function() {
-      updateColours(data, $(this).val());
-    });
-  });
+  initData(data);
+  initVis(data);
 
-  var priceMin = getMin(data, 'MSRP');
-  var priceMax = getMax(data, 'MSRP')+500;
-  console.log(priceMin + '; ' + priceMax + ' USD');
-  var xscale = d3.scaleLinear()
-                .domain([0, priceMax])
-                .range([margin*2, width-margin]);
-  var xaxis = d3.axisBottom(xscale);
-
-  var xLabelOffset = {x: margin*2, y: 36};
-  var yLabelOffset = {x: 0, y: 24};
   // adding axis labels
-  svg.append('g')
+  visGraphInit.canvas.svg.append('g')
       .attr('class', 'axis xaxis')
-      .attr('transform', 'translate(0,'+(height-margin+10)+')')
-      .call(xaxis)
+      .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
+      .call(visGraphInit.axis.x)
     .append('text') // x-axis label
       .attr('class', 'axis__label axis__label--x')
       .attr('text-anchor', 'start')
       .attr('x', xLabelOffset.x)
       .attr('y', xLabelOffset.y)
-      .text('price');
+      .text(dataInitConfig.xAxis.displayName);
   d3.select('.xaxis') // add x-axis unit label
     .append('text')
       .attr('class', 'axis__label-unit')
       .attr('text-anchor', 'start')
-      .attr('x', xLabelOffset.x + 42)
-      .attr('y', xLabelOffset.y)
-      .text('[$USD]');
-  svg.append('g')
+      .attr('x', xLabelUnitsOffset.x)
+      .attr('y', xLabelUnitsOffset.y)
+      .text('['+dataInitConfig.xAxis.units+']');
+  visGraphInit.canvas.svg.append('g')
       .attr('class', 'axis yaxis')
-      .attr('transform', 'translate('+(margin*2-10)+', 0)')
-      .call(yaxis)
+      .attr('transform', 'translate('+yAxisOffset.x+','+yAxisOffset.y+')')
+      .call(visGraphInit.axis.y)
     .append('text') // y-axis label
       .attr('class', 'axis__label axis__label--y')
       .attr('text-anchor', 'end')
       .attr('x', yLabelOffset.x)
       .attr('y', yLabelOffset.y)
-      .text('impedance')
-  d3.select('.yaxis')
+      .text(dataInitConfig.yAxis.displayName)
+  d3.select('.yaxis') // add y-axis unit label
       .append('text')
       .attr('class', 'axis__label-unit')
       .attr('text-anchor', 'end')
-      .attr('x', yLabelOffset.x)
-      .attr('y', yLabelOffset.y+16)
-      .text('[ohms]');
+      .attr('x', yLabelUnitsOffset.x)
+      .attr('y', yLabelUnitsOffset.y)
+      .text('['+dataInitConfig.yAxis.units+']');
 
-  var circles = svg.selectAll('circle')
+  // drawing circles
+  var circles = visGraphInit.canvas.svg.selectAll('circle')
     .data(data)
     .enter()
     .append('circle')
-    .attr('cx', function(d) { return xscale(d['MSRP']); })
-    .attr('cy', function(d) { return yscale(d['Impedance']); })
+    .attr('cx', function(d) { return visGraphInit.scales.x(d[dataInitConfig.xAxis.dimension]); })
+    .attr('cy', function(d) { return visGraphInit.scales.y(d[dataInitConfig.yAxis.dimension]); })
     .attr('r', '5')
-    .attr('fill', function(d) { return colourScale(d['Manufacturer']); })
+    .attr('fill', function(d) { return visGraphInit.scales.colour(d[dataInitConfig.colour.dimension]); })
     .on('mouseover', function() {
       d3.select(this)
         .transition().duration(200)
@@ -143,8 +139,15 @@ d3.csv(url, prepData, function(data) {
         });
         return string;
       });
-});
 
+  // interaction event listeners for y axis and colour
+  d3.select('.jsChangeableYAxis').on('change', function() {
+    updateYAxis(data, $(this).val(), visGraphInit.scales.y, visGraphInit.axis.y);
+  });
+  d3.select('.jsChangeableColour').on('change', function() {
+    updateColours(data, $(this).val());
+  });
+});
 
 
 
@@ -154,4 +157,56 @@ function prepData(data) {
   stripUnitsForColumns(data, dimensions);
   trimWhitespace(data, dimensionsWithStrings);
   return data;
+}
+
+// initialize variables in one place to keep it clean
+function initData(data) {
+  // dataInitConfig.forEach(function(elem) {
+  for (var elem in dataInitConfig) {
+    dataInitConfig[elem]['min'] = getMin(data, dataInitConfig[elem]['dimension']);
+    dataInitConfig[elem]['max'] = getMax(data, dataInitConfig[elem]['dimension']);
+  }
+  console.log(dataInitConfig);
+}
+
+// initialize basic properties for the visualization
+// such as the scales and axes
+function initVis(data) {
+  // create the svg
+  visGraphInit.canvas.svg = d3.select('.canvas')
+    .append('svg')
+    .attr('width', canvasDimensions.width)
+    .attr('height', canvasDimensions.height);
+
+  // initialize scales and axis for x and y
+  visGraphInit.scales.y = d3.scaleLinear()
+                .domain([0, dataInitConfig.yAxis.max])
+                .range([height-margin, margin]);
+  visGraphInit.scales.x = d3.scaleLinear()
+                .domain([0, dataInitConfig.xAxis.max])
+                .range([margin*2, width-margin]);
+
+  visGraphInit.axis.y = d3.axisLeft(visGraphInit.scales.y);
+  visGraphInit.axis.x = d3.axisBottom(visGraphInit.scales.x);
+
+  // create the legend svg
+  visGraphInit.legend.svg = d3.select('.legend-display')
+    .append('svg')
+    .attr('width', legendDimensions.width)
+    .attr('height', legendDimensions.height);
+  visGraphInit.legend.svg.append("g")
+    .attr("class", "legendOrdinal")
+    .attr("transform", "translate(56, 7)");
+
+  // initialize the colour scale
+  visGraphInit.legend.vals = d3.set( data.map(function(d) { return d[dataInitConfig.colour.dimension]; }) ).values();
+  visGraphInit.scales.colour = d3.scaleOrdinal(d3.schemeCategory20)
+                      .domain(visGraphInit.legend.vals);
+  legendOrdinal = d3.legendColor()
+    .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
+    .shapePadding(75)
+    .cellFilter(function(d){ return d.label !== "e" })
+    .scale(visGraphInit.scales.colour)
+    .orient('horizontal');
+  visGraphInit.legend.svg.select(".legendOrdinal").call(legendOrdinal);
 }
