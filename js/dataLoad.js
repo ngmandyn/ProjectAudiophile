@@ -6,6 +6,50 @@ var margin = 56,
     width = window.innerWidth - margin,
     height = window.innerHeight - 272;
 
+var dimensionsObj = {
+  'Impedance': {
+    units: 'ohms',
+    displayName: 'impedance',
+    domain: [], // initialized in initData()
+  },
+  'MSRP': {
+    units: '$USD',
+    displayName: 'price',
+    domain: [],
+  },
+  'Convert to Efficiency': {
+    units: 'dB/mW',
+    displayName: 'efficiency',
+    domain: [],
+  },
+  'Weight': {
+    units: 'grams',
+    displayName: 'weight',
+    domain: [],
+  }
+}
+var dimensionsWithStringsObj = {
+  'Manufacturer': {
+    displayName: 'brand',
+    domain: [],
+    scaleOrdinal: d3.schemeCategory20,
+  },
+  'Model': {
+    displayName: 'model',
+  },
+  'Form factor': {
+    displayName: 'form factor',
+    domain: ['Closed', 'Semi', 'Open'],
+    scaleOrdinal: d3.schemeCategory10,
+  },
+  'Amp required': {
+    displayName: 'amp required',
+    domain: ['No', 'Maybe', 'Recommended', 'Yes'],
+    scaleOrdinal: d3.schemeCategory20b,
+  },
+}
+console.log(dimensionsObj)
+
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
     xLabelOffset = { x: margin*2, y: 36 },
@@ -29,7 +73,7 @@ var dataInitConfig = {
   yAxis: {
     dimension: 'Impedance',
     displayName: 'impedance',
-    units: 'ohmns',
+    units: 'ohms',
     min: null, 
     max: null,
     // offset: 50,
@@ -61,6 +105,13 @@ var visGraphInit = {
   }
 }
 
+
+// $(window).on('resize', function() {
+//   var newWidth = window.innerWidth - margin;
+//   console.log(newWidth);
+//   visGraphInit.canvas.svg.attr('width', newWidth);
+//   visGraphInit.scales.x.range([margin*2, newWidth]);
+// })
 
 
 // ----------------------------------------------------------------------
@@ -114,6 +165,14 @@ d3.csv(dataUrl, prepData, function(data) {
     .attr('cy', function(d) { return visGraphInit.scales.y(d[dataInitConfig.yAxis.dimension]); })
     .attr('r', '5')
     .attr('fill', function(d) { return visGraphInit.scales.colour(d[dataInitConfig.colour.dimension]); })
+    .each(function(d) {
+      // appends data attributes for quantitative dimensions for filtering later
+      var thisCircle = d3.select(this);
+      for (var dimension in dimensionsWithStringsObj) {
+        var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
+        thisCircle.attr('data-'+dataAttr, d[dimension])
+      }
+    })
     .on('mouseover', function() {
       d3.select(this)
         .transition().duration(200)
@@ -162,11 +221,21 @@ function prepData(data) {
 // initialize variables in one place to keep it clean
 function initData(data) {
   // dataInitConfig.forEach(function(elem) {
+  // init object instantiate --> change to use overall obj in the end
   for (var elem in dataInitConfig) {
-    dataInitConfig[elem]['min'] = getMin(data, dataInitConfig[elem]['dimension']);
-    dataInitConfig[elem]['max'] = getMax(data, dataInitConfig[elem]['dimension']);
+    var min = getMin(data, dataInitConfig[elem]['dimension']);
+    var max = getMax(data, dataInitConfig[elem]['dimension']);
+    dataInitConfig[elem]['min'] = min;
+    dataInitConfig[elem]['max'] = max;
   }
-  console.log(dataInitConfig);
+
+  // init object for quantitative dimensions
+  for (var dimension in dimensionsObj) {
+    var min = getMin(data, dimension);
+    var max = getMax(data, dimension);
+    dimensionsObj[dimension].domain = [min, max];
+  }
+  console.log(dimensionsObj);
 }
 
 // initialize basic properties for the visualization

@@ -1,19 +1,10 @@
 function updateYAxis(data, value, yscale, yaxis) {
   if (typeof(value) !== "undefined") {
     // var value = $(this).val(); //get select box's value
-    var outputValue = value;
-    var units;
-    var newMin = getMin(data, value);
-    var newMax = getMax(data, value);
-
-    if (value === 'Convert to Efficiency') {
-      outputValue = 'efficiency';
-      units = '[dB/mW]';
-    }
-    else if(value === 'Impedance')
-      units = '[ohms]';
-    else if(value === 'Weight')
-      units = '[grams]';
+    var outputValue = dimensionsObj[value].displayName;
+    var units = dimensionsObj[value].units;
+    var newMin = dimensionsObj[value].domain[0];
+    var newMax = dimensionsObj[value].domain[1];
 
     yscale.domain([newMin, newMax]);
     yaxis.scale(yscale);

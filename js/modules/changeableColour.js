@@ -3,17 +3,15 @@ function updateColours(data, value) {
 
     var legendVals = d3.set(data.map( function(d) { return d[value] } ) ).values();
 
-    if (value === 'Form factor') {
-      var colourScale = d3.scaleOrdinal(d3.schemeCategory10)
-                          .domain(['Closed', 'Semi', 'Open'])
-    } else if (value === 'Amp required') {
-      colourScale = d3.scaleOrdinal(d3.schemeCategory20b)
-                      .domain(['No', 'Maybe', 'Recommended', 'Yes'])
-    } else if (value === 'Manufacturer') {
-      colourScale = d3.scaleOrdinal(d3.schemeCategory20)
+    if (value === 'Manufacturer') {
+      var colourScale = d3.scaleOrdinal(d3.schemeCategory20)
                       .domain(legendVals);
+    } else {
+      console.log(dimensionsWithStringsObj[value]);
+      var colourScale = d3.scaleOrdinal(dimensionsWithStringsObj[value].scaleOrdinal)
+                          .domain(dimensionsWithStringsObj[value].domain);
     }
-
+      
     var legendOrdinal = d3.legendColor()
                           .shape('path', d3.symbol().type(d3.symbolCircle).size(100)())
                           .shapePadding(75)
