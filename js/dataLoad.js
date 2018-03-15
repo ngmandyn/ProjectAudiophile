@@ -1,5 +1,6 @@
 // var df = require('./modules/dataFunctions.js');
 var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
+var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
 var margin = 56,
@@ -119,6 +120,31 @@ d3.csv(dataUrl, prepData, function(data) {
 
   initData(data);
   initVis(data);
+
+  console.log(data);
+
+  var data2 = null;
+
+  d3.csv(dataUrl2)
+    .row(function(d) { return d; })
+    .get(function(error, rows) {
+      console.log(rows);
+      data2 = rows;
+      combineData();
+    });
+
+function combineData() {
+  var result = join(data, data2, "Model", "Model", function(data, data2) {
+    console.log(data);
+    console.log(data2.Pads);
+    console.log(data2);
+    return {
+      Model: data.Model,
+      Pads: data.Pads
+    };
+  });
+  console.log(result);
+}
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
