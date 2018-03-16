@@ -7,22 +7,9 @@
   <title>Project Audiophile</title>
   <link rel="stylesheet" type="text/css" href="css/tachyons.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
-  <script src="js/d3-legend.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <!-- requirejs -->
-  <!-- <script data-main="js/dataLoad.js" src="js/require.js" charset="utf-8"></script> -->
-  <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
-  <script src="js/modules/changeableAxis.js" type="text/javascript" charset="utf-8" async defer></script>
-  <script src="js/modules/changeableColour.js" type="text/javascript" charset="utf-8" async defer></script>
-  <script src="js/dataLoad.js" type="text/javascript" charset="utf-8" async defer></script>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css"/> -->
 </head>
 <body>
-
-  <article class="masthead mr3 pt4 pb3 pl3 pr3 shadow-2 dib absolute right-0">
-    <h1 class="masthead__title">Project Audiophile</h1>
-  </article>
 
   <article class="legend">
     <!-- here goes the drop down selection stuff -->
@@ -66,8 +53,29 @@
   </article>
   <article class="legend-display"></article>
 
-  <article class="sidebar">
+  <article class="sidebar shadow-2">
+    <article class="masthead shadow-2 db">
+      <h1 class="masthead__title">Project Audiophile</h1>
+    </article>
     <!-- here goes the filters and search -->
+    <label>Search for<input type="text" name="searchbar"></label>
+    <div class="slider" data-slider data-initial-start="25" data-initial-end="75">
+      <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
+      <span class="slider-fill" data-slider-fill></span>
+      <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
+      <input type="hidden">
+      <input type="hidden">
+    </div>
+    
+    <template id="template-dimension-title">
+      <h6 class="meta mb0 pt3 b dimension-title"></h6>
+    </template>
+    <template id="template-checkbox">
+      <label><input type="checkbox"><span class="jsLabelInput"></span></label>
+    </template>
+    <template id="template-slider">
+      <!-- some slider template thing goes here -->
+    </template>
   </article>
 
   <article class="canvas">
@@ -85,5 +93,17 @@
     <!-- here goes the favourited headphones -->
   </article>
 
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+  <script src="js/d3-legend.min.js"></script>
+  <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/modules/changeableAxis.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/modules/changeableColour.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/dataLoad.js" type="text/javascript" charset="utf-8" async defer></script>
+
+  <script>
+    $(document).foundation();
+  </script>
 </body>
 </html>

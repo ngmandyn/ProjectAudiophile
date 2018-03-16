@@ -33,6 +33,8 @@ function trimWhitespace(data, arrOfColumnNames) {
   });
 }
 
+// function replaceSpaces
+
 // returns the max within the columnName of data
 function getMax(data, columnName) {
   return d3.max(data, function(d) {

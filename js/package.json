@@ -1,0 +1,23 @@
+{
+  "name": "project-audiophile",
+  "version": "1.0.0",
+  "description": "package for project audiophile dependencies",
+  "main": "index.js",
+  "dependencies": {
+    "foundation-sites": "^6.4.4-rc1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngmandyn/ProjectAudiophile.git"
+  },
+  "author": "ashley tsang & mandy ng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngmandyn/ProjectAudiophile/issues"
+  },
+  "homepage": "https://github.com/ngmandyn/ProjectAudiophile#readme"
+}

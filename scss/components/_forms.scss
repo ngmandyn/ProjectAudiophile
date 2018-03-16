@@ -1,5 +1,9 @@
 $form-border: 1px solid rgba($discopurple, .30);
 
+label {
+  display: block;
+}
+
 input,
 select{
   // sets custom focus glow on form fields

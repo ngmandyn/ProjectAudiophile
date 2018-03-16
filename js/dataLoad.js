@@ -1,4 +1,3 @@
-// var df = require('./modules/dataFunctions.js');
 var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
@@ -32,7 +31,7 @@ var dimensionsObj = {
 var dimensionsWithStringsObj = {
   'Manufacturer': {
     displayName: 'brand',
-    domain: [],
+    // domain: [],
     scaleOrdinal: d3.schemeCategory20,
   },
   'Model': {
@@ -120,8 +119,9 @@ d3.csv(dataUrl, prepData, function(data) {
 
   initData(data);
   initVis(data);
+  initSidebar();
 
-  console.log(data);
+  // console.log(data);
 
   var data2 = null;
 
@@ -133,18 +133,14 @@ d3.csv(dataUrl, prepData, function(data) {
       combineData();
     });
 
-function combineData() {
-  var result = join(data, data2, "Model", "Model", function(data, data2) {
-    console.log(data);
-    console.log(data2.Pads);
-    console.log(data2);
-    return {
-      Model: data.Model,
-      Pads: data.Pads
-    };
-  });
-  console.log(result);
-}
+  function combineData() {
+    var result = join(data, data2, "Model", "Model", function(data, data2) {
+      return {
+        Model: data.Model,
+        Pads: data.Pads
+      };
+    });
+  }
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
@@ -304,4 +300,27 @@ function initVis(data) {
     .scale(visGraphInit.scales.colour)
     .orient('horizontal');
   visGraphInit.legend.svg.select(".legendOrdinal").call(legendOrdinal);
+}
+
+// adds in the checkboxes for all the defined dimensions
+function initSidebar() {
+  for (var dimension in dimensionsWithStringsObj) {
+    var thisDomain = dimensionsWithStringsObj[dimension].domain;
+
+    if (typeof(thisDomain) !== 'undefined') {
+      // appends title of the dimension
+      var $title = $($('#template-dimension-title').html());
+      $('.sidebar').append($title.html(dimension));
+
+      for (var i = 0; i < thisDomain.length; i++) {
+        // appends each entry of the dimension
+        var elem = thisDomain[i];
+        var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
+        var $newCheckbox = $($('#template-checkbox').html());
+        $newCheckbox.find('input').attr('data-filter-'+elemName, elem);
+        $newCheckbox.find('.jsLabelInput').html(elem);
+        $('.sidebar').append($newCheckbox);
+      }
+    }
+  }
 }
