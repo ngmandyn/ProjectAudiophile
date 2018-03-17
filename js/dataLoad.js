@@ -149,6 +149,9 @@ d3.csv(dataUrl, prepData, function(data) {
     data = result;
   }
 
+  // TODO: clean this up, make one object as filterSelection
+  // that contains all the filtered domains and ranges;
+  // basically makes a new object with all the selected values
   var checkboxSelection = dimensionsWithStringsObj;
   delete checkboxSelection.Manufacturer
   delete checkboxSelection.Model
@@ -172,6 +175,7 @@ d3.csv(dataUrl, prepData, function(data) {
 
   });
 
+  // adds or removed values from the selection list based on what was changed
   function handleFilterList(thisCheckbox) {
     var parentDimension = thisCheckbox.parents('section').attr('data-filter-dimension')
     var parentDimensionName = parentDimension.replace(/-/g, ' ')
