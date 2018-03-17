@@ -2,6 +2,8 @@ var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
+var dataFilterNames = [];
+var dataAttributes = [];
 var margin = 56,
     width = window.innerWidth - margin,
     height = window.innerHeight - 272;
@@ -48,7 +50,8 @@ var dimensionsWithStringsObj = {
     scaleOrdinal: d3.schemeCategory20b,
   },
 }
-console.log(dimensionsObj)
+// console.log(dimensionsObj);
+// console.log(dataAttributes);
 
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
@@ -66,7 +69,7 @@ var dataInitConfig = {
     dimension: 'MSRP',
     displayName: 'price',
     units: '$USD',
-    min: null, 
+    min: null,
     max: null,
     // offset: 50,
   },
@@ -74,7 +77,7 @@ var dataInitConfig = {
     dimension: 'Impedance',
     displayName: 'impedance',
     units: 'ohms',
-    min: null, 
+    min: null,
     max: null,
     // offset: 50,
   },
@@ -117,18 +120,12 @@ var visGraphInit = {
 // ----------------------------------------------------------------------
 d3.csv(dataUrl, prepData, function(data) {
 
-  initData(data);
-  initVis(data);
-  initSidebar();
-
-  // console.log(data);
-
   var data2 = null;
 
   d3.csv(dataUrl2)
     .row(function(d) { return d; })
     .get(function(error, rows) {
-      console.log(rows);
+      //console.log(rows);
       data2 = rows;
       combineData();
     });
@@ -136,10 +133,98 @@ d3.csv(dataUrl, prepData, function(data) {
   function combineData() {
     var result = join(data, data2, "Model", "Model", function(data, data2) {
       return {
+        Manufacturer: data.Manufacturer,
         Model: data.Model,
-        Pads: data.Pads
+        Pads: data.Pads,
+        "Form factor": data2['Form factor'],
       };
     });
+    console.log(result);
+    data = result;
+  }
+
+  initData(data);
+  initVis(data);
+  initSidebar();
+
+  d3.selectAll("input").on("change", update);
+  update();
+
+  // console.log(dataFilterNames);
+
+  // console.log(dimensionsWithStringsObj);
+
+  // console.log(dataAttributes);
+
+  // filter data to include only selected selected
+  // function update() {
+  //   var selected = [];
+  //   var unselected = [];
+  //   d3.selectAll("input").each(function(d) {
+  //     checkbox = d3.select(this);
+  //     if(checkbox.property("checked")) {
+  //       selected.push(checkbox.attr("data-filter-form-factor"));
+  //     } else {
+  //       unselected.push(checkbox.attr("data-filter-form-factor"));
+  //     }
+  //   });
+  //   if (selected.length > 0) {
+  //     newData = data.filter(function(d) {
+  //       return selected.includes(d['Form factor'])
+  //     });
+  //     for (var i = 0; i < selected.length; i++) {
+  //       d3.selectAll("[data-form-factor="+selected[i]+"]").style("visibility", "visible");
+  //     }
+  //     for (var i = 0; i < unselected.length; i++) {
+  //       d3.selectAll("[data-form-factor="+unselected[i]+"]").style("visibility", "hidden");
+  //     }
+  //     console.log(newData);
+  //     console.log("selected: " + selected);
+  //     console.log("filteredOut" + unselected)
+  //   } else {
+  //     newData = data;
+  //   }
+  // }
+
+  // console.log(dataFilterNames);
+  // console.log(dataAttributes);
+
+  function update() {
+    var selected = [];
+    var unselected = [];
+    // console.log('dimension length: ' + Object.keys(dimensionsWithStringsObj).length);
+    for (var i = 0; i < Object.keys(dimensionsWithStringsObj).length; i++) {
+      // console.log(d3.selectAll('['+dataFilterNames[i]+']'));
+      d3.selectAll('['+dataFilterNames[i]+']').each(function(d) {
+        checkbox = d3.select(this);
+        if(checkbox.property("checked")) {
+          selected.push(checkbox.attr(dataFilterNames[i]));
+        } else {
+          unselected.push(checkbox.attr(dataFilterNames[i]));
+        }
+      });
+      console.log(unselected);
+      console.log(selected);
+      if (selected.length > 0) {
+        // newData = data.filter(function(d) {
+        //   return selected.includes(d[Object.keys(dimensionsWithStringsObj)[i]])
+        // });
+        for (var j = 0; j < unselected.length; j++) {
+          // console.log('inside unselected')
+          d3.selectAll("["+dataAttributes[i]+"="+unselected[j]+"]").style("visibility", "hidden");
+        }
+        for (var j = 0; j < selected.length; j++) {
+          d3.selectAll("["+dataAttributes[i]+"="+selected[j]+"]").style("visibility", "visible");
+        }
+        // console.log(newData);
+        // console.log("selected: " + selected);
+        // console.log("filteredOut" + unselected)
+      } else {
+        // newData = data;
+      }
+      // console.log(Object.keys(dimensionsWithStringsObj)[i])
+      // console.log(newData);
+    }
   }
 
   // adding axis labels
@@ -192,7 +277,7 @@ d3.csv(dataUrl, prepData, function(data) {
       var thisCircle = d3.select(this);
       for (var dimension in dimensionsWithStringsObj) {
         var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
-        thisCircle.attr('data-'+dataAttr, d[dimension])
+        thisCircle.attr('data-'+dataAttr, d[dimension]);
       }
     })
     .on('mouseover', function() {
@@ -228,6 +313,7 @@ d3.csv(dataUrl, prepData, function(data) {
   d3.select('.jsChangeableColour').on('change', function() {
     updateColours(data, $(this).val());
   });
+
 });
 
 
@@ -257,7 +343,7 @@ function initData(data) {
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
   }
-  console.log(dimensionsObj);
+  // console.log(dimensionsObj);
 }
 
 // initialize basic properties for the visualization
@@ -306,7 +392,8 @@ function initVis(data) {
 function initSidebar() {
   for (var dimension in dimensionsWithStringsObj) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
-
+    dataFilterNames.push('data-filter-'+dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase());
+    dataAttributes.push('data-'+dimension.replace(/ /g,'-').toLowerCase());
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
       var $title = $($('#template-dimension-title').html());
@@ -317,10 +404,12 @@ function initSidebar() {
         var elem = thisDomain[i];
         var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
         var $newCheckbox = $($('#template-checkbox').html());
-        $newCheckbox.find('input').attr('data-filter-'+elemName, elem);
+        $newCheckbox.find('input').attr('data-filter-'+elemName, elem).prop('checked',true);
         $newCheckbox.find('.jsLabelInput').html(elem);
         $('.sidebar').append($newCheckbox);
       }
     }
   }
 }
+
+
