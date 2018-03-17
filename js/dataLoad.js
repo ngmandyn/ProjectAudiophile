@@ -2,6 +2,8 @@ var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
+var dataFilterNames = [];
+var dataAttributes = [];
 var margin = 56,
     width = window.innerWidth - margin,
     height = window.innerHeight - 272;
@@ -48,7 +50,8 @@ var dimensionsWithStringsObj = {
     scaleOrdinal: d3.schemeCategory20b,
   },
 }
-console.log(dimensionsObj)
+// console.log(dimensionsObj);
+// console.log(dataAttributes);
 
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
@@ -66,7 +69,7 @@ var dataInitConfig = {
     dimension: 'MSRP',
     displayName: 'price',
     units: '$USD',
-    min: null, 
+    min: null,
     max: null,
     // offset: 50,
   },
@@ -74,7 +77,7 @@ var dataInitConfig = {
     dimension: 'Impedance',
     displayName: 'impedance',
     units: 'ohms',
-    min: null, 
+    min: null,
     max: null,
     // offset: 50,
   },
@@ -129,7 +132,7 @@ d3.csv(dataUrl, prepData, function(data) {
   d3.csv(dataUrl2)
     .row(function(d) { return d; })
     .get(function(error, rows) {
-      console.log(rows);
+      //console.log(rows);
       data2 = rows;
       combineData();
     });
@@ -137,11 +140,55 @@ d3.csv(dataUrl, prepData, function(data) {
   function combineData() {
     var result = join(data, data2, "Model", "Model", function(data, data2) {
       return {
+        Manufacturer: data.Manufacturer,
         Model: data.Model,
-        Pads: data.Pads
+        Pads: data.Pads,
+        "Form factor": data2['Form factor'],
       };
     });
+    data = result;
   }
+
+  var checkboxSelection = dimensionsWithStringsObj;
+  delete checkboxSelection.Manufacturer
+  delete checkboxSelection.Model
+
+  $('input[type=checkbox').on('change', function() {
+    handleFilterList($(this))
+
+    // TODO: combine these conditionals with the range conditionals
+    d3.selectAll('circle')
+      .classed('hide', function(d) {
+        var isHide = false;
+        for (var dimension in checkboxSelection) {
+          var currentSelected = checkboxSelection[dimension].domain
+          // console.log(checkboxSelection[dimension].domain)
+          console.log(d[dimension])
+
+          if (!currentSelected.includes(d[dimension])) isHide = true;
+        }
+        return isHide;
+      })
+
+  });
+
+  function handleFilterList(thisCheckbox) {
+    var parentDimension = thisCheckbox.parents('section').attr('data-filter-dimension')
+    var parentDimensionName = parentDimension.replace(/-/g, ' ')
+    var thisValue = thisCheckbox.attr('data-filter-'+parentDimension.toLowerCase())
+    var isChecked = thisCheckbox.prop('checked')
+
+    // if the checkbox was checked, add an addition to the domain
+    // if the checkbox was unchecked, remove from the list of conditions
+    if (isChecked) {
+      checkboxSelection[parentDimensionName].domain.push(thisValue) // add to conditions
+    }
+    else {
+      var index = checkboxSelection[parentDimensionName].domain.indexOf(thisValue)
+      checkboxSelection[parentDimensionName].domain.splice(index, 1) // add to conditions
+    }
+  }
+
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
@@ -195,7 +242,7 @@ d3.csv(dataUrl, prepData, function(data) {
       var thisCircle = d3.select(this);
       for (var dimension in dimensionsWithStringsObj) {
         var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
-        thisCircle.attr('data-'+dataAttr, d[dimension])
+        thisCircle.attr('data-'+dataAttr, d[dimension]);
       }
     })
     .on('mouseover', function() {
@@ -231,6 +278,7 @@ d3.csv(dataUrl, prepData, function(data) {
   d3.select('.jsChangeableColour').on('change', function() {
     updateColours(data, $(this).val());
   });
+
 });
 
 
@@ -260,7 +308,7 @@ function initData(data) {
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
   }
-  console.log(dimensionsObj);
+  // console.log(dimensionsObj);
 }
 
 // initialize basic properties for the visualization
@@ -311,7 +359,8 @@ function initSidebar() {
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
-
+    // dataFilterNames.push('data-filter-'+dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase());
+    // dataAttributes.push('data-'+dimension.replace(/ /g,'-').toLowerCase());
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
@@ -322,7 +371,10 @@ function initSidebar() {
         // appends each entry of the dimension
         var elem = thisDomain[i];
         var $newCheckbox = $($('#template-checkbox').html());
-        $newCheckbox.children('input').attr('data-filter-'+elemName, elem);
+        $newCheckbox.find('input')
+          .attr('data-filter-'+elemName, elem)
+          // .attr('')
+          .prop('checked',true);
         $newCheckbox.find('.jsLabelInput').html(elem);
         $('[data-filter-section='+elemName+']').append($newCheckbox);
       }
@@ -377,8 +429,8 @@ function sliderChangeAndUpdate() {
       })
 
     var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
-    console.log('#data-axis-'+dimensionDisplayName);
-    console.log(dimensionName)
+    // console.log('#data-axis-'+dimensionDisplayName);
+    // console.log(dimensionName)
 
     // check if this axis is actively being shown,
     // so that we know to update the x or y axis
