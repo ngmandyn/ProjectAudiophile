@@ -12,8 +12,29 @@ function updateYAxis(data, value, yscale, yaxis) {
       .call(yaxis);
     d3.select('.axis__label--y').text(outputValue.toLowerCase());
     d3.select('.yaxis .axis__label-unit').text(units);
-    d3.selectAll('circle')
-      .transition().duration(200)
-      .attr('cy', function(d) { return yscale(d[value]); });
-  }    
+    updateAxisDimensionId('y', value.replace(/ /g, '-').toLowerCase())
+    updatePointPositions('y', yscale, value);
+  }
+}
+
+
+function updateAxisDomain(axis, d3Axis, d3Scale, newDomain, dimension) {
+  d3Scale.domain(newDomain)
+  d3Axis.scale(d3Scale)
+  d3.select('.'+axis+'axis').call(d3Axis)
+
+  // updateAxisDimensionId(axis, dimension)
+  // d3.select('.axis').classed(dimension, true).classed(oldDimension, false)
+  updatePointPositions(axis, d3Scale, dimension);
+}
+
+function updatePointPositions(axis, d3Scale, dimension) {
+  d3.selectAll('circle')
+    .transition().duration(200)
+    .attr('c'+axis, function(d) { return d3Scale(d[dimension]); });
+}
+
+function updateAxisDimensionId(axis, newDimension) {
+  var newClass = 'data-axis-'+newDimension
+  d3.select('.'+axis+'axis').attr('id', newClass)
 }

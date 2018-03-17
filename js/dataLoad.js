@@ -120,6 +120,7 @@ d3.csv(dataUrl, prepData, function(data) {
   initData(data);
   initVis(data);
   initSidebar();
+  sliderChangeAndUpdate();
 
   // console.log(data);
 
@@ -145,6 +146,7 @@ d3.csv(dataUrl, prepData, function(data) {
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
       .attr('class', 'axis xaxis')
+      .attr('id', 'data-axis-'+dataInitConfig.xAxis.dimension.toLowerCase())
       .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
       .call(visGraphInit.axis.x)
     .append('text') // x-axis label
@@ -162,6 +164,7 @@ d3.csv(dataUrl, prepData, function(data) {
       .text('['+dataInitConfig.xAxis.units+']');
   visGraphInit.canvas.svg.append('g')
       .attr('class', 'axis yaxis')
+      .attr('id', 'data-axis-'+dataInitConfig.yAxis.dimension.replace(/ /, '-').toLowerCase())
       .attr('transform', 'translate('+yAxisOffset.x+','+yAxisOffset.y+')')
       .call(visGraphInit.axis.y)
     .append('text') // y-axis label
@@ -304,23 +307,90 @@ function initVis(data) {
 
 // adds in the checkboxes for all the defined dimensions
 function initSidebar() {
+
+  // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
 
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
+      var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
       var $title = $($('#template-dimension-title').html());
-      $('.sidebar').append($title.html(dimension));
+      $('[data-filter-section='+elemName+']').append($title.html(dimension));
 
       for (var i = 0; i < thisDomain.length; i++) {
         // appends each entry of the dimension
         var elem = thisDomain[i];
-        var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
         var $newCheckbox = $($('#template-checkbox').html());
-        $newCheckbox.find('input').attr('data-filter-'+elemName, elem);
+        $newCheckbox.children('input').attr('data-filter-'+elemName, elem);
         $newCheckbox.find('.jsLabelInput').html(elem);
-        $('.sidebar').append($newCheckbox);
+        $('[data-filter-section='+elemName+']').append($newCheckbox);
       }
     }
   }
+
+  // init quantitative dimensions as sliders
+  for (var dimension in dimensionsObj) {
+    var thisDomain = dimensionsObj[dimension].domain;
+
+    if (typeof(thisDomain) !== 'undefined') {
+      var elemName = dimensionsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
+      var $title = $($('#template-dimension-title').html());
+      $('[data-filter-section='+elemName+']').append($title.html(dimensionsObj[dimension].displayName));
+
+      var $newSlider = $($('#template-slider').html());
+      $newSlider.attr({
+        'data-start': thisDomain[0],
+        'data-initial-start': thisDomain[0],
+        'data-end': thisDomain[thisDomain.length -1],
+        'data-initial-end': thisDomain[thisDomain.length -1],
+      })
+
+      $newSlider.find('.slider-handle').each(function(i) {
+        $(this).attr('aria-controls','sliderOutput'+i+'-'+elemName)
+      })
+      $newSlider.find('input[type=text]').each(function(i) {
+        $(this).attr('id', 'sliderOutput'+i+'-'+elemName)
+      })
+
+      $('[data-filter-section='+elemName+']').append($newSlider);
+    }
+  }
+  // var sliders = new Foundation.Slider($('.slider'))
+  
+  $(document).foundation(); // initializes the sliders with foundation
+}
+
+function sliderChangeAndUpdate() {
+  $('[data-slider]').on('moved.zf.slider', function() {
+    var adjustingDimension = $(this).parents('[data-filter-section]').attr('data-filter-dimension')
+    var dimensionName = adjustingDimension.replace(/-/g, ' ')
+    var dimensionDisplayName = adjustingDimension.replace(/ /g, '-').toLowerCase()
+    var newMin = $(this).find('input.js-slider-min').val()
+    var newMax = $(this).find('input.js-slider-max').val()
+    var newDomain = [newMin, newMax]
+
+    // hide points that don't fit new domain
+    d3.selectAll('circle')
+      .classed('hide', function(d) {
+        return newMin >= d[dimensionName] || d[dimensionName] >= newMax
+      })
+
+    var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
+    console.log('#data-axis-'+dimensionDisplayName);
+    console.log(dimensionName)
+
+    // check if this axis is actively being shown,
+    // so that we know to update the x or y axis
+    if ($adjustingAxis.length > 0) {
+      // if this adjusting axis is the xaxis
+      if($adjustingAxis.hasClass('xaxis')) {
+        updateAxisDomain('x', visGraphInit.axis.x, visGraphInit.scales.x, newDomain, dimensionName)
+      }
+      // else we are adjusting the yaxis 
+      else if ($adjustingAxis.hasClass('yaxis')) {
+        updateAxisDomain('y', visGraphInit.axis.y, visGraphInit.scales.y, newDomain, dimensionName)
+      }
+    }
+  });
 }

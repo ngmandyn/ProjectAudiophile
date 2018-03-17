@@ -59,13 +59,14 @@
     </article>
     <!-- here goes the filters and search -->
     <label>Search for<input type="text" name="searchbar"></label>
-    <div class="slider" data-slider data-initial-start="25" data-initial-end="75">
-      <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
-      <span class="slider-fill" data-slider-fill></span>
-      <span class="slider-handle" data-slider-handle role="slider" tabindex="1"></span>
-      <input type="hidden">
-      <input type="hidden">
-    </div>
+
+    <section data-filter-dimension="MSRP" data-filter-section="price"></section>
+    <section data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section>
+    <section data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>
+    <section data-filter-dimension="Amp-required" data-filter-section="amp-required"></section>
+    <section data-filter-dimension="Impedance" data-filter-section="impedance"></section>
+    <section data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
+    <section data-filter-dimension="Weight" data-filter-section="weight"></section>
     
     <template id="template-dimension-title">
       <h6 class="meta mb0 pt3 b dimension-title"></h6>
@@ -75,6 +76,13 @@
     </template>
     <template id="template-slider">
       <!-- some slider template thing goes here -->
+      <div class="slider" data-slider data-start="" data-end="" data-initial-start="" data-initial-end="">
+        <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls=""></span>
+        <span class="slider-fill" data-slider-fill></span>
+        <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls=""></span>
+        <input type="text" class="js-slider-min" id="">
+        <input type="text" class="js-slider-max" id="">
+      </div>
     </template>
   </article>
 
@@ -103,7 +111,7 @@
   <script src="js/dataLoad.js" type="text/javascript" charset="utf-8" async defer></script>
 
   <script>
-    $(document).foundation();
+    // $(document).foundation();
   </script>
 </body>
 </html>
