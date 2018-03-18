@@ -1,5 +1,11 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 .sidebar {
   width: 20%;
+  min-width: 12rem;
+  max-width: 13rem;
   height: 100%;
   position: absolute;
   top: 0;
@@ -8,5 +14,6 @@
   z-index: 1;
   background: white;
 
-  padding: 0 1rem 0;
+  overflow-y: scroll;
+  padding: 4.5rem 1rem 6rem;
 }

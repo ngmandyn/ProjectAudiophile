@@ -639,11 +639,14 @@ tiny {
   display: none; }
 
 .masthead {
+  position: absolute;
+  right: 1rem;
+  top: 0;
   border-radius: 0 0 5px 5px;
   background-color: white;
   z-index: 2;
   margin: 0 0 1.5rem -3.5rem;
-  padding: 2rem 1.5rem 1rem; }
+  padding: 2rem 1.5rem .5rem; }
 
 .masthead__title {
   font-family: "mononoki", sans-serif;
@@ -658,17 +661,44 @@ tiny {
   width: 100%;
   color: white;
   font-family: "mononoki", sans-serif;
-  z-index: 2; }
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; }
+  .fav-shelf__tab {
+    position: absolute;
+    padding: .5rem 1rem .75rem;
+    margin-top: -3.25rem;
+    background-color: #662D91;
+    border-radius: 5px 5px 0 0; }
+  .fav-shelf__item {
+    flex: 1 1 20%;
+    font-size: 90%;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: .25rem 1rem; }
+    .fav-shelf__item ~ .fav-shelf__item {
+      margin-left: 1rem; }
+
+.special {
+  stroke: #2E3192;
+  stroke-width: 1; }
+
+::-webkit-scrollbar {
+  display: none; }
 
 .sidebar {
   width: 20%;
+  min-width: 12rem;
+  max-width: 13rem;
   height: 100%;
   position: absolute;
   top: 0;
   right: 0;
   z-index: 1;
   background: white;
-  padding: 0 1rem 0; }
+  overflow-y: scroll;
+  padding: 4.5rem 1rem 6rem; }
 
 label {
   display: block; }

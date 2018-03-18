@@ -3,8 +3,9 @@ function updateYAxis(data, value, yscale, yaxis) {
     // var value = $(this).val(); //get select box's value
     var outputValue = dimensionsObj[value].displayName;
     var units = dimensionsObj[value].units;
-    var newMin = dimensionsObj[value].domain[0];
-    var newMax = dimensionsObj[value].domain[1];
+    // use the filter's value, to see if values have been changed
+    var newMin = filterCollection[value].domain[0];
+    var newMax = filterCollection[value].domain[1];
 
     yscale.domain([newMin, newMax]);
     yaxis.scale(yscale);

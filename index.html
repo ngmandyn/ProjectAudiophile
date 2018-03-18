@@ -53,10 +53,10 @@
   </article>
   <article class="legend-display"></article>
 
+  <article class="masthead shadow-2 db">
+    <h1 class="masthead__title">Project Audiophile</h1>
+  </article>
   <article class="sidebar shadow-2">
-    <article class="masthead shadow-2 db">
-      <h1 class="masthead__title">Project Audiophile</h1>
-    </article>
     <!-- here goes the filters and search -->
     <label>Search for<input type="text" name="searchbar"></label>
 
@@ -90,7 +90,7 @@
     <!-- <template id="tooltip-template"> -->
       <article class="tooltip"></article>
     <!-- </template> -->
-    <template id="tooltip-data-template">
+    <template id="template-tooltip">
       <div class="tooltip__data"></div>
     </template>
     <!-- here goes the drawn data -->
@@ -99,6 +99,11 @@
   <article class="fav-shelf absolute bottom-0">
     <article class="fav-shelf__tab">my selection</article>
     <!-- here goes the favourited headphones -->
+    <template id="template-fav-item">
+      <p class="fav-shelf__item">
+        <span class="jsFavItemName"></span>
+      </p>
+    </template>
   </article>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -106,6 +111,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
   <script src="js/d3-legend.min.js"></script>
   <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/modules/comparisons.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/filters.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/changeableAxis.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/changeableColour.js" type="text/javascript" charset="utf-8" async defer></script>

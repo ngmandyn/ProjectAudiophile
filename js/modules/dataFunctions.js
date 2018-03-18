@@ -96,3 +96,11 @@ function join(lookupTable, mainTable, lookupKey, mainKey, select) {
   }
   return output;
 };
+
+function parseStringForCode(string) {
+  return string.replace(/ /g, '-').toLowerCase()
+}
+
+function parseStringForDimension(string) {
+  return string.replace(/-/g, ' ').charAt(0).toUpperCase()
+}

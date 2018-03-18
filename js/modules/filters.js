@@ -1,9 +1,10 @@
-// this is an object of all the filters currently being applied
+// combines the dimensions together into one object of all selected filters
+// and removes the 'Model' because it is not filterable.
+// TODO: update Manufacturer 
 function initFilterCollection() {
   filterCollection = {...dimensionsObj, ...dimensionsWithStringsObj}
   delete filterCollection.Manufacturer
   delete filterCollection.Model
-  console.log(filterCollection)
 }
 
 // adds or removed values from the selection list based on what was changed
@@ -80,8 +81,8 @@ function checkCircleAgainstFilters() {
           isHide = true;
         } else if (typeof(checkingDomain[0]) === 'string' &&
           isOutsideStringDomain(d, dimension)) {
-          console.log('isOutsideStringDomain: '+dimension+', '+d[dimension])
-          console.log(checkingDomain)
+          // console.log('isOutsideStringDomain: '+dimension+', '+d[dimension])
+          // console.log(checkingDomain)
           isHide = true;
         }
       }

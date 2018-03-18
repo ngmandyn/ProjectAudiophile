@@ -5,8 +5,8 @@ var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
 var dataFilterNames = [];
 var dataAttributes = [];
 var margin = 56,
-    width = window.innerWidth - margin,
-    height = window.innerHeight - 272;
+    width = window.innerWidth - (margin + (16*13)),
+    height = window.innerHeight - 298;
 
 var dimensionsObj = {
   'Impedance': {
@@ -220,11 +220,13 @@ d3.csv(dataUrl, prepData, function(data) {
         .transition().duration(300)
         .attr('r', 5);
     })
-    .on('click', function() {
-      // $(this).children('.tooltip').toggleClass('hide');
-      var content = $(this).find('.tooltip-data')[0].textContent;
-      console.log(content);
-      // $('.tooltip').html($.parseHTML(content));
+    .on('click', function(d) {
+      favsChangeAndUpdate(d, $(this));
+
+    //   // $(this).children('.tooltip').toggleClass('hide');
+    //   var content = $(this).find('.tooltip-data')[0].textContent;
+    //   console.log(content);
+    //   // $('.tooltip').html($.parseHTML(content));
     })
     .append('p')
       .attr('class', 'tooltip-data')
@@ -243,6 +245,7 @@ d3.csv(dataUrl, prepData, function(data) {
   d3.select('.jsChangeableColour').on('change', function() {
     updateColours(data, $(this).val());
   });
+
 
 });
 
@@ -324,8 +327,6 @@ function initSidebar() {
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
-    // dataFilterNames.push('data-filter-'+dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase());
-    // dataAttributes.push('data-'+dimension.replace(/ /g,'-').toLowerCase());
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
@@ -338,7 +339,6 @@ function initSidebar() {
         var $newCheckbox = $($('#template-checkbox').html());
         $newCheckbox.find('input')
           .attr('data-filter-'+elemName, elem)
-          // .attr('')
           .prop('checked',true);
         $newCheckbox.find('.jsLabelInput').html(elem);
         $('[data-filter-section='+elemName+']').append($newCheckbox);
