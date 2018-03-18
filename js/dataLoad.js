@@ -1,6 +1,6 @@
 var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
-var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency'],
+var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
 var dataFilterNames = [];
 var dataAttributes = [];
@@ -50,8 +50,11 @@ var dimensionsWithStringsObj = {
     scaleOrdinal: d3.schemeCategory20b,
   },
 }
-// console.log(dimensionsObj);
-// console.log(dataAttributes);
+
+// TODO: clean this up, make one object as filterSelection
+// that contains all the filtered domains and ranges;
+// basically makes a new object with all the selected values
+var filterCollection
 
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
@@ -120,13 +123,6 @@ var visGraphInit = {
 // ----------------------------------------------------------------------
 d3.csv(dataUrl, prepData, function(data) {
 
-  initData(data);
-  initVis(data);
-  initSidebar();
-  sliderChangeAndUpdate();
-
-  // console.log(data);
-
   var data2 = null;
 
   d3.csv(dataUrl2)
@@ -149,49 +145,14 @@ d3.csv(dataUrl, prepData, function(data) {
     data = result;
   }
 
-  // TODO: clean this up, make one object as filterSelection
-  // that contains all the filtered domains and ranges;
-  // basically makes a new object with all the selected values
-  var checkboxSelection = dimensionsWithStringsObj;
-  delete checkboxSelection.Manufacturer
-  delete checkboxSelection.Model
+  initData(data);
+  // must be called after data is initialized to get domains
+  initFilterCollection();
+  initVis(data);
+  initSidebar();
 
-  $('input[type=checkbox').on('change', function() {
-    handleFilterList($(this))
-
-    // TODO: combine these conditionals with the range conditionals
-    d3.selectAll('circle')
-      .classed('hide', function(d) {
-        var isHide = false;
-        for (var dimension in checkboxSelection) {
-          var currentSelected = checkboxSelection[dimension].domain
-          // console.log(checkboxSelection[dimension].domain)
-          console.log(d[dimension])
-
-          if (!currentSelected.includes(d[dimension])) isHide = true;
-        }
-        return isHide;
-      })
-
-  });
-
-  // adds or removed values from the selection list based on what was changed
-  function handleFilterList(thisCheckbox) {
-    var parentDimension = thisCheckbox.parents('section').attr('data-filter-dimension')
-    var parentDimensionName = parentDimension.replace(/-/g, ' ')
-    var thisValue = thisCheckbox.attr('data-filter-'+parentDimension.toLowerCase())
-    var isChecked = thisCheckbox.prop('checked')
-
-    // if the checkbox was checked, add an addition to the domain
-    // if the checkbox was unchecked, remove from the list of conditions
-    if (isChecked) {
-      checkboxSelection[parentDimensionName].domain.push(thisValue) // add to conditions
-    }
-    else {
-      var index = checkboxSelection[parentDimensionName].domain.indexOf(thisValue)
-      checkboxSelection[parentDimensionName].domain.splice(index, 1) // add to conditions
-    }
-  }
+  sliderChangeAndUpdate();
+  checkboxChangeAndUpdate();
 
 
   // adding axis labels
@@ -415,38 +376,4 @@ function initSidebar() {
   // var sliders = new Foundation.Slider($('.slider'))
   
   $(document).foundation(); // initializes the sliders with foundation
-}
-
-function sliderChangeAndUpdate() {
-  $('[data-slider]').on('moved.zf.slider', function() {
-    var adjustingDimension = $(this).parents('[data-filter-section]').attr('data-filter-dimension')
-    var dimensionName = adjustingDimension.replace(/-/g, ' ')
-    var dimensionDisplayName = adjustingDimension.replace(/ /g, '-').toLowerCase()
-    var newMin = $(this).find('input.js-slider-min').val()
-    var newMax = $(this).find('input.js-slider-max').val()
-    var newDomain = [newMin, newMax]
-
-    // hide points that don't fit new domain
-    d3.selectAll('circle')
-      .classed('hide', function(d) {
-        return newMin >= d[dimensionName] || d[dimensionName] >= newMax
-      })
-
-    var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
-    // console.log('#data-axis-'+dimensionDisplayName);
-    // console.log(dimensionName)
-
-    // check if this axis is actively being shown,
-    // so that we know to update the x or y axis
-    if ($adjustingAxis.length > 0) {
-      // if this adjusting axis is the xaxis
-      if($adjustingAxis.hasClass('xaxis')) {
-        updateAxisDomain('x', visGraphInit.axis.x, visGraphInit.scales.x, newDomain, dimensionName)
-      }
-      // else we are adjusting the yaxis 
-      else if ($adjustingAxis.hasClass('yaxis')) {
-        updateAxisDomain('y', visGraphInit.axis.y, visGraphInit.scales.y, newDomain, dimensionName)
-      }
-    }
-  });
 }
