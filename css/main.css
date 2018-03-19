@@ -731,6 +731,13 @@ select {
   .legend > :not(:first-child) {
     margin-left: 4rem; }
 
+.legendOrdinal {
+  font-family: "mononoki", sans-serif;
+  fill: #662D91;
+  font-size: 0.75rem;
+  letter-spacing: -0.05em;
+}
+
 .select-axis {
   display: flex; }
 

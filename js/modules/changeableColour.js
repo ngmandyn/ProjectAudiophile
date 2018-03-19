@@ -25,5 +25,8 @@ function updateColours(data, value) {
     d3.selectAll('circle')
       .transition().duration(200)
       .attr('fill', function(d) { return colourScale(d[value]); })
+
+    brushWithLegend();
+
   }
 }

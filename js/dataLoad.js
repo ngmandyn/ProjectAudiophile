@@ -3,7 +3,7 @@ var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
 var dataFilterNames = [];
-var searchableValues = [];
+var brushableValues = [];
 var margin = 56,
     width = window.innerWidth - (margin + (16*13)),
     height = window.innerHeight - 298;
@@ -47,9 +47,10 @@ var dimensionsWithStringsObj = {
   'Amp required': {
     displayName: 'amp required',
     domain: ['No', 'Maybe', 'Recommended', 'Yes'],
-    scaleOrdinal: d3.schemeCategory20b,
+    scaleOrdinal: [ "#b3cde3", "#8c96c6", "#8856a7", "#4d004b"],
   },
 }
+
 
 // TODO: clean this up, make one object as filterSelection
 // that contains all the filtered domains and ranges;
@@ -155,6 +156,7 @@ d3.csv(dataUrl, prepData, function(data) {
   checkboxChangeAndUpdate();
 
   searchAndBrush();
+  brushWithLegend();
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
@@ -208,9 +210,10 @@ d3.csv(dataUrl, prepData, function(data) {
       var thisCircle = d3.select(this);
       for (var dimension in dimensionsWithStringsObj) {
         var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
-        if (dimension === 'Model' || dimension === 'Manufacturer') {
-          if (!(searchableValues.includes(d[dimension].replace(/ /g,'-').toLowerCase()))) {
-            searchableValues.push(d[dimension].replace(/ /g,'-').toLowerCase());
+        if (dimension === 'Model' || dimension === 'Manufacturer' ||
+            dimension === 'Form factor' || dimension === 'Amp required') {
+          if (!(brushableValues.includes(d[dimension].replace(/ /g,'-').toLowerCase()))) {
+            brushableValues.push(d[dimension].replace(/ /g,'-').toLowerCase());
           };
         }
         thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
