@@ -28,9 +28,7 @@ function handleCheckboxFilterList(thisCheckbox) {
 function checkboxChangeAndUpdate() {
   $('input[type=checkbox').on('change', function() {
     handleCheckboxFilterList($(this))
-
-    // TODO: combine these conditionals with the range conditionals
-    checkCircleAgainstFilters()
+    checkCircleAgainstAllFilters()
   });
 }
 
@@ -47,11 +45,9 @@ function sliderChangeAndUpdate() {
     filterCollection[dimensionName].domain = newDomain
 
     // hide points that don't fit new domain
-    checkCircleAgainstFilters()
+    checkCircleAgainstAllFilters()
 
     var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
-    // console.log('#data-axis-'+dimensionDisplayName);
-    // console.log(dimensionName)
 
     // check if this axis is actively being shown,
     // so that we know to update the x or y axis
@@ -68,21 +64,19 @@ function sliderChangeAndUpdate() {
   });
 }
 
-function checkCircleAgainstFilters() {
+// checks each circle against all the filters,
+// so that only circles matching every criteria are shown
+function checkCircleAgainstAllFilters() {
   d3.selectAll('circle')
     .classed('hide', function(d) {
       var isHide = false;
       for (var dimension in filterCollection) {
         var checkingDomain = filterCollection[dimension].domain
 
-        if (typeof(checkingDomain[0]) === 'number' &&
-          isOutsideNumberDomain(d, dimension)) {
-          // console.log('checking number domain')
+        // once one dimension doesn't match the selection, we hide it
+        if (typeof(checkingDomain[0]) === 'number' && isOutsideNumberDomain(d, dimension)) {
           isHide = true;
-        } else if (typeof(checkingDomain[0]) === 'string' &&
-          isOutsideStringDomain(d, dimension)) {
-          // console.log('isOutsideStringDomain: '+dimension+', '+d[dimension])
-          // console.log(checkingDomain)
+        } else if (typeof(checkingDomain[0]) === 'string' && isOutsideStringDomain(d, dimension)) {
           isHide = true;
         }
       }
@@ -94,16 +88,11 @@ function checkCircleAgainstFilters() {
 function isOutsideNumberDomain(d, dimension) {
   var newMin = filterCollection[dimension].domain[0]
   var newMax = filterCollection[dimension].domain[1]
-  // console.log('isOutsideNumberDomain '+dimension+': \n'+d[dimension]+' vs '+'['+newMin+', '+newMax+']')
-  // console.log(newMin > d[dimension] || d[dimension] > newMax)
   return newMin > d[dimension] || d[dimension] > newMax
 }
 
 function isOutsideStringDomain(d, dimension) {
   var thisDomain = filterCollection[dimension].domain
-  // console.log('isOutsideStringDomain checking...')
-  // console.log(!thisDomain.includes(d[dimension]))
-
   return !thisDomain.includes(d[dimension])
 }
 

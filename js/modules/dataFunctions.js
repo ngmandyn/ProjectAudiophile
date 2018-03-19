@@ -33,7 +33,6 @@ function trimWhitespace(data, arrOfColumnNames) {
   });
 }
 
-// function replaceSpaces
 
 // returns the max within the columnName of data
 function getMax(data, columnName) {
@@ -98,7 +97,7 @@ function join(lookupTable, mainTable, lookupKey, mainKey, select) {
 };
 
 function parseStringForCode(string) {
-  return string.replace(/ /g, '-').toLowerCase()
+  return string.replace(/ /g, '-').replace(/[/()]/g, '').toLowerCase()
 }
 
 function parseStringForDimension(string) {

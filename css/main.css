@@ -827,4 +827,45 @@ select {
   .slider-handle.is-dragging {
     transition: all 0s linear; }
 
+.tooltip {
+  display: block;
+  position: absolute;
+  background-color: white;
+  border: 1px solid;
+  padding: .75rem;
+  font-family: "mononoki", sans-serif;
+  z-index: 2;
+  margin-left: -3rem;
+  margin-top: -6rem; }
+  .tooltip__name {
+    font-weight: bold; }
+  .tooltip__price {
+    display: block; }
+  .tooltip__fav-button {
+    display: inline-block;
+    font-size: 80%;
+    padding: .125rem .25rem;
+    border: 1px solid;
+    border-radius: 7px;
+    transition: all 200ms ease-in-out;
+    margin-top: .5rem; }
+    .tooltip__fav-button.isActive {
+      background-color: #2E3192;
+      color: white; }
+    .tooltip__fav-button:hover {
+      background-color: #2E3192;
+      color: white;
+      transition: all 200ms ease-in-out; }
+
+.tooltip--small {
+  margin-top: -2rem;
+  margin-left: -3rem;
+  padding: .25rem .5rem; }
+  .tooltip--small .tooltip__name {
+    font-weight: normal; }
+  .tooltip--small .tooltip__price {
+    display: none; }
+  .tooltip--small .tooltip__fav-button {
+    display: none; }
+
 /*# sourceMappingURL=main.css.map */

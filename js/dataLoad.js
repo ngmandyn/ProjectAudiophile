@@ -216,25 +216,29 @@ d3.csv(dataUrl, prepData, function(data) {
         thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
       }
     })
-    .on('mouseover', function() {
+    .on('mouseover', function(d) {
       d3.select(this)
         .transition().duration(200)
         .attr('r', 10);
         // move to front
         this.parentNode.appendChild(this);
+
+      // don't create another tooltip if we're already hovering
+      // or we have clicked this circle before
+      if (!tooltipAlreadyExists(d))
+        showTooltip(d, $(this))
     })
-    .on('mouseout', function() {
+    .on('mouseout', function(d) {
       d3.select(this)
         .transition().duration(300)
         .attr('r', 5);
+
+      removeTooltip(d, 'small')
     })
     .on('click', function(d) {
-      favsChangeAndUpdate(d, $(this));
-
-    //   // $(this).children('.tooltip').toggleClass('hide');
-    //   var content = $(this).find('.tooltip-data')[0].textContent;
-    //   console.log(content);
-    //   // $('.tooltip').html($.parseHTML(content));
+      // showTooltip(d, $(this))
+      // removeTooltip(d, 'small')
+      toggleTooltip(d, $(this), 'large')
     })
     .append('p')
       .attr('class', 'tooltip-data')

@@ -1,29 +1,47 @@
 var favouritesCollection = {}
 var $favItemShelf = $('.fav-shelf')
 
-// called inside dataLoad.js
-// attached to where the circles are created
+/*
+  called inside dataLoad.js
+  attached to where the circles are created
+*/
 function favsChangeAndUpdate(d, jqThisCircle) {
   // this is just printing the informating in the circle
   var content = jqThisCircle.find('.tooltip-data')[0].textContent;
   console.log(content);
-
   var newFavsName = d['Manufacturer']+' '+d['Model']
-  var currentFavouriteKeys = Object.keys(favouritesCollection)
-  
 
-  // if the favourite exists, remove it
-  if (currentFavouriteKeys.includes(newFavsName)) {
+  if (favAlreadyExists(d)) {
     delete favouritesCollection[newFavsName]
     removeFavItemFromShelf(d['Manufacturer'], d['Model'], jqThisCircle)
-  }
+  } 
   // else add the favourite as a new object to the collection
-  else if (currentFavouriteKeys.length < 5) {
+  else if (favLessThanLimit()) {
     var newFav = {}
     newFav[newFavsName] = d
     favouritesCollection = {...favouritesCollection, ...newFav}
     addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
   }
+}
+
+/*
+  return boolean
+  checks if this data item is already within the 
+  favouritesCollection to prevent duplicate entries
+*/
+function favAlreadyExists(d) {
+  var newFavsName = d['Manufacturer']+' '+d['Model']
+  var currentFavouriteKeys = Object.keys(favouritesCollection)
+  return currentFavouriteKeys.includes(newFavsName)
+}
+
+/* 
+  return boolean
+  checks if the collection has less than the limit (5)
+*/
+function favLessThanLimit() {
+  var currentFavouriteKeys = Object.keys(favouritesCollection)
+  return currentFavouriteKeys.length < 5
 }
 
 function addFavItemToShelf(manufacturer, model, jqThisCircle) {
@@ -46,6 +64,6 @@ function removeFavItemFromShelf(manufacturer, model, jqThisCircle) {
   // item.remove()
 }
 
-function makeFavCircleSpecial(d, clickedCircle) {
+function makeFavCircleSpecial(clickedCircle) {
   clickedCircle.toggleClass('special')
 }

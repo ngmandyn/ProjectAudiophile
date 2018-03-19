@@ -87,11 +87,20 @@
   </article>
 
   <article class="canvas">
-    <!-- <template id="tooltip-template"> -->
-      <article class="tooltip"></article>
-    <!-- </template> -->
+<!--     <template id="template-small-tooltip">
+      <article class="small-tooltip">
+      </article>
+    </template> -->
     <template id="template-tooltip">
-      <div class="tooltip__data"></div>
+      <article class="tooltip tooltip--small">
+        <p class="tooltip__name">
+          <span class="tooltip__manufacturer"></span>
+          <span class="tooltip__model"></span>
+        </p>
+        <p class="tooltip__price"></div>
+        <div class="tooltip__fav-button">I want to buy</div>
+        <div class="tooltip__triangle"></div>
+      </article>
     </template>
     <!-- here goes the drawn data -->
   </article>
@@ -113,6 +122,7 @@
   <script src="js/modules/dataFunctions.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/comparisons.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/filters.js" type="text/javascript" charset="utf-8" async defer></script>
+  <script src="js/modules/tooltips.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/search.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/changeableAxis.js" type="text/javascript" charset="utf-8" async defer></script>
   <script src="js/modules/changeableColour.js" type="text/javascript" charset="utf-8" async defer></script>

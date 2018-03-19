@@ -32,7 +32,12 @@ function updateAxisDomain(axis, d3Axis, d3Scale, newDomain, dimension) {
 function updatePointPositions(axis, d3Scale, dimension) {
   d3.selectAll('circle')
     .transition().duration(200)
-    .attr('c'+axis, function(d) { return d3Scale(d[dimension]); });
+    .attr('c'+axis, function(d) { return d3Scale(d[dimension]); })
+    .each(function(d) {
+      if(tooltipAlreadyExists(d)) {
+        updateTooltipPositionWithCircle(d, $(this))
+      }
+    });
 }
 
 function updateAxisDimensionId(axis, newDimension) {
