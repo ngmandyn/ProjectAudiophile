@@ -1,6 +1,6 @@
 // combines the dimensions together into one object of all selected filters
 // and removes the 'Model' because it is not filterable.
-// TODO: update Manufacturer 
+// TODO: update Manufacturer
 function initFilterCollection() {
   filterCollection = {...dimensionsObj, ...dimensionsWithStringsObj}
   delete filterCollection.Manufacturer
@@ -60,7 +60,7 @@ function sliderChangeAndUpdate() {
       if($adjustingAxis.hasClass('xaxis')) {
         updateAxisDomain('x', visGraphInit.axis.x, visGraphInit.scales.x, newDomain, dimensionName)
       }
-      // else we are adjusting the yaxis 
+      // else we are adjusting the yaxis
       else if ($adjustingAxis.hasClass('yaxis')) {
         updateAxisDomain('y', visGraphInit.axis.y, visGraphInit.scales.y, newDomain, dimensionName)
       }
@@ -86,7 +86,7 @@ function checkCircleAgainstFilters() {
           isHide = true;
         }
       }
-    
+
       return isHide;
     })
 }

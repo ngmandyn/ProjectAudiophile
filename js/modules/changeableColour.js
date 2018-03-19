@@ -11,7 +11,7 @@ function updateColours(data, value) {
       var colourScale = d3.scaleOrdinal(dimensionsWithStringsObj[value].scaleOrdinal)
                           .domain(dimensionsWithStringsObj[value].domain);
     }
-      
+
     var legendOrdinal = d3.legendColor()
                           .shape('path', d3.symbol().type(d3.symbolCircle).size(100)())
                           .shapePadding(75)

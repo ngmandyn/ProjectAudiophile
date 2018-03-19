@@ -3,7 +3,7 @@ var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
 var dataFilterNames = [];
-var dataAttributes = [];
+var searchableValues = [];
 var margin = 56,
     width = window.innerWidth - (margin + (16*13)),
     height = window.innerHeight - 298;
@@ -154,6 +154,7 @@ d3.csv(dataUrl, prepData, function(data) {
   sliderChangeAndUpdate();
   checkboxChangeAndUpdate();
 
+  searchAndBrush();
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')
@@ -207,13 +208,20 @@ d3.csv(dataUrl, prepData, function(data) {
       var thisCircle = d3.select(this);
       for (var dimension in dimensionsWithStringsObj) {
         var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
-        thisCircle.attr('data-'+dataAttr, d[dimension]);
+        if (dimension === 'Model' || dimension === 'Manufacturer') {
+          if (!(searchableValues.includes(d[dimension].replace(/ /g,'-').toLowerCase()))) {
+            searchableValues.push(d[dimension].replace(/ /g,'-').toLowerCase());
+          };
+        }
+        thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
       }
     })
     .on('mouseover', function() {
       d3.select(this)
         .transition().duration(200)
         .attr('r', 10);
+        // move to front
+        this.parentNode.appendChild(this);
     })
     .on('mouseout', function() {
       d3.select(this)
