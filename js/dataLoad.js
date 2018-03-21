@@ -6,7 +6,7 @@ var data1 = null;
 var newData = null;
 
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
-    dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
+    dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required', 'Bass', 'Midrange', 'Treble', 'Removable Cable', 'Pads'];
 var dataFilterNames = [];
 var brushableValues = [];
 var margin = 56,
@@ -52,7 +52,27 @@ var dimensionsWithStringsObj = {
   'Amp required': {
     displayName: 'amp required',
     domain: ['No', 'Maybe', 'Recommended', 'Yes'],
-    scaleOrdinal: [ "#b3cde3", "#8c96c6", "#8856a7", "#4d004b"],
+    scaleOrdinal: ["#b3cde3", "#8c96c6", "#8856a7", "#4d004b"],
+  },
+  'Bass': {
+    displayName: 'bass',
+    domain: ['Recessed', 'Neutral', 'Emphasized'],
+  },
+  'Midrange': {
+    displayName: 'midrange',
+    domain: ['Recessed', 'Neutral', 'Emphasized'],
+  },
+  'Treble': {
+    displayName: 'treble',
+    domain: ['Recessed', 'Neutral', 'Emphasized'],
+  },
+  'Removable Cable': {
+    displayName: 'removable cable',
+    domain: ['No', 'Yes'],
+  },
+  'Pads': {
+    displayName: 'pads',
+    domain: ['Velour', 'Fabric', 'Pleather', 'Leather'],
   },
 }
 
@@ -136,7 +156,6 @@ d3.csv(dataUrl, prepData, function(data) {
 d3.csv(dataUrl2)
   .row(function(d) { return d; })
   .get(function(error, rows) {
-    //console.log(rows);
     data2 = rows;
     console.log(data1)
     console.log(data2)
@@ -152,13 +171,13 @@ function combineData(data, data2) {
       Pads: data.Pads,
       Impedance: data2.Impedance,
       Weight: data2.Weight,
-      "Efficiency": data2['Convert to Efficiency'],
+      "Convert to Efficiency": data2['Convert to Efficiency'],
       "Form factor": data2['Form factor'],
       "Amp required": data2['Amp required'],
       Bass: data.Bass,
       Midrange: data.Midrange,
-      Trebles: data.Treble,
-      "Removable cable": data['Removable Cable'],
+      Treble: data.Treble,
+      "Removable Cable": data['Removable Cable'],
     };
   });
   return result;
@@ -167,9 +186,7 @@ function combineData(data, data2) {
 d3.csv(dataUrl, prepData, function(data) {
 
   data = newData;
-  // combinedData = data;
-  // console.log(data);
-  console.log(data);
+  console.log(data)
 
   initData(data);
   // must be called after data is initialized to get domains
@@ -316,7 +333,6 @@ function initData(data) {
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
   }
-  // console.log(dimensionsObj);
 }
 
 // initialize basic properties for the visualization
@@ -363,7 +379,6 @@ function initVis(data) {
 
 // adds in the checkboxes for all the defined dimensions
 function initSidebar() {
-
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
