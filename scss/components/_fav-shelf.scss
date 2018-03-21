@@ -75,6 +75,7 @@
   }
 
   .fav-shelf__item {
+    position: relative;
     flex: 1 1 20%;
     font-size: 90%;
     border: 1px solid white;
@@ -83,6 +84,21 @@
 
     & ~ & {
       margin-left: 1rem;
+    }
+  }
+
+  .fav-shelf__item-cancel {
+    position: absolute;
+    right: .5rem;
+    color: white;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+
+    &:after {
+      content: 'X';
     }
   }
 

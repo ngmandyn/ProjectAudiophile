@@ -85,7 +85,7 @@ var filterCollection
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
     xLabelOffset = { x: margin*2, y: 36 },
-    xLabelUnitsOffset = { x: xLabelOffset.x+42, y: xLabelOffset.y },
+    xLabelUnitsOffset = { x: xLabelOffset.x+100, y: xLabelOffset.y },
     yAxisOffset = { x: margin*2-10, y: 0 },
     yLabelOffset = { x: 0, y: 24 },
     yLabelUnitsOffset = { x: yLabelOffset.x, y: yLabelOffset.y+16 },
@@ -95,16 +95,16 @@ var xAxisOffset = { x: 0, y: height-margin+10 },
 // the config of the starting graph's axes and colour
 var dataInitConfig = {
   xAxis: {
-    dimension: 'MSRP',
-    displayName: 'price',
-    units: '$USD',
+    dimension: 'Impedance',
+    displayName: 'impedance',
+    units: 'ohms',
     min: null,
     max: null,
   },
   yAxis: {
-    dimension: 'Impedance',
-    displayName: 'impedance',
-    units: 'ohms',
+    dimension: 'MSRP',
+    displayName: 'price',
+    units: '$USD',
     min: null,
     max: null,
   },
@@ -286,6 +286,7 @@ function performTasks(callback) {
           }
           thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
         }
+        
       })
       .on('mouseover', function(d) {
         d3.select(this)
@@ -296,20 +297,19 @@ function performTasks(callback) {
 
         // don't create another tooltip if we're already hovering
         // or we have clicked this circle before
-        if (!tooltipAlreadyExists(d))
-          showTooltip(d, $(this))
+        // if (!tooltipAlreadyExists(d))
+          showTooltip(d, $(this), 'large')
       })
       .on('mouseout', function(d) {
         d3.select(this)
           .transition().duration(300)
           .attr('r', 5);
 
-        removeTooltip(d, 'small')
+        removeTooltip(d, 'large')
       })
       .on('click', function(d) {
-        // showTooltip(d, $(this))
-        // removeTooltip(d, 'small')
-        toggleTooltip(d, $(this), 'large')
+        // toggleTooltip(d, $(this), 'large')
+        favsChangeAndUpdate(d, $(this))
       })
       .append('p')
         .attr('class', 'tooltip-data')
@@ -322,12 +322,13 @@ function performTasks(callback) {
         });
 
     // interaction event listeners for y axis and colour
-    d3.select('.jsChangeableYAxis').on('change', function() {
-      updateYAxis(data, $(this).val(), visGraphInit.scales.y, visGraphInit.axis.y);
+    d3.select('.jsChangeableXAxis').on('change', function() {
+      updateXAxis(data, $(this).val(), visGraphInit.scales.x, visGraphInit.axis.x);
     });
     d3.select('.jsChangeableColour').on('change', function() {
       updateColours(data, $(this).val());
     });
+
 
   callback(null, newData)
   });

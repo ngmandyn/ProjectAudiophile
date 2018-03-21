@@ -50,8 +50,8 @@ function showTooltip(d, thisCircle, tooltipType) {
       })
 
     $('.canvas').append($tooltip)
-    checkIfFavButtonShouldBeActive(d); // update the favourite state
-    checkForFavouriteButtonClickAndUpdate(d); // bind event listener
+    // checkIfFavButtonShouldBeActive(d); // update the favourite state
+    // checkForFavouriteButtonClickAndUpdate(d); // bind event listener
   }
 }
 
@@ -92,35 +92,6 @@ function updateTooltipPositionWithCircle(d, thisCircle) {
   })
 }
 
-/*
-  return jQuery Object
-  get the jquery tooltip object from the data
-  and an optional tooltipType if looking for small or large
-*/
-function getTooltip(d, tooltipType) {
-  var headphoneName = parseStringForCode(d['Manufacturer']+' '+d['Model'])
-  var $tooltip;
-
-  if (typeof(tooltipType) !== 'undefined') {
-    $tooltip = $('[data-tooltip='+headphoneName+'][data-tooltip-type='+tooltipType+']')
-  }
-  else {
-    $tooltip = $('[data-tooltip='+headphoneName+']')
-  }
-
-  return $tooltip
-}
-
-/*
-  return jQuery Object
-  get the jquery circle object from the data
-*/
-function getCircle(d) {
-  var manuf = parseStringForCode(d['Manufacturer'])
-  var model = parseStringForCode(d['Model'])
-  var $circle = $('circle[data-manufacturer='+manuf+'][data-model='+model+']')
-  return $circle
-}
 
 /*
   return jQuery Object
@@ -133,28 +104,28 @@ function getCircleFromManufAndModel(manuf, model) {
   return $circle
 }
 
-/*
-  check for click events on the favourite button
-*/
-function checkForFavouriteButtonClickAndUpdate(d) {
-  // console.log($('.tooltip__fav-button'))
-  $('.tooltip__fav-button').on('click', function() {
-    $(this).toggleClass('isActive')
-    var manuf = $(this).parents('.tooltip').find('.tooltip__manufacturer').html()
-    var model = $(this).parents('.tooltip').find('.tooltip__model').html()
-    var $thisCircle = getCircleFromManufAndModel(manuf, model)
+// /*
+//   check for click events on the favourite button
+// */
+// function checkForFavouriteButtonClickAndUpdate(d) {
+//   // console.log($('.tooltip__fav-button'))
+//   $('.tooltip__fav-button').on('click', function() {
+//     $(this).toggleClass('isActive')
+//     var manuf = $(this).parents('.tooltip').find('.tooltip__manufacturer').html()
+//     var model = $(this).parents('.tooltip').find('.tooltip__model').html()
+//     var $thisCircle = getCircleFromManufAndModel(manuf, model)
 
-    favsChangeAndUpdate(d, $thisCircle)
-  })
-}
+//     favsChangeAndUpdate(d, $thisCircle)
+//   })
+// }
 
-/*
-  check if this data item has been added to favourites, and if so,
-  add an isActive class to the button (to relate to the state of the data)
-*/
-function checkIfFavButtonShouldBeActive(d) {
-  if (favAlreadyExists(d)) 
-    getTooltip(d).find('.tooltip__fav-button').addClass('isActive')
-}
+// /*
+//   check if this data item has been added to favourites, and if so,
+//   add an isActive class to the button (to relate to the state of the data)
+// */
+// function checkIfFavButtonShouldBeActive(d) {
+//   if (favAlreadyExists(d)) 
+//     getTooltip(d).find('.tooltip__fav-button').addClass('isActive')
+// }
 
 // function checkForExitButtonClick($tooltip) {}

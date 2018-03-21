@@ -16,12 +16,7 @@
     <section class="select-axis">
       <fieldset class="select-axis__y">
         <label for="select-y-axis" class="db"><strong>y-axis</strong> shows</label>
-        <select name="select-y-axis" class="jsChangeableYAxis">
-          <!-- <option value="average review">average review</option> -->
-          <option value="Impedance" select="selected">impedance</option>
-          <option value="Convert to Efficiency">efficiency</option>
-          <option value="Weight">weight</option>
-        </select>
+        <p>price</p>
       </fieldset>
       <div class="select-axis__graph">
         <span class="select-axis__graph-y">y</span>
@@ -29,19 +24,26 @@
       </div>
       <fieldset class="select-axis__x">
         <label for="select-x-axis" class="db"><strong>x-axis</strong> shows</label>
-        <select name="select-x-axis" class="jsChangeableXAxis" disabled>
-          <option value="MRSP">price</option>
+        <select name="select-x-axis" class="jsChangeableXAxis">
+          <!-- <option value="average review">average review</option> -->
+          <option value="Impedance" select="selected">impedance</option>
+          <option value="Convert to Efficiency">efficiency</option>
+          <option value="Weight">weight</option>
         </select>
+        <!-- <select name="select-x-axis" class="jsChangeableXAxis" disabled>
+          <option value="MRSP">price</option>
+        </select> -->
       </fieldset>
     </section>
     <section class="select-other">
       <fieldset class="select-other__colour">
         <label for="select-colour"><strong>colour</strong> shows</label>
-        <select name="select-colour" class="jsChangeableColour">
+        <p>brands</p>
+        <!-- <select name="select-colour" class="jsChangeableColour">
           <option value="Manufacturer" selected="selected">brands</option>
           <option value="Form factor">form factor</option>
           <option value="Amp required">amp required</option>
-        </select>
+        </select> -->
       </fieldset>
 <!--       <fieldset class="select-other__size jsChangeableSize">
         <label for="select-size"><strong>size</strong> shows</label>
@@ -58,26 +60,26 @@
   </article>
   <article class="sidebar shadow-2">
     <!-- here goes the filters and search -->
-    <label>Search for<input type="text" id="searchbar" name="searchbar" placeholder="a brand or model..."></label>
+    <label class="mb3">Search for<input type="text" id="searchbar" name="searchbar" placeholder="a brand or model..."></label>
 
-    <section data-filter-dimension="MSRP" data-filter-section="price"></section>
-    <section data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section>
-    <section data-filter-dimension="Weight" data-filter-section="weight"></section>
-    <section data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>
-    <section data-filter-dimension="Amp-required" data-filter-section="amp-required"></section>
-    <section>
-      <h6>Sound Signature</h6>
-      <section data-filter-dimension="Treble" data-filter-section="treble"></section>
-      <section data-filter-dimension="Midrange" data-filter-section="midrange"></section>
-      <section data-filter-dimension="Bass" data-filter-section="bass"></section>
+    <section class="mb3" data-filter-dimension="MSRP" data-filter-section="price"></section>
+    <section class="mb3 mb5" data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section>
+    <section class="mb3 mb5" data-filter-dimension="Weight" data-filter-section="weight"></section>
+    <section class="mb3" data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>
+    <section class="mb3" data-filter-dimension="Amp-required" data-filter-section="amp-required"></section>
+    <section class="mb3">
+      <h6 class="ma0 pb1 b">Sound Signature</h6>
+      <section class="mb3" data-filter-dimension="Treble" data-filter-section="treble"></section>
+      <section class="mb3" data-filter-dimension="Midrange" data-filter-section="midrange"></section>
+      <section class="mb3" data-filter-dimension="Bass" data-filter-section="bass"></section>
     </section>
-    <section data-filter-dimension="Pads" data-filter-section="pads"></section>
-    <section data-filter-dimension="Removable Cable" data-filter-section="removable-cable"></section>
-    <section data-filter-dimension="Impedance" data-filter-section="impedance"></section>
-    <section data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
+    <section class="mb3" data-filter-dimension="Pads" data-filter-section="pads"></section>
+    <section class="mb3" data-filter-dimension="Removable Cable" data-filter-section="removable-cable"></section>
+    <section class="mb3 mb5" data-filter-dimension="Impedance" data-filter-section="impedance"></section>
+    <section class="mb3 mb5" data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
 
     <template id="template-dimension-title">
-      <h6 class="meta mb0 pt3 b dimension-title"></h6>
+      <h6 class="meta mb0 b dimension-title"></h6>
     </template>
     <template id="template-checkbox">
       <label><input type="checkbox"><span class="jsLabelInput"></span></label>
@@ -106,7 +108,7 @@
           <span class="tooltip__model"></span>
         </p>
         <p class="tooltip__price"></div>
-        <div class="tooltip__fav-button">I want to buy</div>
+        <!-- <div class="tooltip__fav-button">I want to buy</div> -->
         <div class="tooltip__triangle"></div>
       </article>
     </template>
@@ -143,6 +145,7 @@
     <template id="template-fav-item">
       <p class="fav-shelf__item">
         <span class="jsFavItemName"></span>
+        <!-- <span class="fav-shelf__item-cancel jsFavItemCancel"></span> -->
       </p>
     </template>
   </article>

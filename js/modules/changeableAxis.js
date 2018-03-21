@@ -1,4 +1,4 @@
-function updateYAxis(data, value, yscale, yaxis) {
+function updateXAxis(data, value, xscale, xaxis) {
   if (typeof(value) !== "undefined") {
     // var value = $(this).val(); //get select box's value
     var outputValue = dimensionsObj[value].displayName;
@@ -7,14 +7,14 @@ function updateYAxis(data, value, yscale, yaxis) {
     var newMin = filterCollection[value].domain[0];
     var newMax = filterCollection[value].domain[1];
 
-    yscale.domain([newMin, newMax]);
-    yaxis.scale(yscale);
-    d3.select('.yaxis')
-      .call(yaxis);
-    d3.select('.axis__label--y').text(outputValue.toLowerCase());
-    d3.select('.yaxis .axis__label-unit').text(units);
-    updateAxisDimensionId('y', value.replace(/ /g, '-').toLowerCase())
-    updatePointPositions('y', yscale, value);
+    xscale.domain([newMin, newMax]);
+    xaxis.scale(xscale);
+    d3.select('.xaxis')
+      .call(xaxis);
+    d3.select('.axis__label--x').text(outputValue.toLowerCase());
+    d3.select('.xaxis .axis__label-unit').text(units);
+    updateAxisDimensionId('x', value.replace(/ /g, '-').toLowerCase())
+    updatePointPositions('x', xscale, value);
   }
 }
 
