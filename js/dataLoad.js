@@ -3,6 +3,7 @@ var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
 
 var data2 = null;
 var data1 = null;
+var newData = null;
 
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
@@ -126,10 +127,49 @@ var visGraphInit = {
 
 
 // ----------------------------------------------------------------------
+
+d3.csv(dataUrl, prepData, function(data) {
+  data1 = data;
+});
+
+
+d3.csv(dataUrl2)
+  .row(function(d) { return d; })
+  .get(function(error, rows) {
+    //console.log(rows);
+    data2 = rows;
+    console.log(data1)
+    console.log(data2)
+    newData = combineData(data1, data2);
+  });
+
+function combineData(data, data2) {
+  var result = join(data, data2, "Model", "Model", function(data, data2) {
+    return {
+      Manufacturer: data.Manufacturer,
+      MSRP: data2.MSRP,
+      Model: data.Model,
+      Pads: data.Pads,
+      Impedance: data2.Impedance,
+      Weight: data2.Weight,
+      "Efficiency": data2['Convert to Efficiency'],
+      "Form factor": data2['Form factor'],
+      "Amp required": data2['Amp required'],
+      Bass: data.Bass,
+      Midrange: data.Midrange,
+      Trebles: data.Treble,
+      "Removable cable": data['Removable Cable'],
+    };
+  });
+  return result;
+}
+
 d3.csv(dataUrl, prepData, function(data) {
 
-    // console.log(data2)
-  data1 = data;
+  data = newData;
+  // combinedData = data;
+  // console.log(data);
+  console.log(data);
 
   initData(data);
   // must be called after data is initialized to get domains
@@ -250,28 +290,6 @@ d3.csv(dataUrl, prepData, function(data) {
 });
 
 
-d3.csv(dataUrl2)
-  .row(function(d) { return d; })
-  .get(function(error, rows) {
-    //console.log(rows);
-    data2 = rows;
-    console.log(data1)
-    console.log(data2)
-    var newData = combineData(data1, data2);
-    console.log(newData)
-  });
-
-function combineData(data, data2) {
-  var result = join(data, data2, "Model", "Model", function(data, data2) {
-    return {
-      Manufacturer: data.Manufacturer,
-      Model: data.Model,
-      Pads: data.Pads,
-      "Form factor": data2['Form factor'],
-    };
-  });
-  return result;
-}
 
 // replaces row(function(d))
 // strips units from given dimensions
@@ -396,6 +414,6 @@ function initSidebar() {
     }
   }
   // var sliders = new Foundation.Slider($('.slider'))
-  
+
   $(document).foundation(); // initializes the sliders with foundation
 }
