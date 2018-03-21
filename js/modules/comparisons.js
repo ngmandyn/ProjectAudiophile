@@ -102,16 +102,27 @@ function addFavItemToTable(d) {
   $('.jsFavTableBody').append($row)
 }
 
-function handleFavShelfHideShow() {
-  $('#jsCompareFavourites').on('click', function() {
-    $('.fav-shelf').toggleClass('is-expanded')
-  })
-}
-
 function addFavItemDataAttributes(manufacturer, model, jqObj) {
   return jqObj.attr({
     'data-fav-item': parseStringForCode(manufacturer+'-'+model),
     'data-fav-manufacturer': parseStringForCode(manufacturer),
     'data-fav-model': parseStringForCode(model)
   });
+}
+
+function handleFavShelfHideShow() {
+  $('#jsCompareFavourites').on('click', function() {
+    if (!$(this).hasClass('is-active')) {
+      $('.fav-shelf').toggleClass('is-expanded')
+      $(this).toggleClass('is-active')
+      $('#jsViewEverything').toggleClass('is-active')
+    }
+  })
+  $('#jsViewEverything').on('click', function() {
+    if (!$(this).hasClass('is-active')) {
+      $('.fav-shelf').toggleClass('is-expanded')
+      $(this).toggleClass('is-active')
+      $('#jsCompareFavourites').toggleClass('is-active')
+    }
+  })
 }
