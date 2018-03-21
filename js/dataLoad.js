@@ -1,5 +1,9 @@
 var dataUrl = "https://www.sfu.ca/~ngmandyn/iat355/HeadphonesCleaned.csv";
 var dataUrl2 = "https://www.sfu.ca/~ngmandyn/iat355/Headphones2Cleaned.csv";
+
+var data2 = null;
+var data1 = null;
+
 var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
     dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required'];
 var dataFilterNames = [];
@@ -124,27 +128,8 @@ var visGraphInit = {
 // ----------------------------------------------------------------------
 d3.csv(dataUrl, prepData, function(data) {
 
-  var data2 = null;
-
-  d3.csv(dataUrl2)
-    .row(function(d) { return d; })
-    .get(function(error, rows) {
-      //console.log(rows);
-      data2 = rows;
-      combineData();
-    });
-
-  function combineData() {
-    var result = join(data, data2, "Model", "Model", function(data, data2) {
-      return {
-        Manufacturer: data.Manufacturer,
-        Model: data.Model,
-        Pads: data.Pads,
-        "Form factor": data2['Form factor'],
-      };
-    });
-    data = result;
-  }
+    // console.log(data2)
+  data1 = data;
 
   initData(data);
   // must be called after data is initialized to get domains
@@ -265,6 +250,28 @@ d3.csv(dataUrl, prepData, function(data) {
 });
 
 
+d3.csv(dataUrl2)
+  .row(function(d) { return d; })
+  .get(function(error, rows) {
+    //console.log(rows);
+    data2 = rows;
+    console.log(data1)
+    console.log(data2)
+    var newData = combineData(data1, data2);
+    console.log(newData)
+  });
+
+function combineData(data, data2) {
+  var result = join(data, data2, "Model", "Model", function(data, data2) {
+    return {
+      Manufacturer: data.Manufacturer,
+      Model: data.Model,
+      Pads: data.Pads,
+      "Form factor": data2['Form factor'],
+    };
+  });
+  return result;
+}
 
 // replaces row(function(d))
 // strips units from given dimensions
