@@ -68,6 +68,16 @@ $slider-radius: 50%;
 .slider {
   @include slider-container;
   // margin-bottom: 1rem;
+
+  & input {
+    display: inline-block;
+    width: 48%;
+    margin-top: 1rem;
+
+    &:last-of-type {
+      text-align: left;
+    }
+  }
 }
 
 .slider-fill {

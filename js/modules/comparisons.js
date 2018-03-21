@@ -23,7 +23,27 @@ function favsChangeAndUpdate(d, jqThisCircle) {
     addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
     addFavItemToTable(d)
   }
+
+  // $('.jsFavItemCancel').on('click', function() {
+  //   var thisDataManuf = $(this).parents('.fav-shelf__item').attr('data-fav-manufacturer')
+  //   var thisDataModel = $(this).parents('.fav-shelf__item').attr('data-fav-model')
+  //   var thisDataFullName = $(this).parents('.fav-shelf__item').attr('data-fav-full-name')
+  //   var keysArr = Object.keys(favouritesCollection)
+  //   var favIndex = keysArr.indexOf(thisDataFullName)
+  //   console.log(keysArr)
+  //   console.log(thisDataFullName)
+  //   console.log(favIndex)
+
+  //   console.log(favouritesCollection)
+  //   // console.log(favouritesCollection[Object.keys(favouritesCollection)[0]])
+  //   delete favouritesCollection[Object.keys(favouritesCollection)[favIndex]]
+  //   console.log(favouritesCollection)
+  //   console.log($('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
+  //   removeFavItemFromShelf(thisDataManuf, thisDataModel, $('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
+  // })
 }
+
+// function deleteFavourite()
 
 /*
  * return boolean
@@ -67,7 +87,7 @@ function makeFavCircleSpecial(clickedCircle) {
 
 function initFavItemTable() {
   for (var dimension in dimensionsObj) {
-    $('.fav-table').find('thead tr').append('<th>'+dimensionsObj[dimension].displayName+'</th>')
+    $('.fav-table').find('thead tr').append('<th>'+dimensionsObj[dimension].displayName+' <small>'+dimensionsObj[dimension].units+'</small></th>')
   }
 }
 
@@ -88,13 +108,10 @@ function addFavItemToTable(d) {
     var $cell = $($('#template-fav-table-cell').html());
     var $barGraph = $($('#template-bar-graph').html());
 
-    console.log(d[dimension] + ', ' + dimensionsObj[dimension].domain[1])
     var percentageWidth = (d[dimension] / dimensionsObj[dimension].domain[1] * 100) + '%';
-    console.log(percentageWidth)
 
     $barGraph.find('.jsBarGraphWidthInsert').css('width', percentageWidth)
     $barGraph.find('.jsBarGraphValueInsert').html(d[dimension])
-    console.log($barGraph)
     $cell.append($barGraph)
     $row.append($cell)
   }
@@ -106,7 +123,8 @@ function addFavItemDataAttributes(manufacturer, model, jqObj) {
   return jqObj.attr({
     'data-fav-item': parseStringForCode(manufacturer+'-'+model),
     'data-fav-manufacturer': parseStringForCode(manufacturer),
-    'data-fav-model': parseStringForCode(model)
+    'data-fav-model': parseStringForCode(model),
+    'data-fav-full-name': '"'+manufacturer+' '+model+'"'
   });
 }
 

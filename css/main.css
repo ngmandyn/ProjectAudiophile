@@ -715,6 +715,7 @@ tiny {
   flex-wrap: nowrap; }
 
 .fav-shelf__item {
+  position: relative;
   flex: 1 1 20%;
   font-size: 90%;
   border: 1px solid white;
@@ -722,6 +723,18 @@ tiny {
   padding: .25rem 1rem; }
   .fav-shelf__item ~ .fav-shelf__item {
     margin-left: 1rem; }
+
+.fav-shelf__item-cancel {
+  position: absolute;
+  right: .5rem;
+  color: white;
+  text-align: center;
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem; }
+  .fav-shelf__item-cancel:after {
+    content: 'X'; }
 
 .fav-shelf.is-expanded .fav-table {
   display: table; }
@@ -890,6 +903,12 @@ select {
   cursor: pointer;
   user-select: none;
   touch-action: none; }
+  .slider input {
+    display: inline-block;
+    width: 48%;
+    margin-top: 1rem; }
+    .slider input:last-of-type {
+      text-align: left; }
 
 .slider-fill {
   position: absolute;
@@ -933,11 +952,14 @@ select {
   font-family: "mononoki", sans-serif;
   z-index: 2;
   margin-left: -3rem;
-  margin-top: -6rem; }
+  margin-top: -4.5rem; }
   .tooltip__name {
-    font-weight: bold; }
+    font-weight: bold;
+    font-size: 90%;
+    margin-bottom: .25rem; }
   .tooltip__price {
-    display: block; }
+    display: block;
+    font-size: 80%; }
   .tooltip__fav-button {
     display: inline-block;
     font-size: 80%;

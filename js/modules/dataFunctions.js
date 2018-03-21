@@ -103,3 +103,34 @@ function parseStringForCode(string) {
 function parseStringForDimension(string) {
   return string.replace(/-/g, ' ').charAt(0).toUpperCase()
 }
+
+
+/*
+  return jQuery Object
+  get the jquery tooltip object from the data
+  and an optional tooltipType if looking for small or large
+*/
+function getTooltip(d, tooltipType) {
+  var headphoneName = parseStringForCode(d['Manufacturer']+' '+d['Model'])
+  var $tooltip;
+
+  if (typeof(tooltipType) !== 'undefined') {
+    $tooltip = $('[data-tooltip='+headphoneName+'][data-tooltip-type='+tooltipType+']')
+  }
+  else {
+    $tooltip = $('[data-tooltip='+headphoneName+']')
+  }
+
+  return $tooltip
+}
+
+/*
+  return jQuery Object
+  get the jquery circle object from the data
+*/
+function getCircle(d) {
+  var manuf = parseStringForCode(d['Manufacturer'])
+  var model = parseStringForCode(d['Model'])
+  var $circle = $('circle[data-manufacturer='+manuf+'][data-model='+model+']')
+  return $circle
+}
