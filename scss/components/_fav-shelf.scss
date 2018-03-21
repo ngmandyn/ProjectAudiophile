@@ -1,27 +1,80 @@
 
 .fav-shelf {
+  position: absolute;
+  bottom: 0;
   padding: get-global-spacing('horiz');
   background: get-gradient('blueberry');
   width: 100%;
   color: white;
   font-family: $meta-font-family;
   z-index: 2;
+  min-height: 3rem;
+  transition: all 300ms ease-in-out;
+}
 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  // justify-content: space-between;
+.fav-shelf.is-expanded {
+  min-height: 98%;
+  transition: all 300ms ease-in-out;
+  display: inline-block;
 
-  &__tab {
-    position: absolute;
-    padding: .5rem 1rem .75rem;
-    margin-top: -3.25rem;
-    // background: get-gradient('blueberry');
-    background-color: $discopurple;
-    border-radius: 5px 5px 0 0;
+  .fav-shelf__tabs {
+    position: relative;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 3rem;
   }
 
-  &__item {
+  .fav-shelf__item-container { display: none; }
+}
+
+  .fav-shelf__tabs {
+    position: absolute;
+    margin-top: -3.5rem;
+    // display: flex;
+  }
+
+  .fav-shelf__tab {
+    display: inline-block;
+    transition: all 200ms ease-in-out;
+    color: $discopurple;
+    border: 1px solid $discopurple;
+    border-radius: 5px;
+    padding: .5rem 1rem;
+    background: white;
+
+    &:hover {
+      background-color: $discopurple;
+      color: white;
+      transition: all 200ms ease-in-out;
+      cursor: pointer;
+    }
+
+    & ~ & {
+      margin-left: .5rem;
+    }
+    &.is-active {
+      background-color: $discopurple;
+      padding: .5rem 1rem;
+      border-radius: 5px;
+      color: white;
+      cursor: default;
+    }
+    &.selection.is-active {
+      background-color: $discopurple;
+      border-radius: 5px 5px 0 0;
+      padding: .5rem 1rem 1rem;
+    }
+    // position: absolute;
+    // background: get-gradient('blueberry');
+  }
+
+  .fav-shelf__item-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .fav-shelf__item {
     flex: 1 1 20%;
     font-size: 90%;
     border: 1px solid white;
@@ -32,8 +85,84 @@
       margin-left: 1rem;
     }
   }
+
+
+/////////////////////////////////////////////// fav table
+.fav-shelf.is-expanded .fav-table { display: table; }
+
+.fav-table {
+  // hide the table when the fav-shelf isn't expanded
+  display: none; 
+
+  width: 96%;
+  
+  th {
+    font-weight: bold;
+    text-align: left;
+    padding: 0 1rem 2rem;
+    &:not(:first-child) { padding-left: 4rem; }
+  }
+
+  td {
+    font-weight: normal;
+    padding: 0 1rem .5rem;
+    &:not(:first-child) { padding-left: 4rem; }
+  }
 }
 
+/////////////////////////////////////////////// hbar
+.hBarGraph_bar {
+  flex: 1 0 auto;
+  // background-color: mix($light-gray, #fff, 50%);
+  border-radius: 0 5px 5px 0;
+  margin-top: -.15rem;
+  margin-bottom: -.15rem;
+  padding: .75rem 0;
+  position: relative;
+
+  // &.isTooltipActive {
+  //   background-color: $light-gray;
+  // }
+}
+  .hBar {
+    // padding: .4rem 0;
+    // margin-bottom: .5rem;
+    height: 1.8rem;
+    min-width: .2rem;
+    // transition: $graphTransition;
+    position: relative;
+    border-radius: 0 5px 5px 0;
+    background: map-get($gradients, 'icecube');
+
+    &.green { background: map-get($gradients, 'cantaloup'); }
+    &.red { background: map-get($gradients, 'pear'); }
+    // &.blue { background: map-get($gradients, 'icecube'); }
+
+    .stats_rawNum {
+      position: absolute;
+      left: .75rem;
+      top: .4rem;
+      text-shadow: 0 0 3px #000;
+    }
+    .stats_percentage {
+      position: absolute;
+      top: .4rem;
+      text-shadow: 0 0 3px #000;
+
+      &:not(.full),
+      &:not(.tooSmall) { right: -2.5rem; }
+      &.full { right: .75rem; }
+      &.tooSmall { left: 2.5rem; }
+    }
+
+    &.isAnimating {
+      width: 0 !important;
+      // transition: $graphTransition;
+    }
+  }
+
+
+/////////////////////////////////////////////// for the circles
 .special {
   // -webkit-filter: drop-shadow(0 0 5px 5px $foxglove);
   // filter: drop-shadow(0 0 5px 5px $foxglove);

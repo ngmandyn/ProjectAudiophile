@@ -152,7 +152,7 @@ function combineData(data, data2) {
       Pads: data.Pads,
       Impedance: data2.Impedance,
       Weight: data2.Weight,
-      "Efficiency": data2['Convert to Efficiency'],
+      "Convert to Efficiency": data2['Convert to Efficiency'],
       "Form factor": data2['Form factor'],
       "Amp required": data2['Amp required'],
       Bass: data.Bass,
@@ -182,6 +182,9 @@ d3.csv(dataUrl, prepData, function(data) {
 
   searchAndBrush();
   brushWithLegend();
+  
+  initFavItemTable();
+  handleFavShelfHideShow();
 
   // adding axis labels
   visGraphInit.canvas.svg.append('g')

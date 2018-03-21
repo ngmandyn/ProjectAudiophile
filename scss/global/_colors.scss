@@ -20,6 +20,20 @@ $papaya: #FAA56F;
 $persimmon: #F6743D;
 $foxglove: #B27FE7;
 // ------------------------------------
+$orange: #fd6c3e;
+$yellow: #f6ea00;
+$green: #94d142;
+$teal: #1baaa5;
+$dark-teal: #0f6160;
+$darkest-teal: #0c4c49;
+$navy-blue: #1442a2;
+$light-gray: #f2f2f0;
+$gray: #d1d3d4;
+$dark-gray: #4d4d4d;
+$another-teal: #216e82;
+$darkest-dark-teal: #304442;
+// ------------------------------------
+
 $discopurple: #662D91;
 $discoindigo: #2E3192;
 
@@ -34,7 +48,16 @@ $color-palette: (
 );
 
 $gradients: (
-  blueberry: linear-gradient(60deg, $discopurple 0%, $discoindigo 100%),
+  'blueberry': linear-gradient(60deg, $discopurple 0%, $discoindigo 100%),
+  'pear': linear-gradient(135deg, rgba($yellow, .58) 0%, rgba($orange, .58) 80%),
+  'pearReversed': linear-gradient(45deg, rgba($yellow, .58), rgba($orange, .58) 80%),
+  'mint': linear-gradient(135deg, rgba($teal, 1), rgba($dark-teal, 1) 100%),
+  'melon': linear-gradient(135deg, rgba($green, 1), rgba($teal, 1) 100%),
+  'cantaloup': linear-gradient(135deg, rgba($yellow, .58), rgba($green, .58) 100%),
+  'cantaloupReversed': linear-gradient(-135deg, rgba($green, .58), rgba($yellow, .58) 100%),
+  'unripeBlueberry': linear-gradient(45deg, rgba($teal, .58), rgba($green, .58) 100%),
+  'kumquat': linear-gradient(135deg, rgba($yellow, .58), rgba(#fbc517, .58) 100%),
+  'icecube': linear-gradient(135deg, #9ddad8 20%, #c7d2e9 100%),
 );
 
 @function get-color($key) {

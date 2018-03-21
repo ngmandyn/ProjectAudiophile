@@ -108,9 +108,33 @@
     <!-- here goes the drawn data -->
   </article>
 
-  <article class="fav-shelf absolute bottom-0">
-    <article class="fav-shelf__tab">my selection</article>
-    <!-- here goes the favourited headphones -->
+  <article class="fav-shelf is-expanded">
+    <article class="fav-shelf__tabs">
+      <article class="fav-shelf__tab selection">my selection</article>
+      <article class="fav-shelf__tab compare is-active" id="jsCompareFavourites">compare them</article>
+    </article>
+    <article class="fav-shelf__item-container"></article>
+    <table class="fav-table">
+      <thead>
+        <tr>
+          <th>headphone name</th>
+        </tr>
+      </thead>
+      <tbody class="jsFavTableBody">
+      </tbody>
+    </table>
+    <template id="template-fav-table-row">
+      <tr class="jsFavTableRow"></tr>
+    </template>
+    <template id="template-fav-table-cell">
+      <td class="jsFavTableEntry">
+      </td>
+    </template>
+    <template id="template-bar-graph">
+      <div class="hBarGraph_bar">
+        <div class="hBar jsBarGraphWidthInsert"><span class="stats_percentage jsBarGraphValueInsert"></span></div>
+      </div>
+    </template>
     <template id="template-fav-item">
       <p class="fav-shelf__item">
         <span class="jsFavItemName"></span>
