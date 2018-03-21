@@ -100,7 +100,6 @@ var dataInitConfig = {
     units: '$USD',
     min: null,
     max: null,
-    // offset: 50,
   },
   yAxis: {
     dimension: 'Impedance',
@@ -108,7 +107,6 @@ var dataInitConfig = {
     units: 'ohms',
     min: null,
     max: null,
-    // offset: 50,
   },
   colour: {
     dimension: 'Manufacturer',
@@ -148,19 +146,32 @@ var visGraphInit = {
 
 // ----------------------------------------------------------------------
 
-d3.csv(dataUrl, prepData, function(data) {
-  data1 = data;
-});
+// d3.queue()
+//   .defer(d3.csv, dataUrl)
+//   .defer(d3.csv, dataUrl2)
+//   .await(combineData(data1, data2));
 
-
-d3.csv(dataUrl2)
-  .row(function(d) { return d; })
-  .get(function(error, rows) {
-    data2 = rows;
-    console.log(data1)
-    console.log(data2)
-    newData = combineData(data1, data2);
+function loadData1(callback) {
+  d3.csv(dataUrl, prepData, function(data) {
+    data1 = data;
+    callback(null, data1)
   });
+}
+
+
+function loadData2(callback) {
+  d3.csv(dataUrl2)
+    .row(function(d) { return d; })
+    .get(function(error, rows) {
+      data2 = rows;
+      console.log(data1)
+      console.log(data2)
+      newData = combineData(data1, data2);
+      console.log(newData);
+      callback(null, newData)
+    });
+}
+
 
 function combineData(data, data2) {
   var result = join(data, data2, "Model", "Model", function(data, data2) {
@@ -183,132 +194,145 @@ function combineData(data, data2) {
   return result;
 }
 
-d3.csv(dataUrl, prepData, function(data) {
+var queue = d3.queue();
+  queue.defer(loadData1)
+  queue.defer(loadData2)
+  queue.defer(performTasks)
+  queue.await(function(error) {
+    if (error) throw error;
+    console.log("done!");
+  });
 
-  data = newData;
-  console.log(data)
+function performTasks(callback) {
 
-  initData(data);
-  // must be called after data is initialized to get domains
-  initFilterCollection();
-  initVis(data);
-  initSidebar();
+  d3.csv(dataUrl, prepData, function(data) {
 
-  sliderChangeAndUpdate();
-  checkboxChangeAndUpdate();
+    data = newData;
+    console.log(data)
 
-  searchAndBrush();
-  brushWithLegend();
-  
-  initFavItemTable();
-  handleFavShelfHideShow();
+    initData(data);
 
-  // adding axis labels
-  visGraphInit.canvas.svg.append('g')
-      .attr('class', 'axis xaxis')
-      .attr('id', 'data-axis-'+dataInitConfig.xAxis.dimension.toLowerCase())
-      .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
-      .call(visGraphInit.axis.x)
-    .append('text') // x-axis label
-      .attr('class', 'axis__label axis__label--x')
-      .attr('text-anchor', 'start')
-      .attr('x', xLabelOffset.x)
-      .attr('y', xLabelOffset.y)
-      .text(dataInitConfig.xAxis.displayName);
-  d3.select('.xaxis') // add x-axis unit label
-    .append('text')
-      .attr('class', 'axis__label-unit')
-      .attr('text-anchor', 'start')
-      .attr('x', xLabelUnitsOffset.x)
-      .attr('y', xLabelUnitsOffset.y)
-      .text('['+dataInitConfig.xAxis.units+']');
-  visGraphInit.canvas.svg.append('g')
-      .attr('class', 'axis yaxis')
-      .attr('id', 'data-axis-'+dataInitConfig.yAxis.dimension.replace(/ /, '-').toLowerCase())
-      .attr('transform', 'translate('+yAxisOffset.x+','+yAxisOffset.y+')')
-      .call(visGraphInit.axis.y)
-    .append('text') // y-axis label
-      .attr('class', 'axis__label axis__label--y')
-      .attr('text-anchor', 'end')
-      .attr('x', yLabelOffset.x)
-      .attr('y', yLabelOffset.y)
-      .text(dataInitConfig.yAxis.displayName)
-  d3.select('.yaxis') // add y-axis unit label
+    // must be called after data is initialized to get domains
+    initFilterCollection();
+    initVis(data);
+    initSidebar();
+
+    sliderChangeAndUpdate();
+    checkboxChangeAndUpdate();
+
+    searchAndBrush();
+    brushWithLegend();
+
+    initFavItemTable();
+    handleFavShelfHideShow();
+
+    // adding axis labels
+    visGraphInit.canvas.svg.append('g')
+        .attr('class', 'axis xaxis')
+        .attr('id', 'data-axis-'+dataInitConfig.xAxis.dimension.toLowerCase())
+        .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
+        .call(visGraphInit.axis.x)
+      .append('text') // x-axis label
+        .attr('class', 'axis__label axis__label--x')
+        .attr('text-anchor', 'start')
+        .attr('x', xLabelOffset.x)
+        .attr('y', xLabelOffset.y)
+        .text(dataInitConfig.xAxis.displayName);
+    d3.select('.xaxis') // add x-axis unit label
       .append('text')
-      .attr('class', 'axis__label-unit')
-      .attr('text-anchor', 'end')
-      .attr('x', yLabelUnitsOffset.x)
-      .attr('y', yLabelUnitsOffset.y)
-      .text('['+dataInitConfig.yAxis.units+']');
+        .attr('class', 'axis__label-unit')
+        .attr('text-anchor', 'start')
+        .attr('x', xLabelUnitsOffset.x)
+        .attr('y', xLabelUnitsOffset.y)
+        .text('['+dataInitConfig.xAxis.units+']');
+    visGraphInit.canvas.svg.append('g')
+        .attr('class', 'axis yaxis')
+        .attr('id', 'data-axis-'+dataInitConfig.yAxis.dimension.replace(/ /, '-').toLowerCase())
+        .attr('transform', 'translate('+yAxisOffset.x+','+yAxisOffset.y+')')
+        .call(visGraphInit.axis.y)
+      .append('text') // y-axis label
+        .attr('class', 'axis__label axis__label--y')
+        .attr('text-anchor', 'end')
+        .attr('x', yLabelOffset.x)
+        .attr('y', yLabelOffset.y)
+        .text(dataInitConfig.yAxis.displayName)
+    d3.select('.yaxis') // add y-axis unit label
+        .append('text')
+        .attr('class', 'axis__label-unit')
+        .attr('text-anchor', 'end')
+        .attr('x', yLabelUnitsOffset.x)
+        .attr('y', yLabelUnitsOffset.y)
+        .text('['+dataInitConfig.yAxis.units+']');
 
-  // drawing circles
-  var circles = visGraphInit.canvas.svg.selectAll('circle')
-    .data(data)
-    .enter()
-    .append('circle')
-    .attr('cx', function(d) { return visGraphInit.scales.x(d[dataInitConfig.xAxis.dimension]); })
-    .attr('cy', function(d) { return visGraphInit.scales.y(d[dataInitConfig.yAxis.dimension]); })
-    .attr('r', '5')
-    .attr('fill', function(d) { return visGraphInit.scales.colour(d[dataInitConfig.colour.dimension]); })
-    .each(function(d) {
-      // appends data attributes for quantitative dimensions for filtering later
-      var thisCircle = d3.select(this);
-      for (var dimension in dimensionsWithStringsObj) {
-        var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
-        if (dimension === 'Model' || dimension === 'Manufacturer' ||
-            dimension === 'Form factor' || dimension === 'Amp required') {
-          if (!(brushableValues.includes(d[dimension].replace(/ /g,'-').toLowerCase()))) {
-            brushableValues.push(d[dimension].replace(/ /g,'-').toLowerCase());
-          };
+    // drawing circles
+    var circles = visGraphInit.canvas.svg.selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('cx', function(d) { return visGraphInit.scales.x(d[dataInitConfig.xAxis.dimension]); })
+      .attr('cy', function(d) { return visGraphInit.scales.y(d[dataInitConfig.yAxis.dimension]); })
+      .attr('r', '5')
+      .attr('fill', function(d) { return visGraphInit.scales.colour(d[dataInitConfig.colour.dimension]); })
+      .each(function(d) {
+        // appends data attributes for quantitative dimensions for filtering later
+        var thisCircle = d3.select(this);
+        for (var dimension in dimensionsWithStringsObj) {
+          var dataAttr = dimension.replace(/ /g,'-').toLowerCase();
+          if (dimension === 'Model' || dimension === 'Manufacturer' ||
+              dimension === 'Form factor' || dimension === 'Amp required') {
+            if (!(brushableValues.includes(d[dimension].replace(/ /g,'-').toLowerCase()))) {
+              brushableValues.push(d[dimension].replace(/ /g,'-').toLowerCase());
+            };
+          }
+          thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
         }
-        thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
-      }
-    })
-    .on('mouseover', function(d) {
-      d3.select(this)
-        .transition().duration(200)
-        .attr('r', 10);
-        // move to front
-        this.parentNode.appendChild(this);
+      })
+      .on('mouseover', function(d) {
+        d3.select(this)
+          .transition().duration(200)
+          .attr('r', 10);
+          // move to front
+          this.parentNode.appendChild(this);
 
-      // don't create another tooltip if we're already hovering
-      // or we have clicked this circle before
-      if (!tooltipAlreadyExists(d))
-        showTooltip(d, $(this))
-    })
-    .on('mouseout', function(d) {
-      d3.select(this)
-        .transition().duration(300)
-        .attr('r', 5);
+        // don't create another tooltip if we're already hovering
+        // or we have clicked this circle before
+        if (!tooltipAlreadyExists(d))
+          showTooltip(d, $(this))
+      })
+      .on('mouseout', function(d) {
+        d3.select(this)
+          .transition().duration(300)
+          .attr('r', 5);
 
-      removeTooltip(d, 'small')
-    })
-    .on('click', function(d) {
-      // showTooltip(d, $(this))
-      // removeTooltip(d, 'small')
-      toggleTooltip(d, $(this), 'large')
-    })
-    .append('p')
-      .attr('class', 'tooltip-data')
-      .text(function(d) {
-        var string = '';
-        dimensionsWithStrings.forEach(function(value, i) {
-          string += value + ': ' + d[value] + ' \n';
+        removeTooltip(d, 'small')
+      })
+      .on('click', function(d) {
+        // showTooltip(d, $(this))
+        // removeTooltip(d, 'small')
+        toggleTooltip(d, $(this), 'large')
+      })
+      .append('p')
+        .attr('class', 'tooltip-data')
+        .text(function(d) {
+          var string = '';
+          dimensionsWithStrings.forEach(function(value, i) {
+            string += value + ': ' + d[value] + ' \n';
+          });
+          return string;
         });
-        return string;
-      });
 
-  // interaction event listeners for y axis and colour
-  d3.select('.jsChangeableYAxis').on('change', function() {
-    updateYAxis(data, $(this).val(), visGraphInit.scales.y, visGraphInit.axis.y);
+    // interaction event listeners for y axis and colour
+    d3.select('.jsChangeableYAxis').on('change', function() {
+      updateYAxis(data, $(this).val(), visGraphInit.scales.y, visGraphInit.axis.y);
+    });
+    d3.select('.jsChangeableColour').on('change', function() {
+      updateColours(data, $(this).val());
+    });
+
+  callback(null, newData)
   });
-  d3.select('.jsChangeableColour').on('change', function() {
-    updateColours(data, $(this).val());
-  });
 
-
-});
-
+}
 
 
 // replaces row(function(d))
@@ -323,18 +347,30 @@ function prepData(data) {
 function initData(data) {
   // dataInitConfig.forEach(function(elem) {
   // init object instantiate --> change to use overall obj in the end
-  for (var elem in dataInitConfig) {
-    var min = getMin(data, dataInitConfig[elem]['dimension']);
-    var max = getMax(data, dataInitConfig[elem]['dimension']);
-    dataInitConfig[elem]['min'] = min;
-    dataInitConfig[elem]['max'] = max;
-  }
+  // for (var elem in dataInitConfig) {
+  //   var min = getMin(data, dataInitConfig[elem]['dimension']);
+  //   var max = getMax(data, dataInitConfig[elem]['dimension']);
+  //   dataInitConfig[elem]['min'] = min;
+  //   dataInitConfig[elem]['max'] = max;
+  // }
 
   // init object for quantitative dimensions
   for (var dimension in dimensionsObj) {
+    console.log(dimension)
     var min = getMin(data, dimension);
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
+
+    console.log(dataInitConfig.xAxis.dimension)
+    console.log(dataInitConfig.yAxis.dimension)
+    if (dimension === dataInitConfig.xAxis.dimension) {
+      dataInitConfig.xAxis.min = min;
+      dataInitConfig.xAxis.max = max;
+    }
+    if (dimension === dataInitConfig.yAxis.dimension) {
+      dataInitConfig.yAxis.min = min;
+      dataInitConfig.yAxis.max = max;
+    }
   }
 }
 
