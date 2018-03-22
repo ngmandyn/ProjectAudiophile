@@ -220,7 +220,7 @@ function performTasks(callback) {
     sliderChangeAndUpdate();
     checkboxChangeAndUpdate();
 
-    searchAndBrush();
+    brushWithSearch();
     brushWithLegend();
 
     initFavItemTable();

@@ -1,4 +1,4 @@
-function searchAndBrush() {
+function brushWithSearch() {
   $('#searchbar').on('keyup', function() {
     var text = $(this).val().replace(/ /g,'-').toLowerCase();
 
