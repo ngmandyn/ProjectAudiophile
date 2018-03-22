@@ -7,8 +7,8 @@ var $favItemShelf = $('.fav-shelf__item-container')
  */
 function favsChangeAndUpdate(d, jqThisCircle) {
   // this is just printing the informating in the circle
-  var content = jqThisCircle.find('.tooltip-data')[0].textContent;
-  console.log(content);
+  // var content = jqThisCircle.find('.tooltip-data')[0].textContent;
+  // console.log(content);
   var newFavsName = d['Manufacturer']+' '+d['Model']
 
   if (favAlreadyExists(d)) {
@@ -20,30 +20,27 @@ function favsChangeAndUpdate(d, jqThisCircle) {
     var newFav = {}
     newFav[newFavsName] = d
     favouritesCollection = {...favouritesCollection, ...newFav}
-    addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
+    // adding fav item also returns the new added jsQuery object
+    $newFavItem = addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
     addFavItemToTable(d)
+    attachFavDeleteListenerTo($newFavItem.find('.jsFavItemCancel'))
   }
-
-  // $('.jsFavItemCancel').on('click', function() {
-  //   var thisDataManuf = $(this).parents('.fav-shelf__item').attr('data-fav-manufacturer')
-  //   var thisDataModel = $(this).parents('.fav-shelf__item').attr('data-fav-model')
-  //   var thisDataFullName = $(this).parents('.fav-shelf__item').attr('data-fav-full-name')
-  //   var keysArr = Object.keys(favouritesCollection)
-  //   var favIndex = keysArr.indexOf(thisDataFullName)
-  //   console.log(keysArr)
-  //   console.log(thisDataFullName)
-  //   console.log(favIndex)
-
-  //   console.log(favouritesCollection)
-  //   // console.log(favouritesCollection[Object.keys(favouritesCollection)[0]])
-  //   delete favouritesCollection[Object.keys(favouritesCollection)[favIndex]]
-  //   console.log(favouritesCollection)
-  //   console.log($('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
-  //   removeFavItemFromShelf(thisDataManuf, thisDataModel, $('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
-  // })
 }
 
-// function deleteFavourite()
+/*
+ * attach the on.click event listener to each cancel button as they're created
+ * and remove corresponding favourites
+ */
+function attachFavDeleteListenerTo(jsCancelButton) {
+  jsCancelButton.on('click', function() {
+    var thisDataManuf = $(this).parents('.fav-shelf__item').attr('data-fav-manufacturer')
+    var thisDataModel = $(this).parents('.fav-shelf__item').attr('data-fav-model')
+    var thisDataFullName = $(this).parents('.fav-shelf__item').attr('data-fav-full-name').replace(/"/g, '')
+
+    delete favouritesCollection[thisDataFullName]
+    removeFavItemFromShelf(thisDataManuf, thisDataModel, $('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
+  })
+}
 
 /*
  * return boolean
@@ -71,6 +68,8 @@ function addFavItemToShelf(manufacturer, model, jqThisCircle) {
   $newFavItem.find('.jsFavItemName').html(manufacturer+' '+model)
   $favItemShelf.append($newFavItem)
   jqThisCircle.toggleClass('special')
+
+  return $newFavItem
 }
 
 function removeFavItemFromShelf(manufacturer, model, jqThisCircle) {

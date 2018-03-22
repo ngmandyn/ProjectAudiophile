@@ -330,6 +330,7 @@ function performTasks(callback) {
     });
 
 
+
   callback(null, newData)
   });
 
@@ -357,13 +358,10 @@ function initData(data) {
 
   // init object for quantitative dimensions
   for (var dimension in dimensionsObj) {
-    console.log(dimension)
     var min = getMin(data, dimension);
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
 
-    console.log(dataInitConfig.xAxis.dimension)
-    console.log(dataInitConfig.yAxis.dimension)
     if (dimension === dataInitConfig.xAxis.dimension) {
       dataInitConfig.xAxis.min = min;
       dataInitConfig.xAxis.max = max;
