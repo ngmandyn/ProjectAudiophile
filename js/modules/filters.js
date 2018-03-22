@@ -11,9 +11,8 @@ function initFilterCollection() {
 function handleCheckboxFilterList(thisCheckbox) {
   var parentDimension = thisCheckbox.parents('section').attr('data-filter-dimension')
   var parentDimensionName = parentDimension.replace(/-/g, ' ')
-  var thisValue = thisCheckbox.attr('data-filter-'+parentDimension.toLowerCase())
+  var thisValue = thisCheckbox.attr('data-filter-'+parentDimension.toLowerCase().replace(/ /g, '-'))
   var isChecked = thisCheckbox.prop('checked')
-
   // if the checkbox was checked, add an addition to the domain
   // if the checkbox was unchecked, remove from the list of conditions
   if (isChecked) {
