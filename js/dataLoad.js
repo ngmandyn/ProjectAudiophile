@@ -151,6 +151,15 @@ var visGraphInit = {
 //   .defer(d3.csv, dataUrl2)
 //   .await(combineData(data1, data2));
 
+var queue = d3.queue();
+  queue.defer(loadData1)
+  queue.defer(loadData2)
+  queue.defer(performTasks)
+  queue.await(function(error) {
+  if (error) throw error;
+    console.log("done!");
+  });
+
 function loadData1(callback) {
   d3.csv(dataUrl, prepData, function(data) {
     data1 = data;
@@ -193,15 +202,6 @@ function combineData(data, data2) {
   });
   return result;
 }
-
-var queue = d3.queue();
-  queue.defer(loadData1)
-  queue.defer(loadData2)
-  queue.defer(performTasks)
-  queue.await(function(error) {
-    if (error) throw error;
-    console.log("done!");
-  });
 
 function performTasks(callback) {
 
@@ -286,7 +286,7 @@ function performTasks(callback) {
           }
           thisCircle.attr('data-'+dataAttr, d[dimension].replace(/ /g,'-').toLowerCase());
         }
-        
+
       })
       .on('mouseover', function(d) {
         d3.select(this)
@@ -419,11 +419,22 @@ function initVis(data) {
 function initSidebar() {
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
+
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
-      var $title = $($('#template-dimension-title').html());
+      var $title = $($('#template-dimension-title').html())
+        .on('mouseover', function(d) {
+          // d3.select(this)
+          console.log(dimension)
+          showInfoTooltip(d, $(this), dimension)
+        })
+        // .on('mouseout', function(d) {
+        //   d3.select(this)
+        //     removeInfoTooltip(d)
+        // })
+
       $('[data-filter-section='+elemName+']').append($title.html(dimension));
 
       for (var i = 0; i < thisDomain.length; i++) {
@@ -438,6 +449,7 @@ function initSidebar() {
       }
     }
   }
+
 
   // init quantitative dimensions as sliders
   for (var dimension in dimensionsObj) {

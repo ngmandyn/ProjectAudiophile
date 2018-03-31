@@ -129,3 +129,54 @@ function getCircleFromManufAndModel(manuf, model) {
 // }
 
 // function checkForExitButtonClick($tooltip) {}
+
+
+
+function removeInfoTooltip(d) {
+  var $tooltip = getTooltip(d);
+  // if ($tooltip.length > 0) {
+  //   $tooltip.delay(100).animate({
+  //     //fade out the tooltip to ease the transition
+  //     opacity: 0.25
+  //   }, 200, function() {
+  //     // and then remove it from the canvas
+  //     $tooltip.remove()
+  //   });
+  // }
+
+  $tooltip.remove()
+}
+
+function showInfoTooltip(d, thisTitle, elemName) {
+  // var headphoneName = d['Manufacturer']+' '+d['Model']
+
+  // if a small tooltip is already created
+  // just remove the modifier to prevent copies of the tooltip
+  // if (tooltipAlreadyExists(d)) {
+  //   getTooltip(d)
+  //     .removeClass('tooltip--small')
+  //     .attr('data-tooltip-type', 'large')
+  // }
+  // else {
+    var $tooltip = $($('#template-tooltip').html())
+    var tooltipPos = thisTitle.position()
+    console.log(tooltipPos)
+    console.log(elemName)
+
+    // $tooltip.find('.tooltip__manufacturer').html(d['Manufacturer'])
+    // $tooltip.find('.tooltip__model').html(d['Model'])
+    // $tooltip.find('.tooltip__price').html('$'+d['MSRP'])
+
+    $tooltip.css({
+        'top': tooltipPos.top,
+        'left': tooltipPos.left,
+      })
+      // .attr({
+      //   'data-tooltip': parseStringForCode(headphoneName),
+      // })
+
+    $('.sidebar').append($tooltip)
+    // checkIfFavButtonShouldBeActive(d); // update the favourite state
+    // checkForFavouriteButtonClickAndUpdate(d); // bind event listener
+  // }
+}
