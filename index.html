@@ -11,8 +11,7 @@
 </head>
 <body>
 
-  <article class="legend">
-    <!-- here goes the drop down selection stuff -->
+<!--   <article class="legend">
     <section class="select-axis">
       <fieldset class="select-axis__y">
         <label for="select-y-axis" class="db"><strong>y-axis</strong> shows</label>
@@ -22,37 +21,28 @@
         <span class="select-axis__graph-y">y</span>
         <span class="select-axis__graph-x">x</span>
       </div>
-      <fieldset class="select-axis__x">
-        <label for="select-x-axis" class="db"><strong>x-axis</strong> shows</label>
-        <select name="select-x-axis" class="jsChangeableXAxis">
-          <!-- <option value="average review">average review</option> -->
-          <option value="Impedance" select="selected">impedance</option>
-          <option value="Convert to Efficiency">efficiency</option>
-          <option value="Weight">weight</option>
-        </select>
-        <!-- <select name="select-x-axis" class="jsChangeableXAxis" disabled>
-          <option value="MRSP">price</option>
-        </select> -->
-      </fieldset>
     </section>
     <section class="select-other">
       <fieldset class="select-other__colour">
         <label for="select-colour"><strong>colour</strong> shows</label>
         <p>brands</p>
-        <!-- <select name="select-colour" class="jsChangeableColour">
+        <select name="select-colour" class="jsChangeableColour">
           <option value="Manufacturer" selected="selected">brands</option>
           <option value="Form factor">form factor</option>
           <option value="Amp required">amp required</option>
-        </select> -->
+        </select>
       </fieldset>
-<!--       <fieldset class="select-other__size jsChangeableSize">
+      <fieldset class="select-other__size jsChangeableSize">
         <label for="select-size"><strong>size</strong> shows</label>
         <select name="select-size" disabled>
           <option value="size">size</option>
         </select>
-      </fieldset> -->
+      </fieldset>
     </section>
-  </article>
+  </article> -->
+
+  <h5 class="pt3 pl3">headphone explorer</h5>
+
   <article class="legend-display"></article>
 
   <article class="masthead shadow-2 db">
@@ -79,10 +69,15 @@
     <section class="mb3 mb5" data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
 
     <template id="template-dimension-title">
-      <h6 class="meta mb0 b dimension-title"></h6>
+      <p class="meta mb2 b dimension-title"></p>
     </template>
     <template id="template-checkbox">
-      <label><input type="checkbox"><span class="jsLabelInput"></span></label>
+      <label class="sensitivity-button">
+        <input type="checkbox">
+        <span class="sensitivity-button__bg"></span>
+        <span class="sensitivity-button__hbar"></span>
+        <span class="sensitivity-button__label jsLabelInput"></span>
+      </label>
     </template>
     <template id="template-slider">
       <!-- some slider template thing goes here -->
@@ -97,7 +92,7 @@
   </article>
 
   <article class="canvas">
-<!--     <template id="template-small-tooltip">
+    <!-- <template id="template-small-tooltip">
       <article class="small-tooltip">
       </article>
     </template> -->
@@ -114,12 +109,27 @@
     </template>
     <!-- here goes the drawn data -->
   </article>
+  <article>
+    <fieldset class="select-axis__x">
+      <!-- <label for="select-x-axis" class="db"><strong>x-axis</strong> shows</label> -->
+      <select name="select-x-axis" class="jsChangeableXAxis">
+        <!-- <option value="average review">average review</option> -->
+        <option value="Impedance" select="selected">impedance</option>
+        <option value="Convert to Efficiency">efficiency</option>
+        <option value="Weight">weight</option>
+      </select>
+      <!-- <select name="select-x-axis" class="jsChangeableXAxis" disabled>
+        <option value="MRSP">price</option>
+      </select> -->
+    </fieldset>
+  </article>
 
-  <article class="fav-shelf">
-    <article class="fav-shelf__tabs">
-      <article class="fav-shelf__tab selection is-active" id="jsViewEverything">my selection</article>
-      <article class="fav-shelf__tab compare" id="jsCompareFavourites">compare them</article>
-    </article>
+  <article class="fav-shelf is-expanded">
+    <!-- <article class="fav-shelf__tabs"> -->
+      <!-- <article class="fav-shelf__tab selection" id="jsViewEverything">my selection</article> -->
+      <!-- <article class="fav-shelf__tab compare" id="jsCompareFavourites">compare them</article> -->
+    <!-- </article> -->
+    <h5 class="fav-shelf__title">my selection</h5>
     <article class="fav-shelf__item-container"></article>
     <table class="fav-table">
       <thead>

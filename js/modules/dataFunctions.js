@@ -66,7 +66,9 @@ function getMean(data, columnName) {
   return mean;
 }
 
-// count how many records match a particular columnName
+/* 
+  count how many records match a particular columnName
+*/
 function getCount(data, columnName) {
   var arr = [];
   // create an array containging only values within 'columnName'
@@ -78,6 +80,35 @@ function getCount(data, columnName) {
 
   return filtered.length;
 }
+
+/*
+  get count of all the individual dimension elements
+  returns an array of counts corresponding to the order of the domain
+*/
+function getCountOfDomainElement(data, dimension, domainElem) {
+  var count = 0;
+
+  d3.map(data, function(d) {
+    if (d[dimension] === domainElem) count++;
+  });
+
+  return count;
+}
+
+/*
+  get count of all the domain elements
+  data
+  dimension: string
+  domain: array
+*/
+// function getCounfOfAllDomainElements(data, dimension, domain) {
+//   var domainLength = domain.length;
+
+//   var domainCountArr = [];
+//   for (var i = 0; i < domainLength; i++) {
+//     domainCountArr.
+//   }
+// }
 
 function join(lookupTable, mainTable, lookupKey, mainKey, select) {
   var l = lookupTable.length,

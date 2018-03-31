@@ -96,3 +96,16 @@ function isOutsideStringDomain(d, dimension) {
 }
 
 // function updateFilterCollection
+
+// function initSensitivityHistograms() {
+//   for (var dimension in dimensionsWithStringsObj) {
+//     var thisDomain = dimensionsWithStringsObj[dimension].domain;
+//     for (var i=0; i<thisDomain.length; i++) {
+
+//     }
+//   }
+// }
+
+function getWidthOfSensitivityButton(data, dimensionName, domainName) {
+  return '50%';
+}

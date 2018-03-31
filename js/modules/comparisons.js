@@ -88,6 +88,14 @@ function initFavItemTable() {
   for (var dimension in dimensionsObj) {
     $('.fav-table').find('thead tr').append('<th>'+dimensionsObj[dimension].displayName+' <small>'+dimensionsObj[dimension].units+'</small></th>')
   }
+
+  $('.fav-table').find('thead tr').append('<th>sound signature</th>')
+
+  for (var dimension in dimensionsWithStringsObj) {
+    if (isDomainDimensionNeededInDisplay(dimensionsWithStringsObj[dimension].domain, dimension)) {
+      $('.fav-table').find('thead tr').append('<th>'+dimensionsWithStringsObj[dimension].displayName+'</th>')
+    }
+  }
 }
 
 /*
@@ -104,20 +112,54 @@ function addFavItemToTable(d) {
   addFavItemDataAttributes(d['Manufacturer'], d['Model'], $row)
 
   for (var dimension in dimensionsObj) {
-    var $cell = $($('#template-fav-table-cell').html());
-    var $barGraph = $($('#template-bar-graph').html());
-
     var percentageWidth = (d[dimension] / dimensionsObj[dimension].domain[1] * 100) + '%';
+    appendBarGraphToCell($row, percentageWidth, d[dimension]);
+  }
 
-    $barGraph.find('.jsBarGraphWidthInsert').css('width', percentageWidth)
-    $barGraph.find('.jsBarGraphValueInsert').html(d[dimension])
-    $cell.append($barGraph)
-    $row.append($cell)
+  appendSoundSignatureToRow(d, $row);
+
+  for (var dimension in dimensionsWithStringsObj) {
+    if (isDomainDimensionNeededInDisplay(dimensionsWithStringsObj[dimension].domain, dimension)) {
+      appendQualitativeToRow($row, dimension, d[dimension]);
+    }
   }
 
   $('.jsFavTableBody').append($row)
 }
 
+/*
+ *  Appends a bar graph with the percentage width to the cell
+ */
+function appendBarGraphToCell(jqRow, percentageWidth, textValue) {
+  var $cell = $($('#template-fav-table-cell').html());
+
+  var $barGraph = $($('#template-bar-graph').html());
+  $barGraph.find('.jsBarGraphWidthInsert').css('width', percentageWidth);
+  $barGraph.find('.jsBarGraphValueInsert').html(textValue);
+  
+  $cell.append($barGraph);
+  jqRow.append($cell);
+}
+
+function appendSoundSignatureToRow(d, jqRow) {
+  var $cell = $($('#template-fav-table-cell').html());
+  jqRow.append($cell);
+}
+
+function appendQualitativeToRow(jqRow, dimension, value) {
+  var $cell = $($('#template-fav-table-cell').html());
+  $cell.html(value);
+  jqRow.append($cell);
+}
+
+/*
+ *  Adds a set of data attributes to the jqObj passed.
+ *
+ *  data-fav-item
+ *  data-fav-manufacturer
+ *  data-fav-model
+ *  data-fav-full-name: "string" with capitalization and spaces
+ */
 function addFavItemDataAttributes(manufacturer, model, jqObj) {
   return jqObj.attr({
     'data-fav-item': parseStringForCode(manufacturer+'-'+model),
@@ -127,19 +169,29 @@ function addFavItemDataAttributes(manufacturer, model, jqObj) {
   });
 }
 
-function handleFavShelfHideShow() {
-  $('#jsCompareFavourites').on('click', function() {
-    if (!$(this).hasClass('is-active')) {
-      $('.fav-shelf').toggleClass('is-expanded')
-      $(this).toggleClass('is-active')
-      $('#jsViewEverything').toggleClass('is-active')
-    }
-  })
-  $('#jsViewEverything').on('click', function() {
-    if (!$(this).hasClass('is-active')) {
-      $('.fav-shelf').toggleClass('is-expanded')
-      $(this).toggleClass('is-active')
-      $('#jsCompareFavourites').toggleClass('is-active')
-    }
-  })
+// function handleFavShelfHideShow() {
+//   $('#jsCompareFavourites').on('click', function() {
+//     if (!$(this).hasClass('is-active')) {
+//       $('.fav-shelf').toggleClass('is-expanded')
+//       $(this).toggleClass('is-active')
+//       $('#jsViewEverything').toggleClass('is-active')
+//     }
+//   })
+//   $('#jsViewEverything').on('click', function() {
+//     if (!$(this).hasClass('is-active')) {
+//       $('.fav-shelf').toggleClass('is-expanded')
+//       $(this).toggleClass('is-active')
+//       $('#jsCompareFavourites').toggleClass('is-active')
+//     }
+//   })
+// }
+
+/*
+ *
+ */
+function isDomainDimensionNeededInDisplay(domain, dimension) {
+  return typeof(domain) !== 'undefined'
+    && dimension !== 'Bass' 
+    && dimension !== 'Midrange' 
+    && dimension !== 'Treble';
 }

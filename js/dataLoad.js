@@ -5,13 +5,13 @@ var data2 = null;
 var data1 = null;
 var newData = null;
 
-var dimensions = ['Impedance', 'MSRP', 'Convert to Efficiency', 'Weight'],
-    dimensionsWithStrings = ['Manufacturer', 'Model', 'Type', 'Form factor', 'Amp required', 'Bass', 'Midrange', 'Treble', 'Removable Cable', 'Pads'];
+var dataCount = null;
+
 var dataFilterNames = [];
 var brushableValues = [];
 var margin = 56,
     width = window.innerWidth - (margin + (16*13)),
-    height = window.innerHeight - 298;
+    height = (window.innerHeight-248)/2;
 
 var dimensionsObj = {
   'Impedance': {
@@ -77,6 +77,9 @@ var dimensionsWithStringsObj = {
 }
 
 
+var dimensions = Object.keys(dimensionsObj),
+    dimensionsWithStrings = Object.keys(dimensionsWithStringsObj);
+
 // TODO: clean this up, make one object as filterSelection
 // that contains all the filtered domains and ranges;
 // basically makes a new object with all the selected values
@@ -84,8 +87,8 @@ var filterCollection
 
 // position vectors, and dimensions
 var xAxisOffset = { x: 0, y: height-margin+10 },
-    xLabelOffset = { x: margin*2, y: 36 },
-    xLabelUnitsOffset = { x: xLabelOffset.x+100, y: xLabelOffset.y },
+    xLabelOffset = { x: margin*2, y: 42 },
+    xLabelUnitsOffset = { x: xLabelOffset.x+124, y: xLabelOffset.y },
     yAxisOffset = { x: margin*2-10, y: 0 },
     yLabelOffset = { x: 0, y: 24 },
     yLabelUnitsOffset = { x: yLabelOffset.x, y: yLabelOffset.y+16 },
@@ -215,7 +218,7 @@ function performTasks(callback) {
     // must be called after data is initialized to get domains
     initFilterCollection();
     initVis(data);
-    initSidebar();
+    initSidebar(data);
 
     sliderChangeAndUpdate();
     checkboxChangeAndUpdate();
@@ -224,7 +227,6 @@ function performTasks(callback) {
     brushWithLegend();
 
     initFavItemTable();
-    handleFavShelfHideShow();
 
     // adding axis labels
     visGraphInit.canvas.svg.append('g')
@@ -232,19 +234,19 @@ function performTasks(callback) {
         .attr('id', 'data-axis-'+dataInitConfig.xAxis.dimension.toLowerCase())
         .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
         .call(visGraphInit.axis.x)
-      .append('text') // x-axis label
-        .attr('class', 'axis__label axis__label--x')
-        .attr('text-anchor', 'start')
-        .attr('x', xLabelOffset.x)
-        .attr('y', xLabelOffset.y)
-        .text(dataInitConfig.xAxis.displayName);
+      // .append('text') // x-axis label
+      //   .attr('class', 'axis__label axis__label--x')
+      //   .attr('text-anchor', 'start')
+      //   .attr('x', xLabelOffset.x)
+      //   .attr('y', xLabelOffset.y)
+      //   .text(dataInitConfig.xAxis.displayName);
     d3.select('.xaxis') // add x-axis unit label
       .append('text')
         .attr('class', 'axis__label-unit')
         .attr('text-anchor', 'start')
         .attr('x', xLabelUnitsOffset.x)
         .attr('y', xLabelUnitsOffset.y)
-        .text('['+dataInitConfig.xAxis.units+']');
+        .text(dataInitConfig.xAxis.units);
     visGraphInit.canvas.svg.append('g')
         .attr('class', 'axis yaxis')
         .attr('id', 'data-axis-'+dataInitConfig.yAxis.dimension.replace(/ /, '-').toLowerCase())
@@ -262,7 +264,7 @@ function performTasks(callback) {
         .attr('text-anchor', 'end')
         .attr('x', yLabelUnitsOffset.x)
         .attr('y', yLabelUnitsOffset.y)
-        .text('['+dataInitConfig.yAxis.units+']');
+        .text(dataInitConfig.yAxis.units);
 
     // drawing circles
     var circles = visGraphInit.canvas.svg.selectAll('circle')
@@ -347,16 +349,11 @@ function prepData(data) {
 
 // initialize variables in one place to keep it clean
 function initData(data) {
-  // dataInitConfig.forEach(function(elem) {
-  // init object instantiate --> change to use overall obj in the end
-  // for (var elem in dataInitConfig) {
-  //   var min = getMin(data, dataInitConfig[elem]['dimension']);
-  //   var max = getMax(data, dataInitConfig[elem]['dimension']);
-  //   dataInitConfig[elem]['min'] = min;
-  //   dataInitConfig[elem]['max'] = max;
-  // }
+  dataCount = d3.selectAll(data).size();
+  console.log(dataCount);
 
   // init object for quantitative dimensions
+  // get the min and max
   for (var dimension in dimensionsObj) {
     var min = getMin(data, dimension);
     var max = getMax(data, dimension);
@@ -366,10 +363,25 @@ function initData(data) {
       dataInitConfig.xAxis.min = min;
       dataInitConfig.xAxis.max = max;
     }
+
     if (dimension === dataInitConfig.yAxis.dimension) {
       dataInitConfig.yAxis.min = min;
       dataInitConfig.yAxis.max = max;
     }
+  }
+
+  // get the count for each dimension's element
+  for (var dimension in dimensionsWithStringsObj) {
+    var thisDomain = dimensionsWithStringsObj[dimension].domain;
+    console.log(thisDomain);
+
+    if (typeof(thisDomain) !== 'undefined') {
+      for (var i=0; i < thisDomain.length; i++) {
+        // console.log(dimension+' '+thisDomain[i]+': '+getCountOfDomainElement(data, dimension, thisDomain[i]))
+        
+      }
+    }
+      
   }
 }
 
@@ -416,11 +428,13 @@ function initVis(data) {
 }
 
 // adds in the checkboxes for all the defined dimensions
-function initSidebar() {
+function initSidebar(data) {
+
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
 
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
+
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
@@ -437,13 +451,17 @@ function initSidebar() {
 
       $('[data-filter-section='+elemName+']').append($title.html(dimension));
 
+      // appends each entry of the dimension
       for (var i = 0; i < thisDomain.length; i++) {
-        // appends each entry of the dimension
         var elem = thisDomain[i];
+        var domainCount = getCountOfDomainElement(data, dimension, elem);
+        var sensitivityBarWidth = (domainCount/dataCount*100)+'%';
+
         var $newCheckbox = $($('#template-checkbox').html());
         $newCheckbox.find('input')
           .attr('data-filter-'+elemName, elem)
           .prop('checked',true);
+        $newCheckbox.find('.sensitivity-button__hbar').css('width', sensitivityBarWidth);
         $newCheckbox.find('.jsLabelInput').html(elem);
         $('[data-filter-section='+elemName+']').append($newCheckbox);
       }
@@ -478,7 +496,6 @@ function initSidebar() {
       $('[data-filter-section='+elemName+']').append($newSlider);
     }
   }
-  // var sliders = new Foundation.Slider($('.slider'))
 
   $(document).foundation(); // initializes the sliders with foundation
 }
