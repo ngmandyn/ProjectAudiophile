@@ -147,7 +147,7 @@ function removeInfoTooltip(d) {
   $tooltip.remove()
 }
 
-function showInfoTooltip(d, thisTitle, elemName) {
+function showInfoTooltip(thisTitle, elemName) {
   // var headphoneName = d['Manufacturer']+' '+d['Model']
 
   // if a small tooltip is already created

@@ -729,7 +729,6 @@ tiny {
 .hBarGraph_bar {
   flex: 1 0 auto;
   border-radius: 0 5px 5px 0;
-  margin-top: -.15rem;
   position: relative; }
 
 .hBar {
@@ -758,6 +757,30 @@ tiny {
       left: 2.5rem; }
   .hBar.isAnimating {
     width: 0 !important; }
+
+.sound-sig-bar-group {
+  display: flex; }
+
+.sound-sig-bar {
+  border-bottom: 2px solid white;
+  flex: 1 1 auto;
+  height: 2px;
+  margin-top: 0.5rem;
+  text-align: center; }
+  .sound-sig-bar ~ .sound-sig-bar {
+    margin-left: .25rem; }
+  .sound-sig-bar--recessed {
+    margin-top: 0.8rem; }
+    .sound-sig-bar--recessed:before {
+      position: absolute;
+      margin-top: -1rem;
+      content: 'v'; }
+  .sound-sig-bar--emphasized {
+    margin-top: 0.2rem; }
+    .sound-sig-bar--emphasized:after {
+      position: absolute;
+      margin-top: .25rem;
+      content: '^'; }
 
 .special {
   stroke: #2E3192;
@@ -974,8 +997,6 @@ select {
       transition: all 200ms ease-in-out; }
 
 .tooltip--small {
-  margin-top: -2rem;
-  margin-left: -3rem;
   padding: .25rem .5rem; }
   .tooltip--small .tooltip__name {
     font-weight: normal; }

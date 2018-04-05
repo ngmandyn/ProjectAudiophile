@@ -350,7 +350,6 @@ function prepData(data) {
 // initialize variables in one place to keep it clean
 function initData(data) {
   dataCount = d3.selectAll(data).size();
-  console.log(dataCount);
 
   // init object for quantitative dimensions
   // get the min and max
@@ -370,19 +369,6 @@ function initData(data) {
     }
   }
 
-  // get the count for each dimension's element
-  for (var dimension in dimensionsWithStringsObj) {
-    var thisDomain = dimensionsWithStringsObj[dimension].domain;
-    console.log(thisDomain);
-
-    if (typeof(thisDomain) !== 'undefined') {
-      for (var i=0; i < thisDomain.length; i++) {
-        // console.log(dimension+' '+thisDomain[i]+': '+getCountOfDomainElement(data, dimension, thisDomain[i]))
-        
-      }
-    }
-      
-  }
 }
 
 // initialize basic properties for the visualization
@@ -436,20 +422,22 @@ function initSidebar(data) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
 
     if (typeof(thisDomain) !== 'undefined') {
+      console.log(dimension)
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
-      var $title = $($('#template-dimension-title').html())
-        .on('mouseover', function(d) {
+      var $title = $($('#template-dimension-title').html());
+
+      $('[data-filter-section='+elemName+']').append($title.html(dimension));
+
+      $title.on('mouseover', function(d) {
           // d3.select(this)
           console.log(dimension)
-          showInfoTooltip(d, $(this), dimension)
+          showInfoTooltip($(this), dimension)
         })
         // .on('mouseout', function(d) {
         //   d3.select(this)
         //     removeInfoTooltip(d)
         // })
-
-      $('[data-filter-section='+elemName+']').append($title.html(dimension));
 
       // appends each entry of the dimension
       for (var i = 0; i < thisDomain.length; i++) {

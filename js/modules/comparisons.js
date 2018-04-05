@@ -142,8 +142,32 @@ function appendBarGraphToCell(jqRow, percentageWidth, textValue) {
 }
 
 function appendSoundSignatureToRow(d, jqRow) {
-  var $cell = $($('#template-fav-table-cell').html());
-  jqRow.append($cell);
+  var $outerCell = $($('#template-fav-table-cell').html());
+  var $ssGroup = $($('#template-sound-sig').html());
+
+  var bass = d['Bass'];
+  var mids = d['Midrange'];
+  var treble = d['Treble'];
+  console.log(bass + ' ' + mids + ' ' + treble)
+
+  $ssGroup = appendIndividualSoundSignatures(bass, mids, treble, $ssGroup);
+  $outerCell.append($ssGroup);
+
+  jqRow.append($outerCell);
+}
+
+function appendIndividualSoundSignatures(bass, mids, treble, jqCell) {
+  var templateString = '#template-sound-signature-';
+  var bassString = templateString+bass.toLowerCase();
+  var midsString = templateString+mids.toLowerCase();
+  var trebleString = templateString+treble.toLowerCase();
+
+  var $bass = $($(bassString).html());
+  var $mids = $($(midsString).html());
+  var $treble = $($(trebleString).html());
+
+  jqCell.append($bass).append($mids).append($treble);
+  return jqCell;
 }
 
 function appendQualitativeToRow(jqRow, dimension, value) {

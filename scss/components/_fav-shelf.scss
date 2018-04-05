@@ -98,11 +98,7 @@
 /////////////////////////////////////////////// hbar
 .hBarGraph_bar {
   flex: 1 0 auto;
-  // background-color: mix($light-gray, #fff, 50%);
   border-radius: 0 5px 5px 0;
-  margin-top: -.15rem;
-  // margin-bottom: -.15rem;
-  // padding: .75rem 0;
   position: relative;
 
   // &.isTooltipActive {
@@ -144,6 +140,53 @@
       // transition: $graphTransition;
     }
   }
+
+
+/////////////////////////////////////////////// sound signature
+$ss-mt: .5rem;
+$ss-e-mt: $ss-mt - .3rem;
+$ss-r-mt: $ss-mt + .3rem;
+
+.sound-sig-bar-group {
+  display: flex;
+}
+.sound-sig-bar {
+  border-bottom: 2px solid white;
+  flex: 1 1 auto;
+  // width: 30%;
+  height: 2px;
+  margin-top: $ss-mt;
+  text-align: center;
+
+  & ~ & {
+    margin-left: .25rem;
+  }
+
+  // &:before {
+    // position: absolute;
+  // }
+
+  &--recessed {
+    margin-top: $ss-r-mt;
+
+    &:before {
+      position: absolute;
+      margin-top: -1rem;
+      content: 'v';
+
+    }
+  }
+
+  &--emphasized {
+    margin-top: $ss-e-mt;
+
+    &:after {
+      position: absolute;
+      margin-top: .25rem;
+      content: '^';
+    }
+  }
+}
 
 
 /////////////////////////////////////////////// for the circles
