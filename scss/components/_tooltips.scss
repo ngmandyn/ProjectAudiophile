@@ -1,3 +1,4 @@
+@import "../../node_modules/foundation-sites/scss/util/mixins";
 
 .tooltip {
   display: block;
@@ -48,7 +49,20 @@
     }
   }
 
-  &__triangle {}
+  &__triangle {
+    &:before{
+      @include css-triangle($triangle-size: 1.1rem, $triangle-color: $discoindigo, $triangle-direction: down);
+      bottom: -1.1rem;
+      position: absolute;
+      transform: translate(60%, 0);
+    }
+    &:after {
+      @include css-triangle($triangle-size: 1rem, $triangle-color: #fff, $triangle-direction: down);
+      bottom: -1rem;
+      position: absolute;
+      transform: translate(70%, 0);
+    }
+  }
 
 
 }

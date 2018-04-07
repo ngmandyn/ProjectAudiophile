@@ -44,7 +44,7 @@ function showTooltip(d, thisCircle, tooltipType) {
     }
 
     $tooltip.css({
-        'top': tooltipPos.top-85,
+        'top': tooltipPos.top-95,
         'left': tooltipPos.left,
       })
       .attr({
