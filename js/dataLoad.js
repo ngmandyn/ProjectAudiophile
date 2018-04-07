@@ -483,10 +483,15 @@ function initSidebar(data) {
       var elemName = dimensionsObj[dimension].displayName.replace(/ /g,'-');
       var $title = $($('#template-dimension-title').html());
 
+      var units = dimensionsObj[dimension].units
+      var $unitsTemplate = $($('#template-dimension-units').html());
+      $unitsTemplate.closest('.dimension-units').html(units)
+
       var $tooltipTemplate = $($('#template-info-tooltip').html());
       var definition = dimensionsObj[dimension].definition
 
-      $title.html(elemName).append($tooltipTemplate);
+      $title.html(elemName).append($unitsTemplate).append($tooltipTemplate);
+
       $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
 
       $('[data-filter-section='+elemName+']').append($title)

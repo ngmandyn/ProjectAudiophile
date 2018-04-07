@@ -866,6 +866,12 @@ tiny {
   overflow-y: scroll;
   padding: 4.5rem 1rem 6rem; }
 
+.dimension-units {
+  font-size: 65%;
+  color: #662D91;
+  opacity: 0.8;
+  margin-left: 0.2rem; }
+
 label {
   display: block; }
 
