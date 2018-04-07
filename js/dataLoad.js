@@ -141,6 +141,8 @@ var visGraphInit = {
   }
 }
 
+var definitions = [];
+
 
 // $(window).on('resize', function() {
 //   var newWidth = window.innerWidth - margin;
@@ -336,7 +338,6 @@ function performTasks(callback) {
     });
 
 
-
   callback(null, newData)
   });
 
@@ -426,22 +427,18 @@ function initSidebar(data) {
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
 
     if (typeof(thisDomain) !== 'undefined') {
-      console.log(dimension)
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
       var $title = $($('#template-dimension-title').html());
+      var $tooltipTemplate = $($('#template-info-tooltip').html());
+      var definition = 'definition goes here';
 
-      $('[data-filter-section='+elemName+']').append($title.html(dimension));
+      $title.html(dimension).append($tooltipTemplate);
+      $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
 
-      $title.on('mouseover', function(d) {
-          // d3.select(this)
-          console.log(dimension)
-          showInfoTooltip($(this), dimension)
-        })
-        // .on('mouseout', function(d) {
-        //   d3.select(this)
-        //     removeInfoTooltip(d)
-        // })
+      $('[data-filter-section='+elemName+']').append($title);
+
+      console.log(dimension)
 
       // appends each entry of the dimension
       for (var i = 0; i < thisDomain.length; i++) {
@@ -488,6 +485,13 @@ function initSidebar(data) {
       $('[data-filter-section='+elemName+']').append($newSlider);
     }
   }
+
+  $('.jsToggleTooltip').on('mouseover', function(d) {
+    $(this).siblings('.info-tooltip-definition').css('display','inline-block');
+  })
+  .on('mouseout', function(d) {
+    $(this).siblings('.info-tooltip-definition').css('display','none');
+  });
 
   $(document).foundation(); // initializes the sliders with foundation
 }

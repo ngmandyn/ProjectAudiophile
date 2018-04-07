@@ -381,7 +381,6 @@ th {
 
 .grid {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   max-width: 37.5rem;
@@ -700,22 +699,18 @@ tiny {
 
 .fav-shelf__item-container {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap; }
 
 .fav-shelf__item {
   position: relative;
   -webkit-box-flex: 1;
-  -webkit-flex: 1 1 20%;
   -ms-flex: 1 1 20%;
   flex: 1 1 20%;
   font-size: 90%;
@@ -762,7 +757,6 @@ tiny {
 
 .hBarGraph_bar {
   -webkit-box-flex: 1;
-  -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
   border-radius: 0 5px 5px 0;
@@ -803,14 +797,12 @@ tiny {
 
 .sound-sig-bar-group {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
 .sound-sig-bar {
   border-bottom: 2px solid white;
   -webkit-box-flex: 1;
-  -webkit-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   height: 2px;
@@ -877,7 +869,6 @@ select {
 
 .legend {
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   font-family: "mononoki", sans-serif;
@@ -1103,3 +1094,24 @@ select {
     display: none; }
   .tooltip--small .tooltip__fav-button {
     display: none; }
+
+.info-tooltip-mark {
+  display: inline-block;
+  border: thin solid #2E3192;
+  text-align: center;
+  font-size: 80%;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 2rem;
+  padding: .1rem;
+  margin-left: 0.25rem; }
+  .info-tooltip-mark:hover {
+    background: rgba(102, 45, 145, 0.05); }
+
+.info-tooltip-definition {
+  display: block;
+  position: absolute;
+  margin-left: -3rem;
+  margin-top: 1.5rem;
+  background-color: white;
+  z-index: 999; }
