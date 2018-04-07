@@ -46,8 +46,17 @@ select {
     margin-left: 4rem;
   }
 }
+
+  .cell {
+    pointer-events: bounding-box;
+  }
+
   .legend-display {
     // padding: 1rem;
+    font-family: "mononoki", sans-serif;
+    fill: #662D91;
+    font-size: 0.75rem;
+    letter-spacing: -0.05em;
   }
 
   .select-axis {
