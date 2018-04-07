@@ -15,6 +15,8 @@ function removeTooltip(d, tooltipType) {
 
 function showTooltip(d, thisCircle, tooltipType) {
   var headphoneName = d['Manufacturer']+' '+d['Model']
+  var src = d['Image']
+  console.log(src)
 
   // if a small tooltip is already created
   // just remove the modifier to prevent copies of the tooltip
@@ -33,6 +35,7 @@ function showTooltip(d, thisCircle, tooltipType) {
     $tooltip.find('.tooltip__manufacturer').html(d['Manufacturer'])
     $tooltip.find('.tooltip__model').html(d['Model'])
     $tooltip.find('.tooltip__price').html('$'+d['MSRP'])
+    $tooltip.find('.tooltip__image').attr('src', src)
 
     if (typeof(tooltipType) !== 'underfined' && tooltipType === 'large') {
       // remove the modifier class to show the large version
@@ -41,7 +44,7 @@ function showTooltip(d, thisCircle, tooltipType) {
     }
 
     $tooltip.css({
-        'top': tooltipPos.top,
+        'top': tooltipPos.top-85,
         'left': tooltipPos.left,
       })
       .attr({
@@ -76,6 +79,7 @@ function toggleTooltip(d, thisCircle, tooltipType) {
 function tooltipAlreadyExists(d) {
   var headphoneName = d['Manufacturer']+' '+d['Model']
   var $tooltip = $('[data-tooltip='+parseStringForCode(headphoneName)+']')
+  var src = d['Image']
   return $tooltip.length > 0
 }
 

@@ -74,6 +74,9 @@ var dimensionsWithStringsObj = {
     displayName: 'pads',
     domain: ['Velour', 'Fabric', 'Pleather', 'Leather'],
   },
+  'Image': {
+    displayName: 'image',
+  },
 }
 
 
@@ -201,6 +204,7 @@ function combineData(data, data2) {
       Midrange: data.Midrange,
       Treble: data.Treble,
       "Removable Cable": data['Removable Cable'],
+      "Image": data2['Image'],
     };
   });
   return result;

@@ -1,0 +1,53 @@
+Manufacturer,Model,Match in Dataset 2,MSRP,Impedance,Efficiency,Sensitivity,Convert to Efficiency,Weight,Type,Form factor,Driver(s),Amp required,Connector,Detachable cable,Inline,Foldable,Rotatable earcups,Battery life,Default earpad material,Measurements,Image
+AKG,K240 Studio,TRUE,70 USD,55,91.4,,91.4,235,Circumaural,Semi,Dynamic,Recommended,,Yes,,No,No,,PLeather,,img/akg-k240-studio.jpg
+AKG,K52,TRUE,50 USD,32,,110,81.50514998,200,Circumaural,Closed,Dynamic,No,"3.5mm, 6.3 included",No,,,,N/A,,,img/akg-k52.jpg
+AKG,K545,TRUE,250 USD,32,,97,68.50514998,282,Circumaural,Closed,Dynamic,No,"3.5mm, 6.25mm",Yes,Yes,No,Yes,N/A,Pleather,,img/akg-k545.jpg
+AKG,K550mkII,TRUE,200 USD,32,,114,85.50514998,305,Circumaural,Closed,,No,,No,,,,,,,img/akg-k550mkii.jpg
+AKG,K553 Pro,TRUE,300 USD,32,,114,85.50514998,305,Circumaural,Closed,,No,"3.5mm, 1/4"" included",No,,No,Yes,N/A,Pleather,,img/akg-k553-pro.jpg
+AKG,K612 Pro,TRUE,150 USD,120,,101,73.07918125,238,Circumaural,Open,Dynamic,Yes,3.5mm,No,,No,No,N/A,Velour,,img/akg-k612-pro.jpg
+AKG,K701,TRUE,450 USD,65,92.9,,92.9,235,Circumaural,Open,Dynamic,Recommended,,No,,No,No,,,,img/akg-k701.jpg
+AKG,K702,TRUE,350 USD,62,92.9,105,92.9,235,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,,,img/akg-k702.jpg
+AKG,K712 Pro,TRUE,500 USD,62,92.9,106,92.9,235,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,Velour pads and memory foam,,img/akg-k712-pro.jpg
+AKG,K7XX,TRUE,650 USD,62,93,105,93,235,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,,,img/akg-k7xx.jpg
+AKG,K812,TRUE,1500 USD,36,,110,81.5563025,390,Circumaural,Open,,Recommended,,Yes,,No,,,,,img/akg-k812.jpg
+AKG,K872,TRUE,1550 USD,36,,112,83.5563025,390,Circumaural,Closed,Dynamic,Recommended,,Yes,,No,,,,,img/akg-k872.jpg
+AKG,M220,TRUE,160 USD,55,91,104,91,240,Circumaural,Semi,Dynamic,Recommended,"3.5mm, 6.35mm",Yes,No,No,No,,PLeather,,img/akg-m220.jpg
+AKG,Q701,TRUE,480 USD,63,93,105,93,235,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,,,img/akg-q701.jpg
+Audeze,LCD-2,TRUE,995 USD,70,,101,72.84509804,490,Circumaural,Open,Planar magnetic,Recommended,,Yes,,No,,,,,img/audeze-lcd-2.jpg
+Audio Technica,A900X,TRUE,350 USD,42,99,,99,330,Circumaural,Closed,Dynamic,Maybe,,No,,No,No,,Pleather,,img/audio-technica-a900x.jpg
+Audio Technica,AD900X,TRUE,300 USD,38,100,,100,265,Circumaural,Open,Dynamic,Maybe,3.5mm,No,No,No,Yes,,,,img/audio-technica-ad900x.jpg
+Audio Technica,M30x,TRUE,70 USD,38,,95.5,67.0797836,220,Circumaural,Closed,Dynamic,Recommended,,No,,Yes,No,,,,img/audio-technica-m30x.jpg
+Audio Technica,M40x,TRUE,100 USD,38,,98,69.5797836,240,Circumaural,Closed,Dynamic,Recommended,3.5mm,Yes,,Yes,Yes,,Pleather,,img/audio-technica-m40x.jpg
+Audio Technica,M50x,TRUE,170 USD,38,99,98,99,285,Circumaural,Closed,Dynamic,Maybe,3.5mm,Yes,,Yes,Yes,,,,img/audio-technica-m50x.jpg
+Beyerdynamic,DT 1990 PRO,TRUE,600 USD,250,102,,102,370,Circumaural,Semi,Dynamic,Yes,,Yes,,No,No,,,,img/beyerdynamic-dt-1990-pro.jpg
+Beyerdynamic,DT 770 Pro 250 Ohm,TRUE,150 USD,250,96,,96,270,Circumaural,Closed,Dynamic,Yes,"3.5mm, 6.25mm",No,No,No,No,No,Padded Cloth,,img/beyerdynamic-dt-770-pro-250-ohm.jpg
+Beyerdynamic,DT 880 Pro,TRUE,350 USD,250,96,,96,295,Circumaural,Semi,Dynamic,Yes,"3.5mm, 6.25mm",No,,No,No,N/A,Velour,,img/beyerdynamic-dt-880-pro.jpg
+Beyerdynamic,DT 990 Pro 250 Ohm,TRUE,180 USD,250,96,,96,250,Circumaural,Open,Dynamic,Yes,"3.5mm, 6.25mm",No,,No,No,,,,img/beyerdynamic-dt-990-pro-250-ohm.jpg
+Beyerdynamic,T1 Gen 1,TRUE,1200 USD,600,,102,74.77815125,350,Circumaural,Semi,Dynamic,Yes,,,,,,,,,img/beyerdynamic-t1-gen-1.jpg
+Beyerdynamic,T70p,TRUE,500 USD,32,,104,75.50514998,330,Circumaural,Closed,Dynamic,No,,,,,,,,,img/beyerdynamic-t70p.jpg
+Fostex,T20RP MK3,TRUE,160 USD,50,,92,63.69897,558,Circumaural,Open,Planar magnetic,Recommended,"1/4"" & 1/8""",Yes,,No,,,,,img/fostex-t20rp-mk3.jpg
+Fostex,T50RP,TRUE,160 USD,50,92,,92,314,Circumaural,Semi,Planar magnetic,Recommended,,Yes,,No,No,,,,img/fostex-t50rp.jpg
+Fostex,TH-900,TRUE,1500 USD,25,,100,71.39794001,400,Circumaural,Semi,Dynamic (Bio-cellulose),No,,No,,No,,,,,img/fostex-th-900.jpg
+Fostex,TH-X00,TRUE,400 USD,25,,94,65.39794001,482,Circumaural,Semi,Dynamic (Bio-cellulose),No,,No,,No,,,,,img/fostex-th-x00.jpg
+Hifiman ,HE-400i,TRUE,500 USD,35,93,,93,370,Circumaural,Open,Planar,Recommended,,Yes,,No,Yes,,Mix PL+Vel,,img/hifiman-he-400i.jpg
+Hifiman ,HE-560,TRUE,900 USD,50,80,,80,300,Circumaural,Open,Planar,Recommended,,,,,,,,,img/hifiman-he-560.jpg
+Hifiman ,HE6,TRUE,1300 USD,50,83.5,,83.5,477,Circumaural,Open,Planar,Recommended,,Yes,No,No,Yes,,,,img/hifiman-he6.jpg
+Philips,Fidelio X2,TRUE,300 USD,35,96.5,,96.5,380,Circumaural,Open,Dynamic,Recommended,3.5mm,Yes,No,No,No,,Memory Foam/Velour,,img/philips-fidelio-x2.jpg
+Philips,SHP9500S,TRUE,100 USD,32,,102,73.50514998,330,Circumaural,Open,Dynamic 50 mm,No,3.5 mm,Yes,No,No,No,,,,img/philips-shp9500.jpg
+Sennheiser,HD380 Pro,TRUE,195 USD,54,,110,81.73239376,220,Circumaural,Closed,Dynamic,Recommended,"3.5mm, 6.25mm",Yes,No,Yes,Yes,,Pleather,,img/sennheiser-hd380-pro.jpg
+Sennheiser,HD518,TRUE,130 USD,50,,108,79.69897,255,Circumaural,Open,,Recommended,,Yes,,No,No,,,,img/sennheiser-hd518.jpg
+Sennheiser,HD558,TRUE,96 USD,50,,112,83.69897,260,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,,,img/sennheiser-hd558.jpg
+Sennheiser,HD598,TRUE,250 USD,50,,112,83.69897,270,Circumaural,Open,Dynamic,Recommended,,Yes,,No,No,,,,img/sennheiser-hd598.jpg
+Sennheiser,HD598Cs,TRUE,250 USD,23,,115,86.36172784,334,Circumaural,Closed,Dynamic,No,"3.5mm, 6.25mm",Yes,,No,No,,,,img/sennheiser-hd598cs.jpg
+Sennheiser,HD600,TRUE,400 USD,300,97,,97,260,Circumaural,Open,Dynamic,Yes,,Yes,,No,No,,Velour,,img/sennheiser-hd600.jpg
+Sennheiser,HD650,TRUE,500 USD,300,,103,75.47712125,260,Circumaural,Open,Dynamic,Yes,"1/4""",Yes,No,No,No,,Velours,,img/sennheiser-hd650.jpg
+Sennheiser,HD6XX,TRUE,200 USD,300,,103,75.47712125,260,Circumaural,Open,Dynamic,Yes,"3.5mm, 6.25 adapter included",Yes,,No,No,,Velour,,img/sennheiser-hd6xx.jpg
+Sennheiser,HD700,TRUE,750 USD,150,,105,77.17609126,270,Circumaural,Open,Dynamic,Yes,,Yes,,No,No,,,,img/sennheiser-hd700.jpg
+Sennheiser,HD800,TRUE,1400 USD,300,,102,74.47712125,330,Circumaural,Open ,Dynamic,Yes,,Yes,,No,No,,,,img/sennheiser-hd800.jpg
+Sennheiser ,URBANITE XL,TRUE,180 USD,18,,110,81.25527251,312,Circumaural ,Closed,,No,3.5mm,Yes,"Remote, mic",Yes,,,,,img/sennheiser-urbanite-xl.jpg
+Shure,SRH440,TRUE,100 USD,44,,105,76.64345268,272,Circumaural,Closed,,Recommended,,,,,,,,,img/shure-srh440.jpg
+Shure,SRH840,TRUE,200 USD,44,,102,73.64345268,317.5,Circumaural,Closed,,Recommended,,,,,,,,,img/shure-srh840.jpg
+Superlux,HD 668B,TRUE,50 USD,56,,98,69.74818803,222,Circumaural,Semi,Dynamic,Recommended,3.5 TRS,Yes,,No,,,,,img/superlux-hd-668b.jpg
+Superlux,HD-681,TRUE,50 USD,32,98,,98,221,Circumaural,Semi,Dynamic,No,3.5mm,No,No,No,No,,,,img/superlux-hd-681.jpg
+Superlux,HD-681 EVO,TRUE,45 USD,32,,98,69.50514998,226,Circumaural,Semi,Dynamic,No,3.5/6.2,Yes,No,No,No,,PLeather/Velour,,img/superlux-hd-681-evo.jpg
+V-moda,Crossfade M100,TRUE,300 USD,32,,103,74.50514998,280,Circumaural,Closed,Dual-Diaphram Dynamic,No,,Yes,,,,,,,img/v-moda-crossfade-m100.jpg

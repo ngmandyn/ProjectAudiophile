@@ -5,6 +5,7 @@ function initFilterCollection() {
   filterCollection = {...dimensionsObj, ...dimensionsWithStringsObj}
   delete filterCollection.Manufacturer
   delete filterCollection.Model
+  delete filterCollection.Image
 }
 
 // adds or removed values from the selection list based on what was changed
