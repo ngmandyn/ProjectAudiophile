@@ -21,25 +21,10 @@ function favsChangeAndUpdate(d, jqThisCircle) {
     newFav[newFavsName] = d
     favouritesCollection = {...favouritesCollection, ...newFav}
     // adding fav item also returns the new added jsQuery object
-    $newFavItem = addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
-    addFavItemToTable(d)
-    attachFavDeleteListenerTo($newFavItem.find('.jsFavItemCancel'))
+    // $newFavItem = addFavItemToShelf(d['Manufacturer'], d['Model'], jqThisCircle)
+    addFavItemToTable(d);
+    makeFavCircleSpecial(jqThisCircle);
   }
-}
-
-/*
- * attach the on.click event listener to each cancel button as they're created
- * and remove corresponding favourites
- */
-function attachFavDeleteListenerTo(jsCancelButton) {
-  jsCancelButton.on('click', function() {
-    var thisDataManuf = $(this).parents('.fav-shelf__item').attr('data-fav-manufacturer')
-    var thisDataModel = $(this).parents('.fav-shelf__item').attr('data-fav-model')
-    var thisDataFullName = $(this).parents('.fav-shelf__item').attr('data-fav-full-name').replace(/"/g, '')
-
-    delete favouritesCollection[thisDataFullName]
-    removeFavItemFromShelf(thisDataManuf, thisDataModel, $('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']'))
-  })
 }
 
 /*
@@ -62,26 +47,33 @@ function favLessThanLimit() {
   return currentFavouriteKeys.length < 5
 }
 
-function addFavItemToShelf(manufacturer, model, jqThisCircle) {
-  var $favItemTemplate = $($('#template-fav-item').html())
-  var $newFavItem = addFavItemDataAttributes(manufacturer, model, $favItemTemplate)
-  $newFavItem.find('.jsFavItemName').html(manufacturer+' '+model)
-  $favItemShelf.append($newFavItem)
-  jqThisCircle.toggleClass('special')
+// function addFavItemToShelf(manufacturer, model, jqThisCircle) {
+//   var $favItemTemplate = $($('#template-fav-item').html())
+//   var $newFavItem = addFavItemDataAttributes(manufacturer, model, $favItemTemplate)
+//   $newFavItem.find('.jsFavItemName').html(manufacturer+' '+model)
+//   $favItemShelf.append($newFavItem)
+//   jqThisCircle.toggleClass('special')
 
-  return $newFavItem
-}
+//   return $newFavItem
+// }
 
 function removeFavItemFromShelf(manufacturer, model, jqThisCircle) {
   $('[data-fav-item='+parseStringForCode(manufacturer+'-'+model)+']').remove()
-  jqThisCircle.toggleClass('special')
+  jqThisCircle.removeClass('special')
   // var item = $('[data-fav-manufacturer='+parseStringForCode(manufacturer)+'][data-fav-model='+parseStringForCode(model)+']')
   // console.log(item)
   // item.remove()
 }
 
 function makeFavCircleSpecial(clickedCircle) {
-  clickedCircle.toggleClass('special')
+  clickedCircle.addClass('special')
+}
+
+function toggleFavCircleExtraSpecial(circle, isExtraSpecial) {
+  if (isExtraSpecial)
+    circle.addClass('extraSpecial');
+  else 
+    circle.removeClass('extraSpecial');
 }
 
 function initFavItemTable() {
@@ -105,11 +97,16 @@ function initFavItemTable() {
 function addFavItemToTable(d) {
   var $row = $($('#template-fav-table-row').html())
   var $cell = $($('#template-fav-table-cell').html());
+  var $cancelButton = $($('#template-fav-item-cancel').html());
 
   var name = d['Manufacturer']+' '+d['Model'];
 
-  $row.append($cell.html(name))
+  attachFavDeleteListenerTo($cancelButton);
+  $row.append($cell.append($cancelButton).append(name))
+
   addFavItemDataAttributes(d['Manufacturer'], d['Model'], $row)
+
+  if (isARowSelected()) $row.addClass('isSecondary');
 
   for (var dimension in dimensionsObj) {
     var percentageWidth = (d[dimension] / dimensionsObj[dimension].domain[1] * 100) + '%';
@@ -124,6 +121,7 @@ function addFavItemToTable(d) {
     }
   }
 
+  attachRowClickListenerTo($row);
   $('.jsFavTableBody').append($row)
 }
 
@@ -177,38 +175,73 @@ function appendQualitativeToRow(jqRow, dimension, value) {
 }
 
 /*
- *  Adds a set of data attributes to the jqObj passed.
- *
- *  data-fav-item
- *  data-fav-manufacturer
- *  data-fav-model
- *  data-fav-full-name: "string" with capitalization and spaces
+ * attach the on.click event listener to each cancel button as they're created
+ * and remove corresponding favourites
  */
-function addFavItemDataAttributes(manufacturer, model, jqObj) {
-  return jqObj.attr({
-    'data-fav-item': parseStringForCode(manufacturer+'-'+model),
-    'data-fav-manufacturer': parseStringForCode(manufacturer),
-    'data-fav-model': parseStringForCode(model),
-    'data-fav-full-name': '"'+manufacturer+' '+model+'"'
-  });
+function attachFavDeleteListenerTo(jsCancelButton) {
+  jsCancelButton.on('click', function() {
+    var $row = $(this).parents('.jsFavTableRow');
+    var thisDataManuf = $row.attr('data-fav-manufacturer')
+    var thisDataModel = $row.attr('data-fav-model')
+    var thisDataFullName = $row.attr('data-fav-full-name').replace(/"/g, '')
+    var $circle = $('circle[data-manufacturer='+thisDataManuf+'][data-model='+thisDataModel+']');
+
+    // resets the highlight if the deleted item was highlightsed
+    if ($row.hasClass('isPrimary')) { 
+      // resetRowHighlights();
+      // toggleFavCircleExtraSpecial($circle, false);
+      resetRowHighlightsAndCircle($circle);
+    }
+
+    delete favouritesCollection[thisDataFullName];
+    removeFavItemFromShelf(thisDataManuf, thisDataModel, $circle);
+  })
 }
 
-// function handleFavShelfHideShow() {
-//   $('#jsCompareFavourites').on('click', function() {
-//     if (!$(this).hasClass('is-active')) {
-//       $('.fav-shelf').toggleClass('is-expanded')
-//       $(this).toggleClass('is-active')
-//       $('#jsViewEverything').toggleClass('is-active')
-//     }
-//   })
-//   $('#jsViewEverything').on('click', function() {
-//     if (!$(this).hasClass('is-active')) {
-//       $('.fav-shelf').toggleClass('is-expanded')
-//       $(this).toggleClass('is-active')
-//       $('#jsCompareFavourites').toggleClass('is-active')
-//     }
-//   })
-// }
+/*
+ * 
+ * 
+ */
+function attachRowClickListenerTo(jsRow) {
+  jsRow.on('click', function(e) {
+    // cancels detection on the cancelation button
+    if ($(this).hasClass('jsFavItemCancel'))
+      return;
+
+    var $rows = $('.jsFavTableRow');
+    var manuf = $(this).attr('data-fav-manufacturer');
+    var model = $(this).attr('data-fav-model');
+    var $circle = getCircleWithManufAndModel(manuf, model);
+    
+    if ($(this).hasClass('isPrimary')) {
+      // resetRowHighlights();
+      resetRowHighlightsAndCircle($circle);
+    }
+    else {
+      toggleFavCircleExtraSpecial($circle, true);
+      $(this).addClass('isPrimary').removeClass('isSecondary');
+      $rows.not($(this)).addClass('isSecondary').removeClass('isPrimary');
+    }
+  })
+}
+
+function resetRowHighlightsAndCircle(circle) {
+  resetRowHighlights();
+  toggleFavCircleExtraSpecial(circle, false);
+}
+
+function resetRowHighlights() {
+  var $rows = $('.jsFavTableRow');
+  $rows.removeClass('isPrimary').removeClass('isSecondary');
+}
+
+function isARowSelected() {
+  if ($('.jsFavTableRow').hasClass('isPrimary')) {
+    console.log("a primary row exists")
+    return true;
+  }
+  return false;
+}
 
 /*
  *

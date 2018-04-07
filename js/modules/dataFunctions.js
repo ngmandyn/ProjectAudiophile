@@ -165,3 +165,25 @@ function getCircle(d) {
   var $circle = $('circle[data-manufacturer='+manuf+'][data-model='+model+']')
   return $circle
 }
+
+function getCircleWithManufAndModel(manuf, model) {
+  var $circle = $('circle[data-manufacturer='+manuf+'][data-model='+model+']');
+  return $circle;
+}
+
+/*
+ *  Adds a set of data attributes to the jqObj passed.
+ *
+ *  data-fav-item
+ *  data-fav-manufacturer
+ *  data-fav-model
+ *  data-fav-full-name: "string" with capitalization and spaces
+ */
+function addFavItemDataAttributes(manufacturer, model, jqObj) {
+  return jqObj.attr({
+    'data-fav-item': parseStringForCode(manufacturer+'-'+model),
+    'data-fav-manufacturer': parseStringForCode(manufacturer),
+    'data-fav-model': parseStringForCode(model),
+    'data-fav-full-name': '"'+manufacturer+' '+model+'"'
+  });
+}
