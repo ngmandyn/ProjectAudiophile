@@ -18,27 +18,33 @@ var dimensionsObj = {
     units: 'ohms',
     displayName: 'impedance',
     domain: [], // initialized in initData()
+    definition: 'Impedance, measured in ohms (Ω), tells you how hard a headphone’s driver hinders the flow of electrical current '+
+                'in the voice coil. This must be overcome by the power output of the amplifier, otherwise insufficient volume ' +
+                'and clipping dynamic peaks will occur.',
   },
   'MSRP': {
     units: '$USD',
     displayName: 'price',
     domain: [],
+    definition: 'The manufacturer\'s suggested retail price (MSRP), in US dollars.',
   },
   'Convert to Efficiency': {
     units: 'dB/mW',
     displayName: 'efficiency',
     domain: [],
+    definition: 'Efficiency tells you how much sound pressure (volume) comes out from some about of power (milliwatts). '+
+                'The lower the efficiency rating of a headphone, the harder it is to power.',
   },
   'Weight': {
     units: 'grams',
     displayName: 'weight',
     domain: [],
+    definition: 'The weight of the headphone in grams, including the cable.',
   }
 }
 var dimensionsWithStringsObj = {
   'Manufacturer': {
     displayName: 'brand',
-    // domain: [],
     scaleOrdinal: d3.schemeCategory20,
   },
   'Model': {
@@ -48,31 +54,47 @@ var dimensionsWithStringsObj = {
     displayName: 'form factor',
     domain: ['Closed', 'Semi', 'Open'],
     scaleOrdinal: d3.schemeCategory10,
+    definition: 'Open models offer next to no isolation and will leak noise into your surroundings, '+
+                'but they achieve the best sound, stage and imaging. '+'<br/>'+
+                'Closed models do not leak sound but most find them too bulky and heavy to be used portably.',
   },
   'Amp required': {
     displayName: 'amp required',
     domain: ['No', 'Maybe', 'Recommended', 'Yes'],
     scaleOrdinal: ["#b3cde3", "#8c96c6", "#8856a7", "#4d004b"],
+    definition: '32 Ohm and 99dB/mW or more: You don’t need an amplifier. '+'<br/>'+
+                '33-80 Ohm and 99dB/mW or more: You may benefit in getting an amplifier.' +'<br/>'+
+                '33-80 Ohm and less than 99dB/mW: You should get a competent amplifier.' +'<br/>'+
+                '81-300 Ohm, or more: You should definitely get a competent amplifier.',
   },
   'Bass': {
     displayName: 'bass',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
+    definition: 'Frequencies in the range of 0Hz-256Hz are the very low notes that make your head vibrate and your room shake '+
+                '(commonly referred to as “the Wub Wub”).',
   },
   'Midrange': {
     displayName: 'midrange',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
+    definition: 'Frequencies between 250Hz and 2000Hz and very important for a natural presentation of sound. '+
+                'Human voices fall within this part and headphones with an unnatural midrange may make vocals sound “distant”.',
   },
   'Treble': {
     displayName: 'treble',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
+    definition: 'The highest tones in the frequency range start at 2Hz and ends at the hearing limit of the human ear at 20Hz. '+
+                'Treble is what gives a headphone detail and clarity.',
   },
   'Removable Cable': {
     displayName: 'removable cable',
     domain: ['No', 'Yes'],
+    definition: 'Some headphones have detachable cables that can be easily replaced. Otherwise fixing broken cables '+
+                'is only possible by soldering or by using the necessary equipment.',
   },
   'Pads': {
     displayName: 'pads',
     domain: ['Velour', 'Fabric', 'Pleather', 'Leather'],
+    definition: 'The headphone\'s default earpad material.',
   },
   'Image': {
     displayName: 'image',
@@ -140,9 +162,6 @@ var visGraphInit = {
     y: null,
   }
 }
-
-var definitions = [];
-
 
 // $(window).on('resize', function() {
 //   var newWidth = window.innerWidth - margin;
@@ -430,15 +449,13 @@ function initSidebar(data) {
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
       var $title = $($('#template-dimension-title').html());
-      var $tooltipTemplate = $($('#template-info-tooltip').html());
-      var definition = 'definition goes here';
 
+      var $tooltipTemplate = $($('#template-info-tooltip').html());
+      var definition = dimensionsWithStringsObj[dimension].definition
       $title.html(dimension).append($tooltipTemplate);
       $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
 
       $('[data-filter-section='+elemName+']').append($title);
-
-      console.log(dimension)
 
       // appends each entry of the dimension
       for (var i = 0; i < thisDomain.length; i++) {
@@ -463,9 +480,16 @@ function initSidebar(data) {
     var thisDomain = dimensionsObj[dimension].domain;
 
     if (typeof(thisDomain) !== 'undefined') {
-      var elemName = dimensionsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
+      var elemName = dimensionsObj[dimension].displayName.replace(/ /g,'-');
       var $title = $($('#template-dimension-title').html());
-      $('[data-filter-section='+elemName+']').append($title.html(dimensionsObj[dimension].displayName));
+
+      var $tooltipTemplate = $($('#template-info-tooltip').html());
+      var definition = dimensionsObj[dimension].definition
+
+      $title.html(elemName).append($tooltipTemplate);
+      $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
+
+      $('[data-filter-section='+elemName+']').append($title)
 
       var $newSlider = $($('#template-slider').html());
       $newSlider.attr({
@@ -487,10 +511,12 @@ function initSidebar(data) {
   }
 
   $('.jsToggleTooltip').on('mouseover', function(d) {
-    $(this).siblings('.info-tooltip-definition').css('display','inline-block');
+    // $(this).siblings('.info-tooltip-definition').css('display','inline-block');
+    $(this).siblings('.info-tooltip-definition').fadeIn(200);
   })
   .on('mouseout', function(d) {
-    $(this).siblings('.info-tooltip-definition').css('display','none');
+    // $(this).siblings('.info-tooltip-definition').css('display','none');
+    $(this).siblings('.info-tooltip-definition').fadeOut(200);
   });
 
   $(document).foundation(); // initializes the sliders with foundation

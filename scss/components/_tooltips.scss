@@ -88,7 +88,9 @@
   //   .tooltip__fav-button { display: none; }
   // }
 
- .info-tooltip-mark {
+
+
+  .info-tooltip-mark {
     display: inline-block;
     border: thin solid $discoindigo;
     text-align: center;
@@ -100,15 +102,25 @@
     margin-left: 0.25rem;
 
     &:hover {
-      background: rgba(102, 45, 145, 0.05);
+      background: rgba(102, 45, 145, 0.1);
     }
  }
 
- .info-tooltip-definition {
+  .info-tooltip-definition {
     display: block;
     position: absolute;
-    margin-left: -3rem;
-    margin-top: 1.5rem;
-    background-color: white;
+    font-size: 70%;
+    line-height: 0.9rem;
+    padding: .5rem;
+    margin-right: 1rem;
+    margin-top: 0.25rem;
+    background-color: rgba(white, .95);
     z-index: 999;
+    overflow-x: visible;
+    -webkit-box-shadow: 0 0 5px $gray;
+    box-shadow: 0 0 5px $gray;
+
+    br {
+      line-height: 1.15rem;
+    }
  }
