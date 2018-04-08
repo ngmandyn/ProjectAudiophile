@@ -52,7 +52,13 @@
     <!-- here goes the filters and search -->
     <label class="mb3">Search for<input type="text" id="searchbar" name="searchbar" placeholder="a brand or model..."></label>
 
-    <section class="mb3" data-filter-dimension="MSRP" data-filter-section="price"></section>
+    <template id="template-sensitivity-bar">
+      <div class="sensitivity-bar jsSensivityBar"></div>
+    </template>
+
+    <section class="mb3 relative" data-filter-dimension="MSRP" data-filter-section="price">
+      <section class="mb3 sensitivity-histogram" data-sensitivity></section>
+    </section>
     <section class="mb3 mb5" data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section>
     <section class="mb3 mb5" data-filter-dimension="Weight" data-filter-section="weight"></section>
     <section class="mb3" data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>

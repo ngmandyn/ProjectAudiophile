@@ -1,11 +1,53 @@
 // combines the dimensions together into one object of all selected filters
-// and removes the 'Model' because it is not filterable.
+// and removes the dimensions that are not filterable.
 // TODO: update Manufacturer
 function initFilterCollection() {
   filterCollection = {...dimensionsObj, ...dimensionsWithStringsObj}
   delete filterCollection.Manufacturer
   delete filterCollection.Model
   delete filterCollection.Image
+}
+
+function initSensitivityBuckets (data) {
+  numPerBucket = Math.round(dataCount/numBuckets);
+  console.log(numPerBucket);
+  var priceRangeMin = dimensionsObj.MSRP.domain[0] - 1;
+  var priceRangeMax = dimensionsObj.MSRP.domain[1];
+  var priceRangePerBucket = (priceRangeMax-priceRangeMin)/numBuckets;
+  console.log(priceRangePerBucket);
+
+  // creates the buckets, with the domain min and max
+  for (var i = 0; i < numBuckets; i++) {
+    var bucketMin = priceRangeMin + (priceRangePerBucket*i) + 1;
+    var bucketMax = bucketMin + priceRangePerBucket;
+    sensitivityBuckets[i] = {};
+    sensitivityBuckets[i]['domain'] = [bucketMin, bucketMax];
+    sensitivityBuckets[i]['maxCount'] = 0;
+    sensitivityBuckets[i]['count'] = 0;
+    console.log(sensitivityBuckets[i]['domain']);
+  }
+
+  console.log(sensitivityBuckets)
+
+  // loops through data entries to count how many are in each bucket
+  d3.map(data, function(d) {
+    var itemPrice = d['MSRP'];
+
+    for (bucket in sensitivityBuckets) {
+      var bucketMin = sensitivityBuckets[bucket]['domain'][0];
+      var bucketMax = sensitivityBuckets[bucket]['domain'][1];
+      if (itemPrice >= bucketMin && itemPrice < bucketMax) {
+        sensitivityBuckets[bucket]['maxCount']++;
+        sensitivityBuckets[bucket]['count']++;
+      }
+    }
+  });
+
+  console.log(sensitivityBuckets)
+
+  initSensitivityHistogram();
+  // and updates the histogram
+  redrawSensitivityHistogram();
 }
 
 // adds or removed values from the selection list based on what was changed
@@ -28,7 +70,9 @@ function handleCheckboxFilterList(thisCheckbox) {
 function checkboxChangeAndUpdate() {
   $('input[type=checkbox').on('change', function() {
     handleCheckboxFilterList($(this))
-    checkCircleAgainstAllFilters()
+    resetSensitivityBuckets();
+    checkCircleAgainstAllFilters();
+    redrawSensitivityHistogram();
   });
 }
 
@@ -45,7 +89,9 @@ function sliderChangeAndUpdate() {
     filterCollection[dimensionName].domain = newDomain
 
     // hide points that don't fit new domain
-    checkCircleAgainstAllFilters()
+    resetSensitivityBuckets();
+    checkCircleAgainstAllFilters();
+    redrawSensitivityHistogram();
 
     var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
 
@@ -75,14 +121,53 @@ function checkCircleAgainstAllFilters() {
 
         // once one dimension doesn't match the selection, we hide it
         if (typeof(checkingDomain[0]) === 'number' && isOutsideNumberDomain(d, dimension)) {
-          isHide = true;
+          return true;
         } else if (typeof(checkingDomain[0]) === 'string' && isOutsideStringDomain(d, dimension)) {
-          isHide = true;
+          return true;
         }
       }
 
+      updateSensitivityCount(d, true);
       return isHide;
     })
+}
+
+// add or subtract the sensivity count with the d being passed
+function updateSensitivityCount(d, isAdding) {
+  var itemPrice = d['MSRP'];
+
+  for (bucket in sensitivityBuckets) {
+    var bucketMin = sensitivityBuckets[bucket]['domain'][0];
+    var bucketMax = sensitivityBuckets[bucket]['domain'][1];
+    if (itemPrice >= bucketMin && itemPrice < bucketMax) {
+      if (isAdding && sensitivityBuckets[bucket]['count'] < sensitivityBuckets[bucket]['maxCount'])
+        sensitivityBuckets[bucket]['count'] += 1;
+      else if (!isAdding && sensitivityBuckets[bucket]['count'] > 0)
+        sensitivityBuckets[bucket]['count'] -= 1;
+    }
+  }
+}
+
+function initSensitivityHistogram() {
+  var $bar = ($('#template-sensitivity-bar').html());
+  var $histogram = $('[data-sensitivity]');
+
+  for (buckets in sensitivityBuckets) {
+    $histogram.append($bar);
+  }
+}
+
+function redrawSensitivityHistogram() {
+  for (bucket in sensitivityBuckets) {
+    var height = (sensitivityBuckets[bucket]['count']) / dataCount * 100;
+    $($('.jsSensivityBar').get(bucket)).css('height', height+'%');
+  }
+}
+
+function resetSensitivityBuckets() {
+  for (bucket in sensitivityBuckets) {
+    sensitivityBuckets[bucket]['count'] = 0;
+  }
 }
 
 function isOutsideNumberDomain(d, dimension) {

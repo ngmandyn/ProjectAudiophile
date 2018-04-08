@@ -7,6 +7,10 @@ var newData = null;
 
 var dataCount = null;
 
+var numPerBucket = null;
+var numBuckets = 15;
+var sensitivityBuckets = {};
+
 var dataFilterNames = [];
 var brushableValues = [];
 var margin = 56,
@@ -245,6 +249,8 @@ function performTasks(callback) {
     initVis(data);
     initSidebar(data);
 
+    initSensitivityBuckets(data);
+
     sliderChangeAndUpdate();
     checkboxChangeAndUpdate();
 
@@ -259,12 +265,6 @@ function performTasks(callback) {
         .attr('id', 'data-axis-'+dataInitConfig.xAxis.dimension.toLowerCase())
         .attr('transform', 'translate('+xAxisOffset.x+','+xAxisOffset.y+')')
         .call(visGraphInit.axis.x)
-      // .append('text') // x-axis label
-      //   .attr('class', 'axis__label axis__label--x')
-      //   .attr('text-anchor', 'start')
-      //   .attr('x', xLabelOffset.x)
-      //   .attr('y', xLabelOffset.y)
-      //   .text(dataInitConfig.xAxis.displayName);
     d3.select('.xaxis') // add x-axis unit label
       .append('text')
         .attr('class', 'axis__label-unit')

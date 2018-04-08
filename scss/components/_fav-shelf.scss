@@ -112,53 +112,6 @@
   }
 }
 
-/////////////////////////////////////////////// hbar
-.hBarGraph_bar {
-  flex: 1 0 auto;
-  border-radius: 0 5px 5px 0;
-  position: relative;
-
-  // &.isTooltipActive {
-  //   background-color: $light-gray;
-  // }
-}
-  .hBar {
-    // padding: .4rem 0;
-    // margin-bottom: .5rem;
-    height: 1rem;
-    min-width: .2rem;
-    // transition: $graphTransition;
-    position: relative;
-    border-radius: 0 3px 3px 0;
-    background: map-get($gradients, 'icecube');
-
-    &.green { background: map-get($gradients, 'cantaloup'); }
-    &.red { background: map-get($gradients, 'pear'); }
-    // &.blue { background: map-get($gradients, 'icecube'); }
-
-    .stats_rawNum {
-      position: absolute;
-      left: .75rem;
-      top: .4rem;
-      text-shadow: 0 0 3px #000;
-    }
-    .stats_percentage {
-      position: absolute;
-      text-shadow: 0 0 3px #000;
-
-      &:not(.full),
-      &:not(.tooSmall) { right: -2rem; }
-      &.full { right: .75rem; }
-      &.tooSmall { left: 2.5rem; }
-    }
-
-    &.isAnimating {
-      width: 0 !important;
-      // transition: $graphTransition;
-    }
-  }
-
-
 /////////////////////////////////////////////// sound signature
 $ss-mt: .5rem;
 $ss-e-mt: $ss-mt - .3rem;

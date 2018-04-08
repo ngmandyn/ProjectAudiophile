@@ -44,10 +44,6 @@
     }
   }
 
-///////////////////////////////////////
-.tooltip {
-  
-}
 
 ///////////////////////////////////////
 @import "../../node_modules/foundation-sites/scss/global";
@@ -87,4 +83,69 @@ $slider-radius: 50%;
 .slider-handle {
   @include slider-handle;
   border: 1px white solid;
+}
+
+/////////////////////////////////////////////// hbar
+.hBarGraph_bar {
+  flex: 1 0 auto;
+  border-radius: 0 5px 5px 0;
+  position: relative;
+
+  // &.isTooltipActive {
+  //   background-color: $light-gray;
+  // }
+}
+  .hBar {
+    // padding: .4rem 0;
+    // margin-bottom: .5rem;
+    height: 1rem;
+    min-width: .2rem;
+    // transition: $graphTransition;
+    position: relative;
+    border-radius: 0 3px 3px 0;
+    background: map-get($gradients, 'icecube');
+
+    &.green { background: map-get($gradients, 'cantaloup'); }
+    &.red { background: map-get($gradients, 'pear'); }
+    // &.blue { background: map-get($gradients, 'icecube'); }
+
+    .stats_rawNum {
+      position: absolute;
+      left: .75rem;
+      top: .4rem;
+      text-shadow: 0 0 3px #000;
+    }
+    .stats_percentage {
+      position: absolute;
+      text-shadow: 0 0 3px #000;
+
+      &:not(.full),
+      &:not(.tooSmall) { right: -2rem; }
+      &.full { right: .75rem; }
+      &.tooSmall { left: 2.5rem; }
+    }
+
+    &.isAnimating {
+      width: 0 !important;
+      // transition: $graphTransition;
+    }
+  }
+
+/////////////////////////////////////////////// sensitivity bar
+.sensitivity-histogram {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0;
+  height: 13rem;
+  margin-top: -4rem;
+  margin-bottom: .4rem;
+  z-index: 1;
+}
+.sensitivity-bar {
+  flex: 0 1 10%;
+  margin: 0 .05rem;
+  background: get-gradient('icecube');
+  min-height: 0rem;
 }
