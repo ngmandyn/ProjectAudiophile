@@ -393,6 +393,13 @@ function initData(data) {
     }
   }
 
+  allBrands = d3.set( data.map(function(d) { return d[dataInitConfig.colour.dimension]; }) ).values()
+  var brandCounts = {}
+  for (var i = 0; i < allBrands.length; i++) {
+    brandCounts[allBrands[i]] = {};
+    brandCounts[allBrands[i]]['count'] = getCountOfDomainElement(data, 'Manufacturer', allBrands[i])
+  }
+
 }
 
 // initialize basic properties for the visualization
@@ -431,7 +438,6 @@ function initVis(data) {
   legendOrdinal = d3.legendColor()
     .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
     .shapePadding(75)
-    .cellFilter(function(d){ return d.label !== "e" })
     .scale(visGraphInit.scales.colour)
     .orient('horizontal');
   visGraphInit.legend.svg.select(".legendOrdinal").call(legendOrdinal);

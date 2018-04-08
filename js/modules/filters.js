@@ -78,6 +78,7 @@ function checkboxChangeAndUpdate() {
 
 function sliderChangeAndUpdate() {
   $('[data-slider]').on('moved.zf.slider', function() {
+
     var adjustingDimension = $(this).parents('[data-filter-section]').attr('data-filter-dimension')
     var dimensionName = adjustingDimension.replace(/-/g, ' ')
     var dimensionDisplayName = adjustingDimension.replace(/ /g, '-').toLowerCase()
@@ -113,12 +114,12 @@ function sliderChangeAndUpdate() {
 // checks each circle against all the filters,
 // so that only circles matching every criteria are shown
 function checkCircleAgainstAllFilters() {
+  console.log(allBrands)
   d3.selectAll('circle')
     .classed('hide', function(d) {
       var isHide = false;
       for (var dimension in filterCollection) {
         var checkingDomain = filterCollection[dimension].domain
-
         // once one dimension doesn't match the selection, we hide it
         if (typeof(checkingDomain[0]) === 'number' && isOutsideNumberDomain(d, dimension)) {
           return true;
@@ -126,10 +127,23 @@ function checkCircleAgainstAllFilters() {
           return true;
         }
       }
-
       updateSensitivityCount(d, true);
       return isHide;
     })
+}
+
+function updateLegend(d) {
+  var brandLabel = d['Manufacturer']
+  console.log(brandLabel)
+
+  var legendOrdinal = d3.legendColor()
+    .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
+    .shapePadding(75)
+    .scale(visGraphInit.scales.colour)
+    .orient('horizontal')
+    .cellFilter(function(d){ return d.label !== brandLabel })
+  d3.select('.legendOrdinal')
+    .call(legendOrdinal);
 }
 
 // add or subtract the sensivity count with the d being passed

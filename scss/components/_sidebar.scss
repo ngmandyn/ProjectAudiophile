@@ -15,7 +15,7 @@
   background: white;
 
   overflow-y: scroll;
-  padding: 4.5rem 1rem 6rem;
+  padding: 4.5rem 1rem 0rem;
 }
 
 .dimension-units {
@@ -29,4 +29,8 @@
   margin-bottom: 3.5rem;
   position: relative;
   z-index: 10;
+}
+
+#searchbar {
+  width: 100%;
 }
