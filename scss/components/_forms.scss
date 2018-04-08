@@ -99,6 +99,9 @@ select {
   padding: .1rem 0;
   margin: .3rem 0;
   position: relative;
+  &:hover {
+    cursor: pointer;
+  }  
 
   // input { display: none; }
 

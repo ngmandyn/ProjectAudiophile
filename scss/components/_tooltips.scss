@@ -99,7 +99,7 @@
     height: 1.15rem;
     border-radius: 2rem;
     padding: .1rem;
-    margin-left: 0.25rem;
+    margin-left: 0.225rem;
 
     &:hover {
       background: rgba(102, 45, 145, 0.1);
@@ -109,12 +109,11 @@
   .info-tooltip-definition {
     display: block;
     position: absolute;
+    bottom: 1.4rem;
     font-size: 70%;
     line-height: 0.9rem;
-    padding: .5rem;
-    margin-right: 1rem;
-    margin-top: 0.25rem;
-    background-color: rgba(white, .95);
+    padding: .45rem;
+    background: rgba(247, 245, 249, 0.95);
     z-index: 999;
     overflow-x: visible;
     -webkit-box-shadow: 0 0 5px $gray;

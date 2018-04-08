@@ -447,12 +447,12 @@ function initSidebar(data) {
 
     if (typeof(thisDomain) !== 'undefined') {
       // appends title of the dimension
-      var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-').toLowerCase();
+      var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-');
       var $title = $($('#template-dimension-title').html());
 
       var $tooltipTemplate = $($('#template-info-tooltip').html());
       var definition = dimensionsWithStringsObj[dimension].definition
-      $title.html(dimension).append($tooltipTemplate);
+      $title.html(dimension.toLowerCase()).append($tooltipTemplate);
       $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
 
       $('[data-filter-section='+elemName+']').append($title);
