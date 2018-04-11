@@ -15,7 +15,7 @@ var dataFilterNames = [];
 var brushableValues = [];
 var margin = 56,
     width = window.innerWidth - (margin + (16*13)),
-    height = (window.innerHeight-248)/2;
+    height = (window.innerHeight-170)/2;
 
 var dimensionsObj = {
   'Impedance': {
@@ -24,7 +24,7 @@ var dimensionsObj = {
     domain: [], // initialized in initData()
     absDomain: [],
     definition: 'Impedance, measured in ohms (Ω), tells you how hard a headphone’s driver hinders the flow of electrical current '+
-                'in the voice coil. This must be overcome by the power output of the amplifier, otherwise insufficient volume ' +
+                'in the voice coil. This must be overcome by the power output of an amplifier, otherwise insufficient volume ' +
                 'and clipping dynamic peaks will occur.',
   },
   'MSRP': {
@@ -84,13 +84,13 @@ var dimensionsWithStringsObj = {
   'Midrange': {
     displayName: 'midrange',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
-    definition: 'Frequencies between 250Hz and 2000Hz and very important for a natural presentation of sound. '+
-                'Human voices fall within this part and headphones with an unnatural midrange may make vocals sound “distant”.',
+    definition: 'Frequencies between 250Hz and 2000Hz are very important for a natural presentation of sound. '+
+                'Human voices fall within this range and headphones with an unnatural midrange may make vocals sound “distant”.',
   },
   'Treble': {
     displayName: 'treble',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
-    definition: 'The highest tones in the frequency range start at 2Hz and ends at the hearing limit of the human ear at 20Hz. '+
+    definition: 'The highest tones in the frequency range start at 2Hz and end at the hearing limit of the human ear at 20Hz. '+
                 'Treble is what gives a headphone detail and clarity.',
   },
   'Removable Cable': {
@@ -174,6 +174,9 @@ var visGraphInit = {
     maxR: 10,
   }
 }
+
+var hiddenBrands = [];
+var initBrandCounts = {};
 
 // $(window).on('resize', function() {
 //   var newWidth = window.innerWidth - margin;
@@ -404,11 +407,22 @@ function initData(data) {
   }
 
   allBrands = d3.set( data.map(function(d) { return d[dataInitConfig.colour.dimension]; }) ).values()
-  var brandCounts = {}
+
+  for (var i = 0; i < allBrands.length; i++) {
+    initBrandCounts[allBrands[i]] = {};
+    initBrandCounts[allBrands[i]]['count'] = getCountOfDomainElement(data, 'Manufacturer', allBrands[i])
+  }
+
+  // console.log(initBrandCounts)
+
+  brandCounts = {}
   for (var i = 0; i < allBrands.length; i++) {
     brandCounts[allBrands[i]] = {};
     brandCounts[allBrands[i]]['count'] = getCountOfDomainElement(data, 'Manufacturer', allBrands[i])
   }
+
+  // console.log(allBrands)
+  // console.log(brandCounts)
 
 }
 

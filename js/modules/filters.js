@@ -65,6 +65,7 @@ function checkboxChangeAndUpdate() {
     handleCheckboxFilterList($(this))
     resetSensitivityBuckets();
     checkCircleAgainstAllFilters();
+    updateLegend();
     redrawSensitivityHistogram();
   });
 }
@@ -85,6 +86,7 @@ function sliderChangeAndUpdate() {
     // hide points that don't fit new domain
     resetSensitivityBuckets();
     checkCircleAgainstAllFilters();
+    updateLegend();
     redrawSensitivityHistogram();
 
     var $adjustingAxis = $('#data-axis-'+dimensionDisplayName)
@@ -116,8 +118,10 @@ function checkCircleAgainstAllFilters() {
         var checkingDomain = filterCollection[dimension].domain
         // once one dimension doesn't match the selection, we hide it
         if (typeof(checkingDomain[0]) === 'number' && isOutsideNumberDomain(d, dimension)) {
+          getLegendCounts(d)
           return true;
         } else if (typeof(checkingDomain[0]) === 'string' && isOutsideStringDomain(d, dimension)) {
+          getLegendCounts(d)
           return true;
         }
       }
@@ -126,18 +130,46 @@ function checkCircleAgainstAllFilters() {
     })
 }
 
-function updateLegend(d) {
-  var brandLabel = d['Manufacturer']
-  // console.log(brandLabel)
-
+// count the brands of each circle removed,
+// if all the circles of a brand are removed, hide brand in legend
+function getLegendCounts(d) {
+  brandCounts[d['Manufacturer']]['count']--;
+  if (brandCounts[d['Manufacturer']]['count'] <= 0) {
+    hiddenBrands.push(d['Manufacturer']);
+  }
+}
+function updateLegend() {
   var legendOrdinal = d3.legendColor()
     .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())
     .shapePadding(75)
     .scale(visGraphInit.scales.colour)
     .orient('horizontal')
-    .cellFilter(function(d){ return d.label !== brandLabel })
+    .cellFilter(function(d) {
+      // show only the brands not in the hiddenBrands list
+      return !(hiddenBrands.includes(d.label))
+    })
   d3.select('.legendOrdinal')
     .call(legendOrdinal);
+  // console.log(hiddenBrands)
+  hiddenBrands = [];
+  // brandCounts = initBrandCounts;
+  // brandCounts = Object.assign(initBrandCounts, brandCounts)
+  // console.log(initBrandCounts)
+  // console.log(brandCounts)
+  brandCounts = {
+    AKG : {count: 14},
+    Audeze : {count: 1},
+    'Audio Technica' : {count: 5},
+    Beyerdynamic : {count: 6},
+    Fostex : {count: 4},
+    Hifiman : {count: 3},
+    Philips : {count: 2},
+    Sennheiser : {count: 11},
+    Shure : {count: 2},
+    Superlux : {count: 3},
+    'V-moda' : {count: 1},
+  }
+  brushWithLegend()
 }
 
 // add or subtract the sensivity count with the d being passed
