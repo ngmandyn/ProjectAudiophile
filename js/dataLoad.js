@@ -23,7 +23,7 @@ var dimensionsObj = {
     displayName: 'impedance',
     domain: [], // initialized in initData()
     definition: 'Impedance, measured in ohms (Ω), tells you how hard a headphone’s driver hinders the flow of electrical current '+
-                'in the voice coil. This must be overcome by the power output of tan amplifier, otherwise insufficient volume ' +
+                'in the voice coil. This must be overcome by the power output of an amplifier, otherwise insufficient volume ' +
                 'and clipping dynamic peaks will occur.',
   },
   'MSRP': {
@@ -166,6 +166,9 @@ var visGraphInit = {
     y: null,
   }
 }
+
+var hiddenBrands = [];
+var initBrandCounts = {};
 
 // $(window).on('resize', function() {
 //   var newWidth = window.innerWidth - margin;
@@ -394,11 +397,22 @@ function initData(data) {
   }
 
   allBrands = d3.set( data.map(function(d) { return d[dataInitConfig.colour.dimension]; }) ).values()
-  var brandCounts = {}
+
+  for (var i = 0; i < allBrands.length; i++) {
+    initBrandCounts[allBrands[i]] = {};
+    initBrandCounts[allBrands[i]]['count'] = getCountOfDomainElement(data, 'Manufacturer', allBrands[i])
+  }
+
+  // console.log(initBrandCounts)
+
+  brandCounts = {}
   for (var i = 0; i < allBrands.length; i++) {
     brandCounts[allBrands[i]] = {};
     brandCounts[allBrands[i]]['count'] = getCountOfDomainElement(data, 'Manufacturer', allBrands[i])
   }
+
+  // console.log(allBrands)
+  // console.log(brandCounts)
 
 }
 
