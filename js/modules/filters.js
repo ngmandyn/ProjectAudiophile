@@ -175,6 +175,7 @@ function updateLegend() {
     Superlux : {count: 3},
     'V-moda' : {count: 1},
   }
+  brushWithLegend()
 }
 
 // add or subtract the sensivity count with the d being passed
