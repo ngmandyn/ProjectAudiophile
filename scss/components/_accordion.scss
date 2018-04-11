@@ -1,0 +1,48 @@
+@import "../../node_modules/foundation-sites/scss/components/accordion";
+
+// 7. Accordion
+// ------------
+
+$accordion-background: $white;
+$accordion-plusminus: true;
+$accordion-title-font-size: rem-calc(12);
+$accordion-item-color: $discopurple;
+$accordion-item-background-hover: $light-gray;
+$accordion-item-padding: 1.25rem 1rem;
+$accordion-content-background: $white;
+// $accordion-content-border: 1px solid $light-gray;
+$accordion-content-border: transparent;
+$accordion-content-color: $body-font-color;
+$accordion-content-padding: .5rem 0 1rem 0;
+
+.accordion {
+  @include accordion-container;
+  // border-bottom: 1px solid rgba($discopurple, .1);
+}
+
+.accordion__item {
+  padding: 1rem 0 .5rem 0;
+  border-top: 1px solid rgba($discopurple, .1);
+}
+
+.accordion__title {
+  position: relative;
+
+  // @include accordion-title;
+  &::before {
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    margin-top: -0.5rem;
+    content: '+';
+    color: rgba($discopurple, .5);
+  }
+
+  .is-active > &::before {
+    content: '\2013';
+  }
+}
+
+.accordion__content {
+  @include accordion-content;
+}

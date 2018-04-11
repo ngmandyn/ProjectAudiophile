@@ -22,6 +22,7 @@ var dimensionsObj = {
     units: 'ohms',
     displayName: 'impedance',
     domain: [], // initialized in initData()
+    absDomain: [],
     definition: 'Impedance, measured in ohms (Ω), tells you how hard a headphone’s driver hinders the flow of electrical current '+
                 'in the voice coil. This must be overcome by the power output of the amplifier, otherwise insufficient volume ' +
                 'and clipping dynamic peaks will occur.',
@@ -30,12 +31,14 @@ var dimensionsObj = {
     units: '$USD',
     displayName: 'price',
     domain: [],
+    absDomain: [],
     definition: 'The manufacturer\'s suggested retail price (MSRP), in US dollars.',
   },
   'Convert to Efficiency': {
     units: 'dB/mW',
     displayName: 'efficiency',
     domain: [],
+    absDomain: [],
     definition: 'Efficiency tells you how much sound pressure (volume) comes out from some about of power (milliwatts). '+
                 'The lower the efficiency rating of a headphone, the harder it is to power.',
   },
@@ -43,6 +46,7 @@ var dimensionsObj = {
     units: 'grams',
     displayName: 'weight',
     domain: [],
+    absDomain: [],
     definition: 'The weight of the headphone in grams, including the cable.',
   }
 }
@@ -164,6 +168,10 @@ var visGraphInit = {
   axis: {
     x: null,
     y: null,
+  },
+  circles: {
+    minR: 5,
+    maxR: 10,
   }
 }
 
@@ -240,24 +248,12 @@ function performTasks(callback) {
   d3.csv(dataUrl, prepData, function(data) {
 
     data = newData;
-    console.log(data)
 
     initData(data);
 
     // must be called after data is initialized to get domains
     initFilterCollection();
     initVis(data);
-    initSidebar(data);
-
-    initSensitivityBuckets(data);
-
-    sliderChangeAndUpdate();
-    checkboxChangeAndUpdate();
-
-    brushWithSearch();
-    brushWithLegend();
-
-    initFavItemTable();
 
     // adding axis labels
     visGraphInit.canvas.svg.append('g')
@@ -318,7 +314,7 @@ function performTasks(callback) {
       .on('mouseover', function(d) {
         d3.select(this)
           .transition().duration(200)
-          .attr('r', 10);
+          .attr('r', visGraphInit.circles.maxR);
           // move to front
           this.parentNode.appendChild(this);
 
@@ -328,9 +324,12 @@ function performTasks(callback) {
           showTooltip(d, $(this), 'large')
       })
       .on('mouseout', function(d) {
-        d3.select(this)
-          .transition().duration(300)
-          .attr('r', 5);
+
+        if(!$(this).hasClass('extraSpecial')) {
+          d3.select(this)
+            .transition().duration(300)
+            .attr('r', visGraphInit.circles.minR);
+        }
 
         removeTooltip(d, 'large')
       })
@@ -357,7 +356,17 @@ function performTasks(callback) {
     });
 
 
-  callback(null, newData)
+    initSidebar(data);
+
+    initSensitivityBuckets(data);
+
+    sliderChangeAndUpdate();
+    checkboxChangeAndUpdate();
+
+    brushWithSearch();
+    brushWithLegend();
+
+    callback(null, newData)
   });
 
 }
@@ -381,6 +390,7 @@ function initData(data) {
     var min = getMin(data, dimension);
     var max = getMax(data, dimension);
     dimensionsObj[dimension].domain = [min, max];
+    dimensionsObj[dimension].absDomain = [min, max];
 
     if (dimension === dataInitConfig.xAxis.dimension) {
       dataInitConfig.xAxis.min = min;
@@ -405,11 +415,28 @@ function initData(data) {
 // initialize basic properties for the visualization
 // such as the scales and axes
 function initVis(data) {
+
   // create the svg
   visGraphInit.canvas.svg = d3.select('.canvas')
     .append('svg')
-    .attr('width', canvasDimensions.width)
-    .attr('height', canvasDimensions.height);
+      .attr('width', canvasDimensions.width)
+      .attr('height', canvasDimensions.height)
+
+  // create the dropshadow filter
+  visGraphInit.canvas.svg.append('defs')
+    .append('filter')
+      .attr('id', 'dropshadow')
+      .attr('y', '-60%')
+      .attr('x', '-60%')
+      .attr('width', '240%')
+      .attr('height', '240%')
+      .attr('in', 'SourceGraphic')
+    .append('feDropShadow')
+      .attr('dx', '0')
+      .attr('dy', '0')
+      .attr('stdDeviation', '3')
+      .attr('flood-color', '#B27FE7')
+      .attr('flood-opacity', '1')
 
   // initialize scales and axis for x and y
   visGraphInit.scales.y = d3.scaleLinear()
@@ -440,7 +467,7 @@ function initVis(data) {
     .shapePadding(75)
     .scale(visGraphInit.scales.colour)
     .orient('horizontal');
-  visGraphInit.legend.svg.select(".legendOrdinal").call(legendOrdinal);
+  visGraphInit.legend.svg.select('.legendOrdinal').call(legendOrdinal);
 }
 
 // adds in the checkboxes for all the defined dimensions
@@ -448,10 +475,10 @@ function initSidebar(data) {
 
   // init qualitative dimensions as checkboxes
   for (var dimension in dimensionsWithStringsObj) {
-
     var thisDomain = dimensionsWithStringsObj[dimension].domain;
 
     if (typeof(thisDomain) !== 'undefined') {
+      var $accordionTemplate = $($('#template-accordion').html());
       // appends title of the dimension
       var elemName = dimensionsWithStringsObj[dimension].displayName.replace(/ /g,'-');
       var $title = $($('#template-dimension-title').html());
@@ -461,7 +488,13 @@ function initSidebar(data) {
       $title.html(dimension.toLowerCase()).append($tooltipTemplate);
       $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
 
-      $('[data-filter-section='+elemName+']').append($title);
+      if (dimension === 'Bass' || dimension === 'Midrange' || dimension === 'Treble') {
+        $('[data-filter-section='+elemName+']').append($title);
+      }
+      else {
+        $('[data-filter-section='+elemName+']').append($accordionTemplate);
+        $('[data-filter-section='+elemName+'] .accordion__title').append($title);
+      }
 
       // appends each entry of the dimension
       for (var i = 0; i < thisDomain.length; i++) {
@@ -475,7 +508,11 @@ function initSidebar(data) {
           .prop('checked',true);
         $newCheckbox.find('.sensitivity-button__hbar').css('width', sensitivityBarWidth);
         $newCheckbox.find('.jsLabelInput').html(elem);
-        $('[data-filter-section='+elemName+']').append($newCheckbox);
+
+        if (dimension === 'Bass' || dimension === 'Midrange' || dimension === 'Treble')
+          $('[data-filter-section='+elemName+']').append($newCheckbox);
+        else
+          $('[data-filter-section='+elemName+'] [data-tab-content]').append($newCheckbox);
       }
     }
   }
@@ -488,47 +525,71 @@ function initSidebar(data) {
     if (typeof(thisDomain) !== 'undefined') {
       var elemName = dimensionsObj[dimension].displayName.replace(/ /g,'-');
       var $title = $($('#template-dimension-title').html());
-
       var units = dimensionsObj[dimension].units
       var $unitsTemplate = $($('#template-dimension-units').html());
-      $unitsTemplate.closest('.dimension-units').html(units)
-
       var $tooltipTemplate = $($('#template-info-tooltip').html());
       var definition = dimensionsObj[dimension].definition
 
+      $unitsTemplate.closest('.dimension-units').html(units)
       $title.html(elemName).append($unitsTemplate).append($tooltipTemplate);
-
       $tooltipTemplate.closest('.jsTooltipInfoInsert').html(definition)
-
-      $('[data-filter-section='+elemName+']').append($title)
 
       var $newSlider = $($('#template-slider').html());
       $newSlider.attr({
         'data-start': thisDomain[0],
         'data-initial-start': thisDomain[0],
-        'data-end': thisDomain[thisDomain.length -1],
-        'data-initial-end': thisDomain[thisDomain.length -1],
+        'data-end': thisDomain[1],
+        'data-initial-end': thisDomain[1],
       })
+
+      console.log($newSlider.find('.slider-handle'));
 
       $newSlider.find('.slider-handle').each(function(i) {
         $(this).attr('aria-controls','sliderOutput'+i+'-'+elemName)
       })
-      $newSlider.find('input[type=text]').each(function(i) {
+      $newSlider.filter('input[type=number]').each(function(i) {
         $(this).attr('id', 'sliderOutput'+i+'-'+elemName)
       })
-
-      $('[data-filter-section='+elemName+']').append($newSlider);
+      
+      if (dimension === 'MSRP') {
+        $('[data-filter-section='+elemName+']').append($title).append($newSlider);
+      }
+      else {
+        var $accordionTemplate = $($('#template-accordion').html());
+        $('[data-filter-section='+elemName+']').append($accordionTemplate);
+        $('[data-filter-section='+elemName+'] .accordion__title').append($title)
+        $('[data-filter-section='+elemName+'] [data-tab-content]').append($newSlider);
+        // $('[data-filter-section='+elemName+']').append($title).append($newSlider);
+        
+        // console.log($newSlider.filter('.slider'));
+        // var slider = new Foundation.Slider($newSlider.filter('.slider'));
+      }
     }
   }
 
   $('.jsToggleTooltip').on('mouseover', function(d) {
     // $(this).siblings('.info-tooltip-definition').css('display','inline-block');
-    $(this).siblings('.info-tooltip-definition').fadeIn(200);
+    $(this).siblings('.info-tooltip-definition').delay(400).fadeIn(100);
   })
   .on('mouseout', function(d) {
     // $(this).siblings('.info-tooltip-definition').css('display','none');
-    $(this).siblings('.info-tooltip-definition').fadeOut(200);
+    $(this).siblings('.info-tooltip-definition').fadeOut(50);
   });
 
-  $(document).foundation(); // initializes the sliders with foundation
+  // var $sliders = $('.slider')
+  // var sliders = new Foundation.Slider($sliders);
+  // $('.sidebar').foundation(); // initializes the sliders with foundation
+  $(document).foundation();
+  // console.log($('.accordion'))
+  var accordion = new Foundation.Accordion($('.accordion'));
+  $('.accordion__title').on('click', function(ev) {
+    ev.preventDefault();
+    var $thisParent = $(this).closest('.accordion');
+    console.log($thisParent)
+    var $thisItem = $(this).parents('[data-accordion-item]');
+    var $thisContent = $thisItem.find('[data-tab-content]')
+
+    $thisParent.foundation('toggle', $thisContent);
+  });
+
 }

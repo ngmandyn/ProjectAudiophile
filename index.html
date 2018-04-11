@@ -11,36 +11,6 @@
 </head>
 <body>
 
-<!--   <article class="legend">
-    <section class="select-axis">
-      <fieldset class="select-axis__y">
-        <label for="select-y-axis" class="db"><strong>y-axis</strong> shows</label>
-        <p>price</p>
-      </fieldset>
-      <div class="select-axis__graph">
-        <span class="select-axis__graph-y">y</span>
-        <span class="select-axis__graph-x">x</span>
-      </div>
-    </section>
-    <section class="select-other">
-      <fieldset class="select-other__colour">
-        <label for="select-colour"><strong>colour</strong> shows</label>
-        <p>brands</p>
-        <select name="select-colour" class="jsChangeableColour">
-          <option value="Manufacturer" selected="selected">brands</option>
-          <option value="Form factor">form factor</option>
-          <option value="Amp required">amp required</option>
-        </select>
-      </fieldset>
-      <fieldset class="select-other__size jsChangeableSize">
-        <label for="select-size"><strong>size</strong> shows</label>
-        <select name="select-size" disabled>
-          <option value="size">size</option>
-        </select>
-      </fieldset>
-    </section>
-  </article> -->
-
   <h5 class="pt3 pl3">headphone explorer</h5>
 
   <article class="legend-display"></article>
@@ -49,31 +19,46 @@
     <h1 class="masthead__title">Project Audiophile</h1>
   </article>
   <article class="sidebar shadow-2">
-    <!-- here goes the filters and search -->
-    <label class="mb3">Search for<input type="text" id="searchbar" name="searchbar" placeholder="a brand or model..."></label>
+    <label class="mb3 relative" style="z-index:10;">Search for<input type="text" id="searchbar" name="searchbar" placeholder="a brand or model..."></label>
 
     <template id="template-sensitivity-bar">
       <div class="sensitivity-bar jsSensivityBar"></div>
     </template>
 
-    <section class="mb3 relative" data-filter-dimension="MSRP" data-filter-section="price">
+    <section class="mb4 relative" data-filter-dimension="MSRP" data-filter-section="price">
       <section class="mb3 sensitivity-histogram" data-sensitivity></section>
     </section>
-    <section class="mb3 mb5" data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section>
-    <section class="mb3 mb5" data-filter-dimension="Weight" data-filter-section="weight"></section>
-    <section class="mb3" data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>
-    <section class="mb3" data-filter-dimension="Amp-required" data-filter-section="amp-required"></section>
-    <section class="mb3">
-      <h6 class="ma0 pb1 b">Sound Signature</h6>
-      <section class="mb3" data-filter-dimension="Treble" data-filter-section="treble"></section>
-      <section class="mb3" data-filter-dimension="Midrange" data-filter-section="midrange"></section>
-      <section class="mb3" data-filter-dimension="Bass" data-filter-section="bass"></section>
+    <!-- <section class=" mb5" data-filter-dimension="Manufacturer" data-filter-section="manufacturer"></section> -->
+    <section class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Weight" data-filter-section="weight"></section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Form-factor" data-filter-section="form-factor"></section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Amp-required" data-filter-section="amp-required"></section>
+      <section class="accordion__item" data-accordion-item>
+        <!-- <div class="accordion__item" data-accordion-item> -->
+          <div class="accordion__title">
+            <p class="meta mb2 b dimension-title relative">sound signature</p>
+          </div>
+          <div class="accordion__content" data-tab-content>
+            <section class="mt2 mb3" data-filter-dimension="Treble" data-filter-section="treble"></section>
+            <section class="mb3" data-filter-dimension="Midrange" data-filter-section="midrange"></section>
+            <section class="mb3" data-filter-dimension="Bass" data-filter-section="bass"></section>
+          </div>
+        <!-- </div> -->
+      </section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Pads" data-filter-section="pads"></section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Removable Cable" data-filter-section="removable-cable"></section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Impedance" data-filter-section="impedance"></section>
+      <section class="accordion__item" data-accordion-item data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
     </section>
-    <section class="mb3" data-filter-dimension="Pads" data-filter-section="pads"></section>
-    <section class="mb3" data-filter-dimension="Removable Cable" data-filter-section="removable-cable"></section>
-    <section class="mb3 mb5" data-filter-dimension="Impedance" data-filter-section="impedance"></section>
-    <section class="mb3 mb5" data-filter-dimension="Convert to Efficiency" data-filter-section="efficiency"></section>
 
+    <template id="template-accordion">
+      <!-- <section class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true"> -->
+        <!-- <div class="accordion__item" data-accordion-item> -->
+          <div class="accordion__title"></div>
+          <div class="accordion__content" data-tab-content></div>
+        <!-- </div> -->
+      <!-- </section> -->
+    </template>
     <template id="template-dimension-title">
       <p class="meta mb2 b dimension-title relative"></p>
     </template>
@@ -93,14 +78,13 @@
       </label>
     </template>
     <template id="template-slider">
-      <!-- some slider template thing goes here -->
       <div class="slider" data-slider data-start="" data-end="" data-initial-start="" data-initial-end="">
         <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls=""></span>
-        <span class="slider-fill" data-slider-fill></span>
-        <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls=""></span>
-        <input type="text" class="js-slider-min" id="">
-        <input type="text" class="js-slider-max" id="">
+        <span class="slider-fill" data-slider-fill style="min-width:100%;"></span>
+        <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="" style="left:91%;"></span>
       </div>
+      <input type="number" class="slider-input js-slider-min" id="sliderOutput1">
+      <input type="number" class="slider-input js-slider-max" id="sliderOutput2">
     </template>
   </article>
 
@@ -109,6 +93,13 @@
       <article class="small-tooltip">
       </article>
     </template> -->
+    <template id="template-svg-dropshadow">
+      <defs>
+        <filter id="shadow">
+          <feDropShadow dx="1" dy="1" stdDeviation="4"/>
+        </filter>
+      </defs>
+    </template>
     <template id="template-tooltip">
       <article class="tooltip tooltip--small">
         <img class="tooltip__image">
@@ -143,23 +134,51 @@
       <!-- <article class="fav-shelf__tab selection" id="jsViewEverything">my selection</article> -->
       <!-- <article class="fav-shelf__tab compare" id="jsCompareFavourites">compare them</article> -->
     <!-- </article> -->
-    <h5 class="fav-shelf__title">my selection</h5>
+    <h5 class="fav-shelf__title">my selection <small style="font-weight:normal;"><span id="jsFavCountInsert">0</span>/5</small></h5>
     <article class="fav-shelf__item-container"></article>
     <table class="fav-table">
+      <colgroup>
+        <col class="" style="width: 15%;">
+        <col class="" style="width: 17%;">
+        <col class="" style="width: 15%;">
+        <col class="" style="width: 5%;">
+        <col class="" style="width: 5%;">
+        <col class="" style="width: 8%;">
+        <col class="" style="width: 5%;">
+        <col class="" style="width: 5%;">
+        <col class="" style="width: 12.5%;">
+        <col class="" style="width: 12.5%;">
+      </colgroup>
       <thead>
         <tr>
           <th>headphone name</th>
+          <th>price <small>$USD</small></th>
+          <th>weight <small>grams</small></th>
+          <th>form factor</th>
+          <th>amp req.</th>
+          <th>sound signature</th>
+          <th>pads</th>
+          <th>removab. cable</th>
+          <th>impedance <small>ohms</small></th>
+          <th>efficiency <small>db/mW</small></th>
         </tr>
       </thead>
       <tbody class="jsFavTableBody">
       </tbody>
     </table>
-    <template id="template-fav-table-row">
-      <tr class="fav-table__row jsFavTableRow jsFavItem"></tr>
-    </template>
-    <template id="template-fav-table-cell">
-      <td class="jsFavTableEntry">
-      </td>
+    <template id="template-fav-table-row-cells">
+      <tr class="fav-table__row jsFavTableRow jsFavItem">
+        <td class="jsFavTableEntry" data-fav-cell="Model"></td>
+        <td class="jsFavTableEntry" data-fav-cell="MSRP"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Weight"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Form factor"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Amp required"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Sound signature"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Pads"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Removable Cable"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Impedance"></td>
+        <td class="jsFavTableEntry" data-fav-cell="Convert to Efficiency"></td>
+      </tr>
     </template>
     <template id="template-bar-graph">
       <div class="hBarGraph_bar">

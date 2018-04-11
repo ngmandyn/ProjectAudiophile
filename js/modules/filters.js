@@ -10,11 +10,9 @@ function initFilterCollection() {
 
 function initSensitivityBuckets (data) {
   numPerBucket = Math.round(dataCount/numBuckets);
-  console.log(numPerBucket);
   var priceRangeMin = dimensionsObj.MSRP.domain[0] - 1;
   var priceRangeMax = dimensionsObj.MSRP.domain[1];
   var priceRangePerBucket = (priceRangeMax-priceRangeMin)/numBuckets;
-  console.log(priceRangePerBucket);
 
   // creates the buckets, with the domain min and max
   for (var i = 0; i < numBuckets; i++) {
@@ -24,10 +22,7 @@ function initSensitivityBuckets (data) {
     sensitivityBuckets[i]['domain'] = [bucketMin, bucketMax];
     sensitivityBuckets[i]['maxCount'] = 0;
     sensitivityBuckets[i]['count'] = 0;
-    console.log(sensitivityBuckets[i]['domain']);
   }
-
-  console.log(sensitivityBuckets)
 
   // loops through data entries to count how many are in each bucket
   d3.map(data, function(d) {
@@ -42,8 +37,6 @@ function initSensitivityBuckets (data) {
       }
     }
   });
-
-  console.log(sensitivityBuckets)
 
   initSensitivityHistogram();
   // and updates the histogram
@@ -84,8 +77,8 @@ function sliderChangeAndUpdate() {
     var dimensionDisplayName = adjustingDimension.replace(/ /g, '-').toLowerCase()
     // TODO: make a function for this?
     // be careful to parseInt values, as they are usually returned as strings
-    var newMin = parseInt($(this).find('input.js-slider-min').val())
-    var newMax = parseInt($(this).find('input.js-slider-max').val())
+    var newMin = parseInt($(this).siblings('input.js-slider-min').val())
+    var newMax = parseInt($(this).siblings('input.js-slider-max').val())
     var newDomain = [newMin, newMax]
     filterCollection[dimensionName].domain = newDomain
 
@@ -101,10 +94,12 @@ function sliderChangeAndUpdate() {
     if ($adjustingAxis.length > 0) {
       // if this adjusting axis is the xaxis
       if($adjustingAxis.hasClass('xaxis')) {
+        console.log(visGraphInit.scales)
         updateAxisDomain('x', visGraphInit.axis.x, visGraphInit.scales.x, newDomain, dimensionName)
       }
       // else we are adjusting the yaxis
       else if ($adjustingAxis.hasClass('yaxis')) {
+        console.log(visGraphInit.scales)
         updateAxisDomain('y', visGraphInit.axis.y, visGraphInit.scales.y, newDomain, dimensionName)
       }
     }
@@ -114,7 +109,6 @@ function sliderChangeAndUpdate() {
 // checks each circle against all the filters,
 // so that only circles matching every criteria are shown
 function checkCircleAgainstAllFilters() {
-  console.log(allBrands)
   d3.selectAll('circle')
     .classed('hide', function(d) {
       var isHide = false;
@@ -134,7 +128,7 @@ function checkCircleAgainstAllFilters() {
 
 function updateLegend(d) {
   var brandLabel = d['Manufacturer']
-  console.log(brandLabel)
+  // console.log(brandLabel)
 
   var legendOrdinal = d3.legendColor()
     .shape("path", d3.symbol().type(d3.symbolCircle).size(100)())

@@ -23,7 +23,8 @@ $header-type-scale-names: map-keys($header-type-scale);
 
 $type-scale: (
   p:     pow($modular-scale-ratio, 0) * $modular-scale-base,
-  small: pow($modular-scale-ratio, -1) * $modular-scale-base,
+  // small: pow($modular-scale-ratio, -1) * $modular-scale-base,
+  small: 80%,
   tiny: pow($modular-scale-ratio, -2) * $modular-scale-base,
 );
 
@@ -64,6 +65,10 @@ body {
     } else {
       color: -get-color(header);
     }
+
+    @if ($type == 'small') {
+      opacity: .8;
+    }
   }
 }
 
@@ -82,7 +87,10 @@ body {
 
 
 /////////////// Typescale
-
+.small { 
+  font-size: .8%; 
+  opacity: .8; 
+}
 
 /////////////// Other
 .hide {

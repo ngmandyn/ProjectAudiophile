@@ -7,7 +7,6 @@ function updateColours(data, value) {
       var colourScale = d3.scaleOrdinal(d3.schemeCategory20)
                       .domain(legendVals);
     } else {
-      console.log(dimensionsWithStringsObj[value]);
       var colourScale = d3.scaleOrdinal(dimensionsWithStringsObj[value].scaleOrdinal)
                           .domain(dimensionsWithStringsObj[value].domain);
     }

@@ -75,6 +75,7 @@
 .fav-table {
   // hide the table when the fav-shelf isn't expanded
   display: none;
+  table-layout: fixed;
 
   width: 96%;
 
@@ -84,8 +85,9 @@
   
   th {
     font-weight: bold;
-    font-size: .9rem;
+    font-size: .75rem;
     text-align: left;
+    letter-spacing: -.05rem;
     padding: 0 1rem 2rem;
     &:not(:first-child) { padding-left: 1.5rem; padding-right: 1.5rem; }
   }
@@ -94,6 +96,7 @@
     position: relative;
     font-weight: normal;
     padding: .25rem 1rem;
+    letter-spacing: -0.05rem;
     &:not(:first-child) { padding-left: 1.5rem; padding-right: 1.5rem; }
   }
 
@@ -122,6 +125,9 @@ $ss-arrow-height: .7rem;
 
 .sound-sig-bar-group {
   display: flex;
+  position: absolute;
+  width: 3.5rem;
+  margin-top: -0.5rem;
 }
 .sound-sig-bar {
   border-bottom: 2px solid white;
@@ -172,6 +178,6 @@ $ss-arrow-height: .7rem;
 .special {
   // -webkit-filter: drop-shadow(0 0 5px 5px $foxglove);
   // filter: drop-shadow(0 0 5px 5px $foxglove);
-  stroke: $discoindigo;
+  stroke: $foxglove;
   stroke-width: 1;
 }

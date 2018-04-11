@@ -44,6 +44,12 @@ $widths: (
   nine-twelfths: percentage(9/12),
   ten-twelfths: percentage(10/12),
   eleven-twelfths: percentage(11/12),
+  one-twentyfourth: percentage(1/24),
+  two-twentyfourths: percentage(2/24),
+  three-twentyfourths: percentage(3/24),
+  four-twentyfourths: percentage(4/24),
+  five-twentyfourths: percentage(5/24),
+  six-twentyfourths: percentage(6/24),
 );
 
 $widths-names: map-keys($widths);

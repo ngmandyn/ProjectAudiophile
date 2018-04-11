@@ -63,9 +63,9 @@ $slider-radius: 50%;
 
 .slider {
   @include slider-container;
-  // margin-bottom: 1rem;
+  margin-bottom: .25rem;
 
-  & input {
+  &-input {
     display: inline-block;
     width: 48%;
     margin-top: 1rem;
@@ -137,9 +137,9 @@ $slider-radius: 50%;
   display: flex;
   align-items: flex-end;
   position: absolute;
-  bottom: 0;
+  // bottom: 2.8rem;
+  top: -8.4rem;
   height: 13rem;
-  margin-top: -4rem;
   margin-bottom: .4rem;
   z-index: 1;
 }

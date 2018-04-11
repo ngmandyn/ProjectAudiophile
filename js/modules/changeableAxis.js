@@ -19,20 +19,24 @@ function updateXAxis(data, value, xscale, xaxis) {
 }
 
 
-function updateAxisDomain(axis, d3Axis, d3Scale, newDomain, dimension) {
-  d3Scale.domain(newDomain)
-  d3Axis.scale(d3Scale)
+function updateAxisDomain(axis, d3Axis, scale, newDomain, dimension) {
+  scale.domain(newDomain)
+  d3Axis.scale(scale)
   d3.select('.'+axis+'axis').call(d3Axis)
 
   // updateAxisDimensionId(axis, dimension)
   // d3.select('.axis').classed(dimension, true).classed(oldDimension, false)
-  updatePointPositions(axis, d3Scale, dimension);
+  updatePointPositions(axis, scale, dimension);
 }
 
-function updatePointPositions(axis, d3Scale, dimension) {
+function updatePointPositions(axis, scale, dimension) {
   d3.selectAll('circle')
     .transition().duration(200)
-    .attr('c'+axis, function(d) { return d3Scale(d[dimension]); })
+    .attr('c'+axis, function(d) {
+      // console.log('dimension ' + d[dimension])
+      // console.log('d3Scale ' + scale(d[dimension]))
+      return scale(d[dimension]); 
+    })
     .each(function(d) {
       if(tooltipAlreadyExists(d)) {
         updateTooltipPositionWithCircle(d, $(this))
