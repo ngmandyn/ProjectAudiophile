@@ -727,6 +727,12 @@ tiny {
   .fav-shelf__item-cancel:after {
     content: 'X'; }
 
+[data-fav-cell="Convert to Efficiency"],
+[data-fav-cell="Impedance"],
+[data-fav-cell="Weight"],
+[data-fav-cell="MSRP"] {
+  border-right: 1px dashed rgba(255, 255, 255, 0.2); }
+
 .fav-shelf.is-expanded .fav-table {
   display: table; }
 

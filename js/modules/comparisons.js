@@ -65,21 +65,23 @@ function makeFavCircleSpecial(thisCircle, isSpecial) {
   if ((typeof(isSpecial) === 'undefined' || typeof(isSpecial) === 'null')) {
     thisCircle.addClass('special')
     thisCircle.attr('filter', 'url(#dropshadow)');
+    thisCircle.attr('r', visGraphInit.circles.specialR);
   }
   else if (!isSpecial) {
     thisCircle.removeClass('special')
     thisCircle.attr('filter', '')
+    thisCircle.attr('r', visGraphInit.circles.minR);
   }
 }
 
 function toggleFavCircleExtraSpecial(circle, isExtraSpecial) {
   if (isExtraSpecial) {
     circle.addClass('extraSpecial');
-    circle.attr('r', visGraphInit.circles.maxR);
+    circle.attr('r', visGraphInit.circles.extraSpecialR);
   }
   else if (!isExtraSpecial) {
     circle.removeClass('extraSpecial');
-    circle.attr('r', visGraphInit.circles.minR);
+    circle.attr('r', visGraphInit.circles.specialR);
   }
 }
 

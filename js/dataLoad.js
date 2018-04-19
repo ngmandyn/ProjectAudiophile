@@ -172,6 +172,8 @@ var visGraphInit = {
   circles: {
     minR: 5,
     maxR: 10,
+    specialR: 10,
+    extraSpecialR: 15,
   }
 }
 
@@ -315,23 +317,28 @@ function performTasks(callback) {
 
       })
       .on('mouseover', function(d) {
-        d3.select(this)
-          .transition().duration(200)
-          .attr('r', visGraphInit.circles.maxR);
-          // move to front
-          this.parentNode.appendChild(this);
+        if(!$(this).hasClass('extraSpecial')) {
+          d3.select(this)
+            .transition().duration(200)
+            .attr('r', visGraphInit.circles.maxR);
+        }
 
-        // don't create another tooltip if we're already hovering
-        // or we have clicked this circle before
-        // if (!tooltipAlreadyExists(d))
-          showTooltip(d, $(this), 'large')
+        // move to front
+        this.parentNode.appendChild(this);
+
+        showTooltip(d, $(this), 'large')
       })
       .on('mouseout', function(d) {
 
-        if(!$(this).hasClass('extraSpecial')) {
+        if(!$(this).hasClass('extraSpecial') && !$(this).hasClass('special')) {
           d3.select(this)
             .transition().duration(300)
             .attr('r', visGraphInit.circles.minR);
+        }
+        else if(!$(this).hasClass('extraSpecial')) {
+          d3.select(this)
+            .transition().duration(300)
+            .attr('r', visGraphInit.circles.specialR);
         }
 
         removeTooltip(d, 'large')
