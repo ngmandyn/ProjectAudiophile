@@ -90,7 +90,7 @@ var dimensionsWithStringsObj = {
   'Treble': {
     displayName: 'treble',
     domain: ['Recessed', 'Neutral', 'Emphasized'],
-    definition: 'The highest tones in the frequency range start at 2Hz and end at the hearing limit of the human ear at 20Hz. '+
+    definition: 'The highest tones in the frequency range start at 2KHz and end at the hearing limit of the human ear at 20KHz. '+
                 'Treble is what gives a headphone detail and clarity.',
   },
   'Removable Cable': {
